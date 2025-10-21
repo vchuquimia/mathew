@@ -20,6 +20,13 @@ export class AppMenu {
 
     ngOnInit() {
         this.model = [
+            {label:'Core',
+            items:[
+                {label:'Income',
+                    icon: 'pi pi-fw pi-sign-in',
+                    routerLink: ['/income']
+                }]
+            },
             {
                 label: 'Home',
                 items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
@@ -151,7 +158,8 @@ export class AppMenu {
                         target: '_blank'
                     }
                 ]
-            }
-        ];
+            },
+
+        ]
     }
 }

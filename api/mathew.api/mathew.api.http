@@ -1,0 +1,20 @@
+#@mathew_api_HostAddress = http://localhost:5147
+@mathew_api_HostAddress = http://mathew.runasp.net
+GET {{mathew_api_HostAddress}}/category
+Accept: application/json
+
+
+###
+
+POST {{mathew_api_HostAddress}}/category
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "string",
+  "description": "string"
+}
+
+###
+
+

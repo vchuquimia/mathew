@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5a8c6d37-da5b-4ea0-b664-16a26d7b9877" name="monsterasp" url="http://site40371.siteasp.net">
+        <fileTransfer rootFolder="/wwwroot" accessType="SFTP" host="site40371.siteasp.net" port="22" sshConfigId="69c65db0-a77a-418c-98fd-a3a84207b8a2" sshConfig="site40371@site40371.siteasp.net:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

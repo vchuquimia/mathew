@@ -8,7 +8,7 @@ interface Income{
 }
 
 @Injectable()
-export class IncomeService {
+export class IncoService {
     getData() {
         return [
             { name: 'Afghanistan', code: 'AF' },
