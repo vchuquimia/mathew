@@ -19,7 +19,8 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Product, ProductService } from '@/pages/service/product.service';
-import { Category, CategoryService } from '@/service/category.service';
+import { CategoryService } from '@/service/category.service';
+import { Category } from '@/models/category';
 
 interface Column {
     field: string;
@@ -55,17 +56,14 @@ interface ExportColumn {
         IconFieldModule,
         ConfirmDialogModule
     ],
-    templateUrl: './income-search.html',
+    templateUrl: './category.component.html',
     providers: [MessageService, ProductService, ConfirmationService]
 })
-export class IncomeSearch implements OnInit {
+export class CategoryComponent implements OnInit {
     productDialog: boolean = false;
 
-    public categories  = new Array<Category>();
-
-    products = signal<Product[]>([]);
-
-    product!: Product;
+    public categories = new Array<Category>();
+    category!: Category;
 
     selectedProducts!: Product[] | null;
 
@@ -83,7 +81,7 @@ export class IncomeSearch implements OnInit {
         private productService: ProductService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
-        private categoryService: CategoryService,
+        private categoryService: CategoryService
     ) {}
 
     exportCSV() {
@@ -91,16 +89,12 @@ export class IncomeSearch implements OnInit {
     }
 
     ngOnInit() {
-        this.loadDemoData();
-        this.categoryService.getData().subscribe(data => {
-        this.categories = data;
-
-        })
+        this.loadData();
     }
 
-    loadDemoData() {
-        this.productService.getProducts().then((data) => {
-            this.products.set(data);
+    loadData() {
+        this.categoryService.getData().subscribe((data) => {
+            this.categories = data;
         });
 
         this.statuses = [
@@ -125,13 +119,13 @@ export class IncomeSearch implements OnInit {
     }
 
     openNew() {
-        this.product = {};
+        this.category = {};
         this.submitted = false;
         this.productDialog = true;
     }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
+    editCategory(category: Category) {
+        this.category = { ...category };
         this.productDialog = true;
     }
 
@@ -141,13 +135,14 @@ export class IncomeSearch implements OnInit {
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.products.set(this.products().filter((val) => !this.selectedProducts?.includes(val)));
-                this.selectedProducts = null;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Products Deleted',
-                    life: 3000
+                this.categoryService.delete(this.category).subscribe((data) => {
+                    this.selectedProducts = null;
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Successful',
+                        detail: 'Products Deleted',
+                        life: 3000
+                    });
                 });
             }
         });
@@ -164,79 +159,31 @@ export class IncomeSearch implements OnInit {
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.products.set(this.products().filter((val) => val.id !== product.id));
-                this.product = {};
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Deleted',
-                    life: 3000
+                this.categoryService.delete(this.category).subscribe((data) => {
+                    this.category = {};
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Successful',
+                        detail: 'Product Deleted',
+                        life: 3000
+                    });
                 });
             }
         });
     }
 
-    findIndexById(id: string): number {
-        let index = -1;
-        for (let i = 0; i < this.products().length; i++) {
-            if (this.products()[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
-
-    createId(): string {
-        let id = '';
-        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (var i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
-    }
-
-    getSeverity(status: string) {
-        switch (status) {
-            case 'INSTOCK':
-                return 'success';
-            case 'LOWSTOCK':
-                return 'warn';
-            case 'OUTOFSTOCK':
-                return 'danger';
-            default:
-                return 'info';
-        }
-    }
-
-    saveProduct() {
+    saveCategory() {
         this.submitted = true;
-        let _products = this.products();
-        if (this.product.name?.trim()) {
-            if (this.product.id) {
-                _products[this.findIndexById(this.product.id)] = this.product;
-                this.products.set([..._products]);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Updated',
-                    life: 3000
-                });
-            } else {
-                this.product.id = this.createId();
-                this.product.image = 'product-placeholder.svg';
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Created',
-                    life: 3000
-                });
-                this.products.set([..._products, this.product]);
-            }
-
-            this.productDialog = false;
-            this.product = {};
-        }
+        this.categoryService.save(this.category).subscribe((data) => {
+            this.loadData();
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'Category Saved',
+                life: 3000
+            });
+        });
+        this.productDialog = false;
+        this.category = {};
     }
 }

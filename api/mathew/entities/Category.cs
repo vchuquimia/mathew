@@ -12,7 +12,8 @@ public class Category
 
     [MaxLength(500)]
     public string? Description { get; set; }
-
-    public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
-    public ICollection<Budget> Budgets { get; set; } = new List<Budget>();
+    [MaxLength(50)]
+    public string? Icon { get; set; }
+    [MaxLength(50)]
+    public string? Color { get; set; }
 }

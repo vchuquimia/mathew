@@ -1,0 +1,55 @@
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <p-button label="Nuevo Gasto" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+        <p-button severity="secondary" label="Borrar" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()"
+                  [disabled]="!selectedExpenses || !selectedExpenses.length" />
+    </ng-template>
+
+    <ng-template #end>
+        <p-button label="Exportar" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+    </ng-template>
+</p-toolbar>
+<p-dataview [value]="expenses" [layout]="'list'">
+
+    <ng-template #list let-expenses>
+        <div class="flex flex-col">
+            <div *ngFor="let expense of expenses; let i = index">
+                <div class="flex flex-col sm:flex-row sm:items-center p-6 "
+                     [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="basis-1/4 ">
+                        <div class="flex-row" [style]="{ left: '4px', top: '4px' }">
+                            <i class="text-3xl fas"
+                               [ngClass]="[expense.category?.icon??'',expense.category?.color??'']"></i>
+                            <span [ngClass]="expense.category?.color??''" class="text-base">
+                                {{ expense.category.name }}
+                            </span>
+                        </div>
+                        <span
+                            class="flex-row font-medium text-surface-500 dark:text-surface-400 text-sm">{{ expense.date| date:'dd/MM/yy' }} / {{ expense.date| timeago }} </span>
+                    </div>
+                    <div class=" basis-1/2 flex flex-col md:flex-row justify-between md:items-center flex-1">
+                        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                            <div class="text-lg font-medium mt-2">{{ expense.description }}</div>
+                        </div>
+                    </div>
+                    <div class="flex basis-1/4 flex-col md:items-end gap-8">
+                        <span
+                            class="text-xl font-semibold items-end">{{ expense.amount | currency:'BOB':'symbol-narrow' }}</span>
+                        <div class="flex flex-row-reverse md:flex-row gap-2">
+                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
+                                      (click)="editExpense(expense)" />
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                                      (click)="deleteExpense(expense)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataview>
+
+<app-expense-dialog [expense]="expense" [categories]="categories" [(showDialog)]="showDialog" (onClose)="hideDialog()"
+></app-expense-dialog>
+
+<p-confirmdialog [style]="{ width: '450px' }" />

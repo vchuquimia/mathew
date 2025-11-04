@@ -1,0 +1,71 @@
+<p-dialog [(visible)]="showDialog"
+          [style]="{ width: '450px' }" header="Detalles del gasto"
+          [modal]="true" (onHide)="hideDialog()">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="category" class="block font-bold mb-3">Categoria</label>
+                <p-select [(ngModel)]="expense.category"
+                          inputId="category" [options]="categories"
+                          (onChange)="onCategoryChange($event)"
+                          optionLabel="name" placeholder="Select a Status" appendTo="body" fluid>
+                    <ng-template let-selectedItem #selectedItem>
+                        <div class="flex items-center gap-2">
+                            <i class="fas" [ngClass]="[selectedItem?.icon??'fa-home',selectedItem?.color??'']"
+                               style="width: 20px"></i>
+                            <span>{{ selectedItem.name }}</span>
+                        </div>
+                    </ng-template>
+                    <ng-template let-category #item>
+                        <div class="flex items-center gap-2">
+                            <i class="fas" [ngClass]="[category?.icon??'fa-home',category?.color??'']"
+                               style="width: 20px"></i>
+                            <span>{{ category.name }}</span>
+                        </div>
+                    </ng-template>
+                </p-select>
+            </div>
+            @if (expense.id == undefined) {
+
+                <div class="flex flex-row text-sm gap-2 items-center">
+                    <span> Pre:  </span>
+                    <span class="font-bold">{{ expenseSummary?.budgetAmount| currency:'BOB':'symbol-narrow' }}</span>
+                    <span> Saldo P:  </span>
+                    <span class="font-bold">{{ expenseSummary?.remainingBudget| currency:'BOB':'symbol-narrow' }}</span>
+                    <span> Acumulado: </span>
+                    <span class="font-bold">{{ expenseSummary?.totalAmount| currency:'BOB':'symbol-narrow' }}</span>
+                </div>
+            }
+            <div>
+                <label for="amount" class="block font-bold mb-3">Valor</label>
+                <input type="number" inputmode="decimal" pattern="[0-9]*(\.[0-9]{0,2})?" id="amount" pInputText
+                       [(ngModel)]="expense.amount" required rows="3" cols="20" fluid />
+            </div>
+            <div>
+                <label for="name" class="block font-bold mb-3">Fecha</label>
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <p-button icon="pi pi-chevron-left" severity="secondary" (onClick)="onDatePreviousClick()" />
+                    </p-inputgroup-addon>
+                    <p-datepicker [showIcon]="true" [showButtonBar]="true" [(ngModel)]="expense.date"
+                                  [dateFormat]="'dd/M/yy'"
+                                  appendTo="body"></p-datepicker>
+                    <p-inputgroup-addon>
+                        <p-button icon="pi pi-chevron-right" severity="secondary" (onClick)="onDateNextClick()" />
+                    </p-inputgroup-addon>
+                </p-inputgroup>
+            </div>
+            <div>
+                <label for="description" class="block font-bold mb-3">Descripción</label>
+                <textarea id="description" pTextarea [(ngModel)]="expense.description"
+                          required rows="3" cols="20" fluid></textarea>
+            </div>
+
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="saveExpense()" />
+    </ng-template>
+</p-dialog>

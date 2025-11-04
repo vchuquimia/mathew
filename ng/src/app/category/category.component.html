@@ -1,0 +1,114 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+        <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()"
+                  [disabled]="!selectedProducts || !selectedProducts.length" />
+    </ng-template>
+
+    <ng-template #end>
+        <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+    </ng-template>
+</p-toolbar>
+
+<p-table
+    responsiveLayout="stack"
+    scrollHeight="flex"
+    #dt
+    [value]="categories"
+    [rows]="30"
+    [columns]="cols"
+    [paginator]="true"
+    [globalFilterFields]="['name', 'description']"
+
+    [(selection)]="selectedProducts"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 30]"
+>
+    <ng-template #caption>
+        <div class="flex items-center justify-between">
+            <h5 class="m-0">Administrar categorias</h5>
+            <p-iconfield>
+                <p-inputicon styleClass="pi pi-search" />
+                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
+            </p-iconfield>
+        </div>
+    </ng-template>
+    <ng-template #header>
+        <tr>
+            <th style="width: 15px">
+                <p-tableHeaderCheckbox />
+            </th>
+            <th pSortableColumn="name" style="width: 15px">
+                ID
+                <p-sortIcon field="Id" />
+            </th>
+            <th pSortableColumn="Name" style="width: 15px">
+                Nombre
+                <p-sortIcon field="Name" />
+            </th>
+            <th>Descripción</th>
+            <th>Icon</th>
+            <th pSortableColumn="Description">
+                Acciones
+                <p-sortIcon field="Description" />
+            </th>
+
+        </tr>
+    </ng-template>
+    <ng-template #body let-category>
+        <tr>
+            <td style="width: 3rem">
+                <p-tableCheckbox [value]="category" />
+            </td>
+            <td style="min-width: 12rem">{{ category.id }}</td>
+            <td style="min-width: 16rem">{{ category.name }}</td>
+            <td>{{ category.description }}</td>
+            <td><i class=" text-3xl fas" [ngClass]="[category.icon??'',category.color??'']"> </i></td>
+            <td>
+                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
+                          (click)="editCategory(category)" />
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                          (click)="deleteProduct(category)" />
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Category Details" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="name" class="block font-bold mb-3">Name</label>
+                <input type="text" pInputText id="name" [(ngModel)]="category.name" required autofocus fluid />
+                <small class="text-red-500" *ngIf="submitted && !category.name">Name is required.</small>
+            </div>
+            <div>
+                <label for="description" class="block font-bold mb-3">Description</label>
+                <textarea id="description" pTextarea [(ngModel)]="category.description" required rows="3" cols="20"
+                          fluid></textarea>
+            </div>
+            <div>
+                <div class="flex flex-row gap-6 items-center p-6">
+
+                    <i class="!text-[3rem] fas" [ngClass]="[category.icon??'pi-cog',category.color??'']"></i>
+                    <label for="icon" class="block font-bold ">Icono</label>
+                    <input type="text" pInputText id="icon" [(ngModel)]="category.icon" required fluid />
+
+                </div>
+                <label for="color" class="block font-bold mb-3">Color</label>
+                <input type="text" pInputText id="color" [(ngModel)]="category.color" required fluid />
+            </div>
+
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="saveCategory()" />
+    </ng-template>
+</p-dialog>
+
+<p-confirmdialog [style]="{ width: '450px' }" />

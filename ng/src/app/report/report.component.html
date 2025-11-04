@@ -1,0 +1,150 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <div class="flex flex-wrap sm:flex-row p-4 items-center">
+            <div class="w-1/4">
+                <label for="startDate"> Inicio:</label>
+            </div>
+            <div class="w-1/2 ">
+                <p-datePicker id="startDate" [(ngModel)]="startDate"></p-datePicker>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #center>
+        <div class="flex flex-wrap flex-row p-4 items-center">
+            <div class="w-1/4">
+                <label for="endDate"> Fin:</label>
+            </div>
+            <div class="w-1/2 ">
+                <p-datePicker id="endDate" [(ngModel)]="endDate"></p-datePicker>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #end>
+        <div class="flex flex-wrap flex-row p-4 items-center">
+            <div class="w-1/2 ">
+                <p-button label="Buscar" icon="pi pi-search" severity="secondary" class="mr-2"
+                          (onClick)="loadReport()" />
+            </div>
+        </div>
+    </ng-template>
+</p-toolbar>
+
+<p-table
+    responsiveLayout="stack"
+    scrollHeight="flex"
+    #dt
+    [value]="itemsSource"
+    [rows]="30"
+    [globalFilterFields]="['name', 'description']"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 30]"
+>
+    <ng-template #caption>
+        <div class="flex items-center justify-between">
+            <h5 class="m-0">Reporte</h5>
+        </div>
+    </ng-template>
+    <ng-template #header>
+        <tr>
+            <th pSortableColumn="categoryId" style="width: 255px">
+                Categoria
+                <p-sortIcon field="categoryId" />
+            </th>
+            <th pSortableColumn="amount" style="width: 15px">
+                Valor
+                <p-sortIcon field="amount" />
+            </th>
+            <th pSortableColumn="expenseCount">
+                # de pagos/compras
+                <p-sortIcon field="expenseCount" />
+            </th>
+            <th pSortableColumn="expenseCount"> Presupuesto
+                <p-sortIcon field="expenseCount" />
+            </th>
+            <th pSortableColumn="expenseCount"> Saldo
+                <p-sortIcon field="expenseCount" />
+            </th>
+            <th pSortableColumn="expenseCount"> %
+                <p-sortIcon field="expenseCount" />
+            </th>
+            <th>
+                Detalle
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template #body let-expense>
+        <tr>
+            <td>
+                <div class="flex flex-row gap-6 items-center">
+                    <i class=" text-3xl fas" [ngClass]="[expense.category?.icon??'',expense.category?.color??'']"> </i>
+                    <span>
+                        {{ expense.category.name }}
+                    </span>
+                </div>
+            </td>
+            <td>{{ expense.totalAmount| currency:'BOB':'symbol-narrow' }}</td>
+            <td style="min-width: 12rem">{{ expense.expenseCount }}</td>
+            <td style="min-width: 12rem">{{ expense.remainingBudget }}</td>
+            <td style="min-width: 12rem">{{ expense.budgetAmount }}</td>
+            <td style="min-width: 12rem">{{ expense.budgetUsedPercentage }}%
+            </td>
+            <td style="min-width: 12rem">
+                <p-button icon="pi pi-list" class="mr-2" [rounded]="true" [outlined]="true"
+                          (click)="openExpensesDetail(expense, startDate, endDate)" />
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-confirmdialog [style]="{ width: '450px' }" />
+
+<p-dialog [(visible)]="showExpenseDetail" header="Detalle de gastos" [modal]="true"
+          [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }">
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <p-avatar [icon]="'fas '+currentSummaryDto.category?.icon+' '+currentSummaryDto.category?.color"
+                      shape="circle" size="xlarge" />
+            <span class="font-bold whitespace-nowrap">{{ currentSummaryDto.category?.name }}</span>
+            <span
+                class="font-bold whitespace-nowrap">TOTAL : {{ currentSummaryDto.totalAmount | currency:'BOB':'symbol-narrow' }}</span>
+        </div>
+    </ng-template>
+    <ng-template #content>
+        <div class="flex flex-col items-start gap-4 mb-4">
+            <span
+                class="font-bold whitespace-nowrap">Presupuesto : {{ currentSummaryDto.budgetAmount| currency:'BOB':'symbol-narrow' }}</span>
+            <span
+                class="font-bold whitespace-nowrap">Saldo Presupuesto : {{ currentSummaryDto.remainingBudget| currency:'BOB':'symbol-narrow' }}</span>
+            <span class="font-bold whitespace-nowrap">{{ currentSummaryDto.budgetUsedPercentage |  number : '1.2-2' }}
+                %</span>
+        </div>
+        <div class="flex flex-col gap-6">
+            <p-dataview [value]="expenses" [layout]="'list'" borders="all">
+                <ng-template #list let-expenses>
+                    <div class="flex flex-col">
+                        <div *ngFor="let expense of expenses; let i = index">
+                            <div class="flex flex-col sm:flex-row sm:items-center p-6 "
+                                 [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                                <div class="basis-1/2 ">
+                                    <span
+                                        class="flex-row font-medium text-surface-500 dark:text-surface-400 text-sm">{{ expense.date| date:'dd/MM/yy' }}</span>
+                                </div>
+                                <div
+                                    class=" basis-1/2 flex flex-col md:flex-row justify-between md:items-center flex-1">
+                                    <div class="text-lg font-medium mt-2">{{ expense.description }}</div>
+                                </div>
+                                <div class="flex basis-1/4 flex-col md:items-end gap-8">
+                                    <span
+                                        class="text-xl font-semibold items-end">{{ expense.amount | currency:'BOB':'symbol-narrow' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataview>
+
+        </div>
+    </ng-template>
+</p-dialog>

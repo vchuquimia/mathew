@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using mathew.entities;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,10 +45,13 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-app.MapControllers();
+app.UseRouting();
 app.UseCors();
+app.MapControllers();
 app.MapGet("/", () => "Hello World!");
 
+
+/*
 // ============= MCP PROTOCOL ENDPOINTS =============
 app.MapPost("/mcp/initialize", () => Results.Ok(new
 {
@@ -418,9 +420,10 @@ app.MapPost("/mcp/tools/call", async (ExpenseDbContext db, McpToolCallRequest re
 })
 .WithName("MCPCallTool")
 .WithOpenApi();
-
+*/
 app.Run();
 
+/*
 // ============= MCP TOOL IMPLEMENTATIONS =============
 static async Task<object> CreateCategory(ExpenseDbContext db, CategoryDto dto)
 {
@@ -447,10 +450,10 @@ static async Task<object> CreateExpense(ExpenseDbContext db, ExpenseDto dto)
         CategoryId = dto.CategoryId
     };
     
-    db.Expenses.Add(expense);
+    db.ExpensesComponent.Add(expense);
     await db.SaveChangesAsync();
     
-    var created = await db.Expenses.Include(e => e.Category).FirstAsync(e => e.Id == expense.Id);
+    var created = await db.ExpensesComponent.Include(e => e.Category).FirstAsync(e => e.Id == expense.Id);
     return new 
     { 
         success = true, 
@@ -468,7 +471,7 @@ static async Task<object> CreateExpense(ExpenseDbContext db, ExpenseDto dto)
 
 static async Task<object> ListExpenses(ExpenseDbContext db, ListExpensesRequest request)
 {
-    var query = db.Expenses.Include(e => e.Category).AsQueryable();
+    var query = db.ExpensesComponent.Include(e => e.Category).AsQueryable();
     
     if (request.StartDate.HasValue)
         query = query.Where(e => e.Date >= request.StartDate.Value);
@@ -497,7 +500,7 @@ static async Task<object> ListExpenses(ExpenseDbContext db, ListExpensesRequest 
 
 static async Task<object> UpdateExpense(ExpenseDbContext db, UpdateExpenseDto dto)
 {
-    var expense = await db.Expenses.FindAsync(dto.Id);
+    var expense = await db.ExpensesComponent.FindAsync(dto.Id);
     
     if (expense == null)
         throw new Exception($"Expense with ID {dto.Id} not found");
@@ -509,7 +512,7 @@ static async Task<object> UpdateExpense(ExpenseDbContext db, UpdateExpenseDto dt
     
     await db.SaveChangesAsync();
     
-    var updated = await db.Expenses.Include(e => e.Category).FirstAsync(e => e.Id == dto.Id);
+    var updated = await db.ExpensesComponent.Include(e => e.Category).FirstAsync(e => e.Id == dto.Id);
     return new 
     { 
         success = true, 
@@ -527,12 +530,12 @@ static async Task<object> UpdateExpense(ExpenseDbContext db, UpdateExpenseDto dt
 
 static async Task<object> DeleteExpense(ExpenseDbContext db, DeleteRequest request)
 {
-    var expense = await db.Expenses.FindAsync(request.Id);
+    var expense = await db.ExpensesComponent.FindAsync(request.Id);
     
     if (expense == null)
         throw new Exception($"Expense with ID {request.Id} not found");
     
-    db.Expenses.Remove(expense);
+    db.ExpensesComponent.Remove(expense);
     await db.SaveChangesAsync();
     
     return new { success = true, message = $"Expense {request.Id} deleted successfully" };
@@ -707,7 +710,7 @@ static async Task<object> GetBudgetAnalysis(ExpenseDbContext db, BudgetAnalysisR
     
     foreach (var budget in budgets)
     {
-        var totalSpent = await db.Expenses
+        var totalSpent = await db.ExpensesComponent
             .Where(e => e.CategoryId == budget.CategoryId && e.Date >= startDate && e.Date <= endDate)
             .SumAsync(e => (decimal?)e.Amount) ?? 0;
         
@@ -780,7 +783,7 @@ static async Task<object> GetExpenseSummary(ExpenseDbContext db, ExpenseSummaryR
     if (request.EndDate < request.StartDate)
         throw new Exception("End date must be after start date");
     
-    var expenses = await db.Expenses
+    var expenses = await db.ExpensesComponent
         .Include(e => e.Category)
         .Where(e => e.Date >= request.StartDate && e.Date <= request.EndDate)
         .ToListAsync();
@@ -831,7 +834,7 @@ static async Task<object> GetCashFlow(ExpenseDbContext db, YearMonthRequest requ
     var startDate = new DateTime(request.Year, request.Month, 1);
     var endDate = startDate.AddMonths(1).AddDays(-1);
     
-    var expenses = await db.Expenses
+    var expenses = await db.ExpensesComponent
         .Where(e => e.Date >= startDate && e.Date <= endDate)
         .SumAsync(e => (decimal?)e.Amount) ?? 0;
     
@@ -938,3 +941,4 @@ public record UpdateBudgetRequest()
     public decimal Amount { get; set; }
     public int Year { get; set; }
 }
+*/

@@ -5,7 +5,7 @@
       <paths name="monsterasp">
         <serverdata>
           <mappings>
-            <mapping deploy="/wwwroot" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/wwwroot" local="$PROJECT_DIR$/ng/dist/sakai-ng/browser" web="/" />
           </mappings>
         </serverdata>
       </paths>

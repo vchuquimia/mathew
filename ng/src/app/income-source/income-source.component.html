@@ -1,0 +1,102 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+    </ng-template>
+
+    <ng-template #end>
+        <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+    </ng-template>
+</p-toolbar>
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+<p-table
+    responsiveLayout="stack"
+    scrollHeight="flex"
+    #dt
+    [value]="incomeSources"
+    [rows]="30"
+    [paginator]="true"
+    [globalFilterFields]="['name', 'description']"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 30]"
+>
+    <ng-template #caption>
+        <div class="flex items-center justify-between">
+            <h5 class="m-0">Fuentes de Ingresos</h5>
+            <p-iconfield>
+                <p-inputicon styleClass="pi pi-search" />
+                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
+            </p-iconfield>
+        </div>
+    </ng-template>
+    <ng-template #header>
+        <tr>
+            <th style="width: 15px">
+                <p-tableHeaderCheckbox />
+            </th>
+            <th pSortableColumn="name" style="width: 15px">
+                Id
+                <p-sortIcon field="Id" />
+            </th>
+            <th pSortableColumn="Name" style="width: 15px">
+                Nombre
+                <p-sortIcon field="Name" />
+            </th>
+            <th>Descripción</th>
+            <th>Ingreso proyectado</th>
+            <th pSortableColumn="Description">
+                Acciones
+                <p-sortIcon field="Description" />
+            </th>
+
+        </tr>
+    </ng-template>
+    <ng-template #body let-incomeSource>
+        <tr>
+            <td style="width: 3rem">
+                <p-tableCheckbox [value]="incomeSource" />
+            </td>
+            <td style="min-width: 12rem">{{ incomeSource.id }}</td>
+            <td style="min-width: 16rem">{{ incomeSource.name }}</td>
+            <td>{{ incomeSource.description }}</td>
+            <td>{{ incomeSource.projectedIncome| currency:'BOB':'symbol-narrow' }}</td>
+            <td>
+                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
+                          (click)="edit(incomeSource)" />
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                          (click)="delete(incomeSource)" />
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="showDialog" [style]="{ width: '450px' }" header="Fuente de Ingreso" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="year" class="block font-bold mb-3">Nombre</label>
+                <input type="text" id="year" pTextarea [(ngModel)]="incomeSource.name" required rows="3" cols="20"
+                       fluid />
+            </div>
+            <div>
+                <label for="amount" class="block font-bold mb-3">Descripción</label>
+                <input type="text" id="amount" pTextarea [(ngModel)]="incomeSource.description" required rows="3"
+                       cols="20" fluid />
+            </div>
+            <div>
+                <label for="amount" class="block font-bold mb-3">Ingreso proyectado</label>
+                <input type="number" inputmode="decimal" pattern="[0-9]*(\.[0-9]{0,2})?"
+                       [(ngModel)]="incomeSource.projectedIncome" pInputText required rows="3" cols="20" fluid />
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="save()" />
+    </ng-template>
+</p-dialog>
+
+<p-confirmdialog [style]="{ width: '450px' }" />

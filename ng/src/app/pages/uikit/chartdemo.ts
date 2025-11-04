@@ -239,14 +239,14 @@ export class ChartDemo {
             scales: {
                 r: {
                     grid: {
-                        color: surfaceBorder,
+                        color: surfaceBorder
                     },
                     ticks: {
                         display: false,
                         color: textColorSecondary
-                    },
-                },
-            },
+                    }
+                }
+            }
         };
 
         this.radarData = {

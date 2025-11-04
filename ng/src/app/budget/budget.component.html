@@ -1,0 +1,134 @@
+<p-toolbar class="mb-2">
+    <ng-template #start>
+        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+    </ng-template>
+
+    <ng-template #end>
+        <div class="flex items-center justify-between gap-1">
+            <p-select [options]="periods" [(ngModel)]="currentPeriod" optionLabel="label"></p-select>
+            <p-button label="" icon="pi pi-search" severity="secondary" class="mr-2" (onClick)="loadBudget()" />
+        </div>
+    </ng-template>
+</p-toolbar>
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+
+<p-toolbar class="mb-2">
+    <ng-template #start>
+        <div class="flex items-center  gap-3 text-sm">
+            <div>
+                <i class="pi pi-fw pi-arrow-right"></i><span pTooltip="'Ingresos'">{{ incomeBudgetSummary?.incomeAmount| currency:'BOB':'symbol-narrow' }}</span>
+            </div>
+            <div>
+                <i class="pi pi-fw pi-flag"></i><span>{{ incomeBudgetSummary?.budgetAmount| currency:'BOB':'symbol-narrow' }}</span>
+            </div>
+            <span> Diff. {{ incomeBudgetSummary?.balance| currency:'BOB':'symbol-narrow' }}</span>
+        </div>
+    </ng-template>
+</p-toolbar>
+<p-table
+    responsiveLayout="stack"
+    scrollHeight="flex"
+    #dt
+    [value]="budgets"
+    [rows]="30"
+    [paginator]="true"
+    [globalFilterFields]="['name', 'description']"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 30]"
+>
+    <ng-template #caption>
+        <div class="flex items-center justify-between">
+            <h5 class="m-0">Administrar Presupuesto</h5>
+            <p-iconfield>
+                <p-inputicon styleClass="pi pi-search" />
+                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
+            </p-iconfield>
+        </div>
+    </ng-template>
+    <ng-template #header>
+        <tr>
+            <th style="width: 15px">
+                <p-tableHeaderCheckbox />
+            </th>
+            <th pSortableColumn="name" style="width: 15px">
+                Año
+                <p-sortIcon field="Id" />
+            </th>
+            <th pSortableColumn="Name" style="width: 15px">
+                Mes
+                <p-sortIcon field="Name" />
+            </th>
+            <th>Categoria</th>
+            <th>Valor</th>
+            <th pSortableColumn="Description">
+                Acciones
+                <p-sortIcon field="Description" />
+            </th>
+
+        </tr>
+    </ng-template>
+    <ng-template #body let-budget>
+        <tr>
+            <td style="width: 3rem">
+                <p-tableCheckbox [value]="budget" />
+            </td>
+            <td style="min-width: 12rem">{{ budget.year }}</td>
+            <td style="min-width: 16rem">{{ budget.month }}</td>
+            <td><i class=" text-3xl fas"
+                   [ngClass]="[budget.category?.icon??'',budget.category?.color??'']"> </i> {{ budget.category.name }}
+            </td>
+            <td>{{ budget.amount| currency:'BOB':'symbol-narrow' }}</td>
+            <td>
+                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="edit(budget)" />
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                          (click)="delete(budget)" />
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Budget Details" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="year" class="block font-bold mb-3">Año</label>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="year" pTextarea [(ngModel)]="budget.year"
+                       required rows="3" cols="20" fluid />
+            </div>
+            <div>
+                <label for="amount" class="block font-bold mb-3">Mes</label>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="amount" pTextarea
+                       [(ngModel)]="budget.month" required rows="3" cols="20" fluid />
+            </div>
+            <div>
+                <label for="category" class="block font-bold mb-3">Categoria</label>
+                <p-select [(ngModel)]="budget.category" inputId="category" [options]="categories" optionLabel="name"
+                          placeholder="Select a Status" appendTo="body" fluid>
+                    <ng-template let-category #group>
+                        <div class="flex items-center">
+                            <i class="fas" [ngClass]="[budget.category?.icon??'pi-cog',budget.category?.color??'']"
+                               style="width: 20px"></i>
+                            <span>{{ category.name }}</span>
+                        </div>
+                    </ng-template>
+                </p-select>
+            </div>
+            <div>
+                <label for="amount" class="block font-bold mb-3">Valor</label>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="amount" pTextarea
+                       [(ngModel)]="budget.amount" required rows="3" cols="20" fluid />
+            </div>
+
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="save()" />
+    </ng-template>
+</p-dialog>
+
+<p-confirmdialog [style]="{ width: '450px' }" />

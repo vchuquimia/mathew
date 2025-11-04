@@ -1,0 +1,70 @@
+
+###
+GET {{mathew_api_HostAddress}}/income
+Accept: application/json
+Content-Type: application/json
+
+###
+GET {{mathew_api_HostAddress}}/income/getincomebudgetsummary/2025/10
+Accept: application/json
+Content-Type: application/json
+
+### new
+
+POST {{mathew_api_HostAddress}}/income
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 0,
+  "amount": 5000,
+  "description": "salario octubre",
+  "date": "2025-10-30T19:21:06.050Z",
+  "incomeSourceId": 2,
+  "incomeSource": {
+    "id": 2,
+    "name": "string",
+    "description": "string",
+    "projectedIncome": 0
+  }
+}
+
+### update
+POST {{mathew_api_HostAddress}}/income
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1,
+  "amount": 6000.00,
+  "description": "salario octubre",
+  "date": "2025-10-30T19:21:06.05",
+  "incomeSourceId": 2,
+  "incomeSource": {
+    "id": 2,
+    "name": "Salario Victor",
+    "description": "salario iatec",
+    "projectedIncome": 0
+  }
+}
+###
+
+
+DELETE {{mathew_api_HostAddress}}/income
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1,
+  "amount": 6000.00,
+  "description": "salario octubre",
+  "date": "2025-10-30T19:21:06.05",
+  "incomeSourceId": 2,
+  "incomeSource": {
+    "id": 2,
+    "name": "Salario Victor",
+    "description": "salario iatec",
+    "projectedIncome": 0
+  }
+}
+###
