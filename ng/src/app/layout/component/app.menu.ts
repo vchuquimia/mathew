@@ -23,7 +23,7 @@ export class AppMenu {
             {
                 label: 'Home',
                 items: [
-                    { label: 'Registro de salidas', icon: 'pi pi-fw pi-money-bill', routerLink: ['/expenses'] },
+                    { label: 'Gastos', icon: 'pi pi-fw pi-money-bill', routerLink: ['/expenses'] },
                     { label: 'Categorias', icon: 'pi pi-fw pi-list-check', routerLink: ['/category'] },
                     { label: 'Presupuesto', icon: 'pi pi-fw pi-flag', routerLink: ['/budget'] },
                     { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },
