@@ -1,0 +1,15 @@
+<p-toolbar class="mb-2">
+    <ng-template #start>
+        @for (ics of incomeBudgetSummaries; track ics.userName) {
+        <div class="flex items-center  gap-3 text-sm">
+            <div>
+                <i class="pi pi-fw pi-arrow-right"></i><span pTooltip="'Ingresos'">{{ ics?.incomeAmount| currency:'BOB':'symbol-narrow' }}</span>
+            </div>
+            <div>
+                <i class="pi pi-fw pi-flag"></i><span>{{ ics?.budgetAmount| currency:'BOB':'symbol-narrow' }}</span>
+            </div>
+            <span> Diff. {{ ics?.balance| currency:'BOB':'symbol-narrow' }}</span>
+        </div>
+        }
+    </ng-template>
+</p-toolbar>

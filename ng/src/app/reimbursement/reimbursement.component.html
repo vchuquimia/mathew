@@ -1,0 +1,113 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <span class="text-xl font-bold" >Reembolsos</span>
+    </ng-template>
+
+    <ng-template #end>
+    </ng-template>
+</p-toolbar>
+
+<p-toolbar class="mb-2">
+    <ng-template #start>
+        <user-filter [(userParameter)]="currentUser" (onFilter)="userFilter($event)"></user-filter>
+    </ng-template >
+    <ng-template #end>
+        <div class="flex items-center gap-2 text-sm mt-2">
+            <span class="font-bold"> Pendiente: </span>
+            <p-check-box [(ngModel)]="pendingOnly" [binary]="true" (ngModelChange)="filterPending()" />
+        </div>
+    </ng-template >
+</p-toolbar>
+
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+<p-dataview [value]="reimbursements" [layout]="'list'">
+    <ng-template #header>
+        <div class="flex gap-2">
+            <span class="block font-bold mb-3">Total a recibir.</span> {{ totalReimbursement | currency:'BOB':'symbol-narrow' }}
+        </div>
+    </ng-template>
+
+    <ng-template #list let-reimbursements>
+        <div class="flex flex-col">
+            <div *ngFor="let reim of reimbursements; let i = index">
+                <div class="flex flex-row sm:items-center p-3 " [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="basis-1/2 ">
+                        <div class="flex-row" >
+                            <div class="text-sm mt-2"><span class="font-bold"> Desc.: </span>{{ reim.expense.description }}</div>
+                        </div>
+                        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+
+                        </div>
+                        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                            <div class="text-sm mt-2"><span class="font-bold"> Fecha: </span>{{ reim.expense.date | date: 'dd/MM/yy hh:mm'  }}</div>
+                        </div>
+                        <div class="flex flex-row md:flex-col justify-between items-start gap-2 align-middle">
+                            <div class=" flex gap-2 text-sm mt-2">
+                                <span class="font-bold"> Pendiente: </span>
+                                <p-check-box [(ngModel)]="reim.pending" [binary]="true" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex basis-1/2 flex-col items-end gap-2">
+                        <div class="text-sm text-blue-500 mt-2">  <span class="font-bold"> Porcentaje: </span>
+                            {{ reim.percentage }}%</div>
+                        <span class="text-xs font-semibold items-end items">Valor Reembolso:</span>
+                        <span class="text-base font-bold items-end items text-primary">{{ reim.amount | currency:'BOB':'symbol-narrow' }}</span>
+                        <span class="text-xs font-semibold items-end items">Valor Gasto:</span>
+                        <span class="text-base font-semibold items-end items text-gray-400">{{ reim.expense.amount | currency:'BOB':'symbol-narrow' }}</span>
+                        <div class="flex flex-row gap-2 items-center">
+                            <p-button icon="pi pi-money-bill" [rounded]="true" [outlined]="true" (click)="editExpense(reim)" />
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(reim)" />
+                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="edit(reim)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataview>
+
+<p-dialog [(visible)]="showDialog" [style]="{ width: '450px' }" header="Reembolso" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-row">
+            <div class="flex flex-col basis-1/2 gap-2">
+                <div>
+                    <span class="block font-bold mb-3">Desc.</span>
+                    <span>
+                    {{ reimbursement.expense?.description }}
+                    </span>
+                </div>
+                <div>
+                    <label for="amount" class="block font-bold mb-3">Valor Gasto</label>
+                    <span>
+                    {{ reimbursement.expense?.amount| currency:'BOB':'symbol-narrow' }}
+                    </span>
+                </div>
+                <div>
+                    <label for="amount" class="block font-bold mb-3">% Reembolso</label>
+                    <input type="number" inputmode="decimal" pattern="[0-9]*(\.[0-9]{0,2})?"
+                           [(ngModel)]="reimbursement.percentage" (ngModelChange)="percentChange()" pInputText required rows="3" cols="20" fluid />
+                </div>
+                <div >
+                    <span class="block font-bold mb-3">Pendiente</span>
+                    <p-toggleswitch [(ngModel)]="reimbursement.pending" />
+                </div>
+            </div>
+            <div class="flex-col flex basis-1/2 items-end text-xl font-bold">
+                <span>Valor Reembolso</span>
+                <span class="">{{reimbursement.amount | currency:'BOB':'symbol-narrow' }}</span>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="save()" />
+    </ng-template>
+</p-dialog>
+@if (showExpenseDialog && reimbursement.expense !== undefined) {
+    <app-expense-dialog [expense]="reimbursement.expense" [(showDialog)]="showExpenseDialog" (onClose)="hideDialog()"
+    ></app-expense-dialog>
+}
+
+<p-confirmdialog [style]="{ width: '450px' }" />

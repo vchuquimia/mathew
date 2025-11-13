@@ -1,0 +1,19 @@
+<p-select [(ngModel)]="currenCategory"
+          inputId="category" [options]="categories"
+          (onChange)="onChanged($event)"
+          optionLabel="name" placeholder="Select a Status" appendTo="body" fluid>
+    <ng-template let-selectedItem #selectedItem>
+        <div class="flex items-center gap-2">
+            <i class="fas" [ngClass]="[selectedItem?.icon??'fa-home']"
+               style="width: 20px" [style]="{'color':selectedItem?.color}" ></i>
+            <span [style]="{'color':selectedItem?.color}">{{ selectedItem.name }}</span>
+        </div>
+    </ng-template>
+    <ng-template let-category #item>
+        <div class="flex items-center gap-2">
+            <i class="fas" [ngClass]="[category?.icon??'fa-home']"
+               style="width: 20px" [style]="{'color':category.color}"></i>
+            <span [style]="{'color':category.color}">{{ category.name }}</span>
+        </div>
+    </ng-template>
+</p-select>

@@ -1,0 +1,3 @@
+@if (userName !== userService.currentUser?.name || disableUserFilter) {
+    <p-avatar [class]="userService.getColorClass(userName)" [textContent]="userName"></p-avatar>
+}

@@ -1,0 +1,38 @@
+<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" header="Copiar Presupuesto" [modal]="true" (onHide)="hideDialog()">
+    <ng-template #content>
+        <div class="flex flex-row gap-6 pb-3">
+            <div>
+                <label for="year" class="block font-bold mb-3">Año Origen</label>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="year" pTextarea [(ngModel)]="budgetCopyParams.sourceYear" required rows="3" cols="20" fluid />
+
+            </div>
+            <div>
+                <label for="amount" class="block font-bold mb-3">Mes Origen</label>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="amount" pTextarea [(ngModel)]="budgetCopyParams.sourceMonth" required rows="3" cols="20" fluid />
+            </div>
+        </div>
+        <div class="flex flex-row gap-6">
+            <div>
+                <label for="year" class="block font-bold mb-3">Año Destino</label>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="year" pTextarea [(ngModel)]="budgetCopyParams.targetYear" required rows="3" cols="20" fluid />
+
+            </div>
+            <div>
+                <label for="amount" class="block font-bold mb-3">Mes Destion</label>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="amount" pTextarea [(ngModel)]="budgetCopyParams.targetMonth" required rows="3" cols="20" fluid />
+            </div>
+
+        </div>
+        <div class="flex flex-row gap-6">
+            <div class="p-4 gap-5 flex flex-row items-center">
+                <p-checkbox [(ngModel)]="budgetCopyParams.overwriteExisting" [binary]="true" inputId="size_small" name="size"  size="large" />
+                <label for="size_small" class="text-sm">Sobre escribir</label>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="copyBudget()" />
+    </ng-template>
+</p-dialog>
