@@ -4,4 +4,5 @@ public class IncomeBudgetMontlySummaryDto {
         public decimal IncomeAmount { get; set; }
         public decimal BudgetAmount { get; set; }
         public decimal Balance { get; set; }
+        public string UserName { get; set; }
 }

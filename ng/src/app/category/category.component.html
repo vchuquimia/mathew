@@ -1,81 +1,41 @@
 <p-toolbar styleClass="mb-6">
     <ng-template #start>
-        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
-        <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()"
-                  [disabled]="!selectedProducts || !selectedProducts.length" />
+       <span class="text-base font-bold">
+        Categorias
+
+       </span>
     </ng-template>
 
     <ng-template #end>
-        <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
     </ng-template>
 </p-toolbar>
 
-<p-table
-    responsiveLayout="stack"
-    scrollHeight="flex"
-    #dt
-    [value]="categories"
-    [rows]="30"
-    [columns]="cols"
-    [paginator]="true"
-    [globalFilterFields]="['name', 'description']"
+<p-dataview [value]="categories" [layout]="'list'">
 
-    [(selection)]="selectedProducts"
-    [rowHover]="true"
-    dataKey="id"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 20, 30]"
->
-    <ng-template #caption>
-        <div class="flex items-center justify-between">
-            <h5 class="m-0">Administrar categorias</h5>
-            <p-iconfield>
-                <p-inputicon styleClass="pi pi-search" />
-                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
-            </p-iconfield>
+    <ng-template #list let-categories>
+        <div class="flex flex-col">
+            <div *ngFor="let cat of categories; let i = index">
+                <div class="flex flex-row sm:items-center p-3 " [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="basis-2/3 ">
+                        <div class="flex-row" >
+                            <category-viewer [category]="cat" ></category-viewer>
+                        </div>
+                        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                            <div class="text-sm mt-2">{{ cat.description }}</div>
+                        </div>
+                    </div>
+                    <div class="flex basis-1/3 flex-col items-end gap-4">
+                        <div class="flex flex-row gap-2 items-center">
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(cat)" />
+                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="edit(cat)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </ng-template>
-    <ng-template #header>
-        <tr>
-            <th style="width: 15px">
-                <p-tableHeaderCheckbox />
-            </th>
-            <th pSortableColumn="name" style="width: 15px">
-                ID
-                <p-sortIcon field="Id" />
-            </th>
-            <th pSortableColumn="Name" style="width: 15px">
-                Nombre
-                <p-sortIcon field="Name" />
-            </th>
-            <th>Descripción</th>
-            <th>Icon</th>
-            <th pSortableColumn="Description">
-                Acciones
-                <p-sortIcon field="Description" />
-            </th>
-
-        </tr>
-    </ng-template>
-    <ng-template #body let-category>
-        <tr>
-            <td style="width: 3rem">
-                <p-tableCheckbox [value]="category" />
-            </td>
-            <td style="min-width: 12rem">{{ category.id }}</td>
-            <td style="min-width: 16rem">{{ category.name }}</td>
-            <td>{{ category.description }}</td>
-            <td><i class=" text-3xl fas" [ngClass]="[category.icon??'',category.color??'']"> </i></td>
-            <td>
-                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
-                          (click)="editCategory(category)" />
-                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                          (click)="deleteProduct(category)" />
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+</p-dataview>
 
 <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Category Details" [modal]="true">
     <ng-template #content>
@@ -93,13 +53,14 @@
             <div>
                 <div class="flex flex-row gap-6 items-center p-6">
 
-                    <i class="!text-[3rem] fas" [ngClass]="[category.icon??'pi-cog',category.color??'']"></i>
+                    <i class="!text-[3rem] fas" [ngClass]="[category.icon??'pi-cog']" [ngStyle]="{'color':category.color}"></i>
                     <label for="icon" class="block font-bold ">Icono</label>
                     <input type="text" pInputText id="icon" [(ngModel)]="category.icon" required fluid />
 
                 </div>
                 <label for="color" class="block font-bold mb-3">Color</label>
-                <input type="text" pInputText id="color" [(ngModel)]="category.color" required fluid />
+                <p-colorpicker [(ngModel)]="category.color" inputId="cp-hex" class="mb-4" inline/>
+                <span>{{category.color}}</span>
             </div>
 
         </div>

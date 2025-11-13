@@ -5,10 +5,8 @@ import { CategoryService } from '@/service/category.service';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
-import { IconField } from 'primeng/iconfield';
-import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
-import { CurrencyPipe, DatePipe, NgClass } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgClass, NgForOf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { Toolbar } from 'primeng/toolbar';
@@ -22,16 +20,50 @@ import { DatePicker } from 'primeng/datepicker';
 import { InputGroup } from 'primeng/inputgroup';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { Tag } from 'primeng/tag';
+import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
+import { DataView } from 'primeng/dataview';
+import { TimeagoModule } from 'ngx-timeago';
+import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
+import { UserFinancialSummaryComponent } from '@/shared/user-financial-summary/user-financial-summary.component';
+import { UserPeriodParameter } from '@/models/user-period-parameter';
+import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
+import { Period } from '@/models/period';
 
 @Component({
     selector: 'income',
     standalone: true,
-    imports: [Button, ConfirmDialog, Dialog, IconField, InputIcon, InputText, ReactiveFormsModule, TableModule, Textarea, Toolbar, NgClass, FormsModule, Select, CurrencyPipe, Toast, DatePicker, InputGroup, InputGroupAddon, DatePipe, Tag],
+    imports: [
+        Button,
+        ConfirmDialog,
+        Dialog,
+        InputText,
+        ReactiveFormsModule,
+        TableModule,
+        Textarea,
+        Toolbar,
+        NgClass,
+        FormsModule,
+        Select,
+        CurrencyPipe,
+        Toast,
+        DatePicker,
+        InputGroup,
+        InputGroupAddon,
+        DatePipe,
+        Tag,
+        UserFilterComponent,
+        DataView,
+        TimeagoModule,
+        UserAvatarComponent,
+        UserFinancialSummaryComponent,
+        NgForOf,
+        PeriodFilterComponent
+    ],
     providers: [IncomeService, MessageService, ConfirmationService, CategoryService],
     templateUrl: './income.component.html',
     styleUrl: './income.component.css'
 })
-export class IncomeComponent implements OnInit {
+export class IncomeComponent {
     showDialog: boolean = false;
     incomeSources!: IncomeSource[];
 
@@ -39,7 +71,7 @@ export class IncomeComponent implements OnInit {
     incomes = new Array<Income>();
     submitted: boolean = false;
 
-    statuses!: any[];
+    currentUserPeriodParameter = new UserPeriodParameter();
 
     @ViewChild('dt') dt!: Table;
 
@@ -50,25 +82,13 @@ export class IncomeComponent implements OnInit {
         private confirmationService: ConfirmationService
     ) {}
 
-    exportCSV() {
-        this.dt.exportCSV();
-    }
-
-    ngOnInit() {
-        this.loadData();
-    }
-
-    loadData() {
-        this.incomeService.getData().subscribe((data) => {
+    loadData(param: UserPeriodParameter) {
+        this.incomeService.getData(param).subscribe((data) => {
             this.incomes = data;
         });
         this.incomeSourceService.getData().subscribe((data) => {
             this.incomeSources = data;
         });
-    }
-
-    onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
 
     openNew() {
@@ -97,7 +117,7 @@ export class IncomeComponent implements OnInit {
             accept: () => {
                 this.incomeService.delete(income).subscribe((data) => {
                     this.income = new Income({});
-                    this.loadData();
+                    this.loadData(this.currentUserPeriodParameter);
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Successful',
@@ -112,7 +132,7 @@ export class IncomeComponent implements OnInit {
     save() {
         this.submitted = true;
         this.incomeService.save(this.income).subscribe((data) => {
-            this.loadData();
+            this.loadData(this.currentUserPeriodParameter);
             this.messageService.add({
                 severity: 'success',
                 summary: 'Successful',
@@ -134,5 +154,15 @@ export class IncomeComponent implements OnInit {
 
     protected onIncomeSourceChange($event: SelectChangeEvent) {
         this.income.amount = $event.value.projectedIncome;
+    }
+
+    protected userFilter(param: string) {
+        this.currentUserPeriodParameter.userName = param;
+        this.loadData(this.currentUserPeriodParameter);
+    }
+
+    protected periodFilter(parameter: Period) {
+        this.currentUserPeriodParameter.period = parameter;
+        this.loadData(this.currentUserPeriodParameter);
     }
 }

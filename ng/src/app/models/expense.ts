@@ -1,14 +1,19 @@
 import { Category } from '@/models/category';
 
 export class Expense {
-    constructor(param: any) {
-        this.date = param.date;
+    constructor() {
+        this.date = new Date();
+        this.id = 0;
+        this.description = '';
+        this.categoryId = 0;
+        this.registeredBy = '';
     }
 
-    id?: number;
+    id: number;
     amount?: number;
-    description?: string;
+    description: string;
     category?: Category;
-    categoryId?: number;
+    categoryId: number;
+    registeredBy: string;
     date: Date;
 }

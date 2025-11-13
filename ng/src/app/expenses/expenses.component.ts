@@ -24,31 +24,19 @@ import { Expense } from '@/models/expense';
 import { ExpensesService } from '@/service/expenses.service';
 import { Category } from '@/models/category';
 import { FluidModule } from 'primeng/fluid';
-
 import { DataView } from 'primeng/dataview';
-
-
-
 import { ExpenseDialogComponent } from '@/expenses/expense-dialog/expense-dialog.component';
 import { TimeagoFormatter, TimeagoModule } from 'ngx-timeago';
-
-interface Column {
-    field: string;
-    header: string;
-    customExportHeader?: string;
-}
-
-interface ExportColumn {
-    title: string;
-    dataKey: string;
-}
-
-class test {
-    constructor() {
-        this.dateProperty = new Date(2020, 10, 20);
-    }
-    dateProperty: Date;
-}
+import { Avatar } from 'primeng/avatar';
+import { UserService } from '@/service/user.service';
+import { User } from '@/models/user';
+import { SelectButton } from 'primeng/selectbutton';
+import { CategoryViewerComponent } from '@/shared/category-viewer/category-viewer.component';
+import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
+import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
+import { UserPeriodParameter } from '@/models/user-period-parameter';
+import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
+import { Period } from '@/models/period';
 
 @Component({
     selector: 'expenses',
@@ -76,57 +64,45 @@ class test {
         DataView,
         ExpenseDialogComponent,
         ToastModule,
-        TimeagoModule
+        TimeagoModule,
+        CategoryViewerComponent,
+        UserAvatarComponent,
+        UserFilterComponent,
+        PeriodFilterComponent
     ],
     templateUrl: './expenses.component.html',
     providers: [MessageService, ProductService, ConfirmationService]
 })
-export class ExpensesComponent extends test implements OnInit {
-    // test: test = new test();
+export class ExpensesComponent implements OnInit {
     showDialog: boolean = false;
 
-    public categories = new Array<Category>();
     category!: Category;
     expense!: Expense;
     expenses = new Array<Expense>();
 
-    selectedExpenses!: Expense[] | null;
     submitted: boolean = false;
     @ViewChild('dt') dt!: Table;
-
 
     constructor(
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
-        private categoryService: CategoryService,
-        private expenseService: ExpensesService
-    ) {
-        super();
-    }
 
-    exportCSV() {
-        this.dt.exportCSV();
-    }
+        private expenseService: ExpensesService,
+        public userService: UserService
+    ) {}
 
-    ngOnInit() {
-        this.loadData();
-        this.categoryService.getData().subscribe((data) => {
-            this.categories = data;
-        });
-    }
+    currentUserPeriodParameter = new  UserPeriodParameter();
 
-    loadData() {
-        this.expenseService.getData().subscribe((data) => {
+    ngOnInit() {}
+
+    loadData(parameter: UserPeriodParameter) {
+        this.expenseService.getData(parameter).subscribe((data) => {
             this.expenses = data;
         });
     }
 
-    onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-    }
-
     openNew() {
-        this.expense = new Expense({});
+        this.expense = new Expense();
         this.expense.date = new Date();
         this.submitted = false;
         this.showDialog = true;
@@ -139,23 +115,6 @@ export class ExpensesComponent extends test implements OnInit {
 
         // this.test.dateProperty = new Date(this.expense.date);K
         this.showDialog = true;
-    }
-
-    deleteSelectedProducts() {
-        this.confirmationService.confirm({
-            message: 'Are you sure you want to delete the selected products?',
-            header: 'Confirm',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                //call to delete
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Products Deleted',
-                    life: 3000
-                });
-            }
-        });
     }
 
     deleteExpense(expense: Expense) {
@@ -171,14 +130,24 @@ export class ExpensesComponent extends test implements OnInit {
                         detail: 'Gasto borrado',
                         life: 3000
                     });
-                    this.loadData();
+                    this.loadData(this.currentUserPeriodParameter);
                 });
             }
         });
     }
 
     protected hideDialog() {
-        this.loadData();
+        this.loadData(this.currentUserPeriodParameter);
         this.showDialog = false;
+    }
+
+    protected filter(parameter: string) {
+        this.currentUserPeriodParameter.userName = parameter;
+        this.loadData(this.currentUserPeriodParameter);
+    }
+
+    protected filterPeriod(parameter: Period) {
+        this.currentUserPeriodParameter.period = parameter;
+        this.loadData(this.currentUserPeriodParameter);
     }
 }

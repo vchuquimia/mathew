@@ -1,76 +1,38 @@
 <p-toolbar styleClass="mb-6">
     <ng-template #start>
-        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+        <span class="text-xl font-bold" >Fuentes de ingresos</span>
     </ng-template>
 
     <ng-template #end>
-        <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
     </ng-template>
 </p-toolbar>
 <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
-<p-table
-    responsiveLayout="stack"
-    scrollHeight="flex"
-    #dt
-    [value]="incomeSources"
-    [rows]="30"
-    [paginator]="true"
-    [globalFilterFields]="['name', 'description']"
-    [rowHover]="true"
-    dataKey="id"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 20, 30]"
->
-    <ng-template #caption>
-        <div class="flex items-center justify-between">
-            <h5 class="m-0">Fuentes de Ingresos</h5>
-            <p-iconfield>
-                <p-inputicon styleClass="pi pi-search" />
-                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
-            </p-iconfield>
+<p-dataview [value]="incomeSources" [layout]="'list'">
+    <ng-template #list let-incomeSources>
+        <div class="flex flex-col">
+            <div *ngFor="let is of incomeSources; let i = index">
+                <div class="flex flex-row sm:items-center p-3 " [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="basis-2/3 ">
+                        <div class="flex-row" >
+                            <div class="text-sm mt-2">{{ is.name }}</div>
+                        </div>
+                        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                            <div class="text-sm mt-2">{{ is.description }}</div>
+                        </div>
+                    </div>
+                    <div class="flex basis-1/3 flex-col items-end gap-4">
+                        <span class="text-base font-semibold items-end items">{{ is.projectedIncome | currency:'BOB':'symbol-narrow' }}</span>
+                        <div class="flex flex-row gap-2 items-center">
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(is)" />
+                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="edit(is)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </ng-template>
-    <ng-template #header>
-        <tr>
-            <th style="width: 15px">
-                <p-tableHeaderCheckbox />
-            </th>
-            <th pSortableColumn="name" style="width: 15px">
-                Id
-                <p-sortIcon field="Id" />
-            </th>
-            <th pSortableColumn="Name" style="width: 15px">
-                Nombre
-                <p-sortIcon field="Name" />
-            </th>
-            <th>Descripción</th>
-            <th>Ingreso proyectado</th>
-            <th pSortableColumn="Description">
-                Acciones
-                <p-sortIcon field="Description" />
-            </th>
-
-        </tr>
-    </ng-template>
-    <ng-template #body let-incomeSource>
-        <tr>
-            <td style="width: 3rem">
-                <p-tableCheckbox [value]="incomeSource" />
-            </td>
-            <td style="min-width: 12rem">{{ incomeSource.id }}</td>
-            <td style="min-width: 16rem">{{ incomeSource.name }}</td>
-            <td>{{ incomeSource.description }}</td>
-            <td>{{ incomeSource.projectedIncome| currency:'BOB':'symbol-narrow' }}</td>
-            <td>
-                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
-                          (click)="edit(incomeSource)" />
-                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                          (click)="delete(incomeSource)" />
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+</p-dataview>
 
 <p-dialog [(visible)]="showDialog" [style]="{ width: '450px' }" header="Fuente de Ingreso" [modal]="true">
     <ng-template #content>

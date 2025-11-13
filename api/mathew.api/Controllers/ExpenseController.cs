@@ -12,10 +12,13 @@ namespace mathew.api.Controllers;
 [EnableCors]
 public class ExpenseController : ControllerBase
 {
-    [HttpGet("")]
-    public async Task<List<Expense>> SendCommand(ExpenseDbContext context)
+    [HttpGet("{year:int}/{month:int}")]
+    public async Task<List<Expense>> SendCommand(ExpenseDbContext context, int year, int month, string? registeredBy = null)
     {
+
         return await context.Expenses
+            .Where(i=> (i.RegisteredBy == registeredBy || registeredBy == null)
+                       && i.Date.Year == year && i.Date.Month == month)
             .Include(i=> i.Category)
             .OrderByDescending(i=> i.Date)
             .ToListAsync();

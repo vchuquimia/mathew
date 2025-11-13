@@ -20,6 +20,8 @@ public class
     [Required]
     public DateTime Date { get; set; }
 
+    [Required]
+    public string UserName { get; set; }
     public int IncomeSourceId { get; set; }
 
     public IncomeSource IncomeSource { get; set; } = null!;

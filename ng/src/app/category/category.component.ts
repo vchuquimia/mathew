@@ -21,6 +21,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Product, ProductService } from '@/pages/service/product.service';
 import { CategoryService } from '@/service/category.service';
 import { Category } from '@/models/category';
+import { CategoryViewerComponent } from '@/shared/category-viewer/category-viewer.component';
+import { DataView } from 'primeng/dataview';
+import { TimeagoModule } from 'ngx-timeago';
+import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
+import { ColorPicker } from 'primeng/colorpicker';
 
 interface Column {
     field: string;
@@ -54,7 +59,11 @@ interface ExportColumn {
         TagModule,
         InputIconModule,
         IconFieldModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        CategoryViewerComponent,
+        DataView,
+        TimeagoModule,
+        ColorPicker
     ],
     templateUrl: './category.component.html',
     providers: [MessageService, ProductService, ConfirmationService]
@@ -96,26 +105,6 @@ export class CategoryComponent implements OnInit {
         this.categoryService.getData().subscribe((data) => {
             this.categories = data;
         });
-
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
-
-        this.cols = [
-            { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
-            { field: 'name', header: 'Name' },
-            { field: 'image', header: 'Image' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' }
-        ];
-
-        this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
-    }
-
-    onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
 
     openNew() {
@@ -124,47 +113,30 @@ export class CategoryComponent implements OnInit {
         this.productDialog = true;
     }
 
-    editCategory(category: Category) {
+    edit(category: Category) {
         this.category = { ...category };
         this.productDialog = true;
     }
 
-    deleteSelectedProducts() {
-        this.confirmationService.confirm({
-            message: 'Are you sure you want to delete the selected products?',
-            header: 'Confirm',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                this.categoryService.delete(this.category).subscribe((data) => {
-                    this.selectedProducts = null;
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Successful',
-                        detail: 'Products Deleted',
-                        life: 3000
-                    });
-                });
-            }
-        });
-    }
 
     hideDialog() {
         this.productDialog = false;
         this.submitted = false;
     }
 
-    deleteProduct(product: Product) {
+    delete(cat: Category) {
         this.confirmationService.confirm({
-            message: 'Are you sure you want to delete ' + product.name + '?',
+            message: 'Are you sure you want to delete ' + cat.name + '?',
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.categoryService.delete(this.category).subscribe((data) => {
+                this.categoryService.delete(cat).subscribe((data) => {
                     this.category = {};
+                    this.loadData();
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Successful',
-                        detail: 'Product Deleted',
+                        detail: 'Category Deleted',
                         life: 3000
                     });
                 });

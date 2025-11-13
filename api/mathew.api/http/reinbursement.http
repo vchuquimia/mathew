@@ -1,0 +1,96 @@
+
+###
+GET {{mathew_api_HostAddress}}/reimbursement/?username=vh
+Accept: application/json
+Content-Type: application/json
+
+### get by expense id
+GET {{mathew_api_HostAddress}}/reimbursement/getbyexpenseid/2021
+Accept: application/json
+Content-Type: application/json
+
+
+### new
+
+POST {{mathew_api_HostAddress}}/reimbursement
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 0,
+  "amount": 48,
+  "expenseId": 21,
+  "expense": {
+    "id": 21,
+    "amount": 0,
+    "description": "string",
+    "date": "2025-11-10T21:36:33.481Z",
+    "categoryId": 0,
+    "category": {
+      "id": 0,
+      "name": "string",
+      "description": "string",
+      "icon": "string",
+      "color": "string"
+    },
+    "registeredBy": "vh"
+  },
+  "userName": "vh",
+  "percent": 0,
+  "pending": true
+}
+
+
+### update
+POST {{mathew_api_HostAddress}}/reimbursement
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1,
+  "amount": 50,
+  "expenseId": 21,
+  "expense": null,
+  "userName": "string",
+  "percent": 0,
+  "pending": true,
+  "expense": {
+    "id": 21,
+    "amount": 0,
+    "description": "string",
+    "date": "2025-11-10T21:36:33.481Z",
+    "categoryId": 0,
+    "category": {
+      "id": 0,
+      "name": "string",
+      "description": "string",
+      "icon": "string",
+      "color": "string"
+    },
+    "registeredBy": "string"
+  }
+}
+###
+
+DELETE {{mathew_api_HostAddress}}/reimbursement
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 2,
+  "amount": 48.00,
+  "expenseId": 21,
+  "expense": {
+    "id": 21,
+    "amount": 345.00,
+    "description": "323452",
+    "date": "2025-10-02T04:00:00+00:00",
+    "categoryId": 4,
+    "category": null,
+    "registeredBy": "vh"
+  },
+  "userName": "string",
+  "percent": 0,
+  "pending": true
+}
+###

@@ -28,10 +28,11 @@ export class AppMenu {
                     { label: 'Presupuesto', icon: 'pi pi-fw pi-flag', routerLink: ['/budget'] },
                     { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },
                     { label: 'Fuente de ingresos', icon: 'pi pi-fw pi-reply', routerLink: ['/incomesource'] },
-                    { label: 'Registro de ingresos', icon: 'pi pi-fw pi-arrow-right', routerLink: ['/income'] }
+                    { label: 'Registro de ingresos', icon: 'pi pi-fw pi-arrow-right', routerLink: ['/income'] },
+                    { label: 'Reembolsos', icon: 'pi pi-fw pi-history', routerLink: ['/reinbursement'] }
                 ]
             },
-            ];
+
         //     {
         //         label: 'Home',
         //         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
@@ -164,6 +165,6 @@ export class AppMenu {
         //             }
         //         ]
         //     }
-        // ];
+         ];
     }
 }

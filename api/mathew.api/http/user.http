@@ -1,0 +1,82 @@
+
+###
+GET {{mathew_api_HostAddress}}/user
+Accept: application/json
+Content-Type: application/json
+
+
+### new
+
+POST {{mathew_api_HostAddress}}/budget
+Accept: application/json
+Content-Type: application/json
+
+{
+  "categoryId": 0,
+  "amount": 15.5,
+  "month": 12,
+  "year": 2025,
+  "category": {
+    "id": 4,
+    "name": "string",
+    "description": "string",
+    "icon": "string",
+    "color": "string"
+  }
+}
+
+
+### update
+POST {{mathew_api_HostAddress}}/budget
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 2,
+  "categoryId": 4,
+  "amount": 15.50,
+  "month": 12,
+  "year": 2025,
+  "category": {
+    "id": 4,
+    "name": "gatos",
+    "description": "comida, insumos, veterinario, paseos\n",
+    "icon": null,
+    "color": null
+  }
+}
+### copy budget
+
+POST {{mathew_api_HostAddress}}/budget/copybudget
+Accept: application/json
+Content-Type: application/json
+
+{
+  "sourceMonth": 10,
+  "sourceYear": 2025,
+  "targetMonth": 11,
+  "targetYear": 2025,
+  "overwriteExisting": true
+}
+###
+
+
+DELETE {{mathew_api_HostAddress}}/budget
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 2009,
+  "categoryId": 9,
+  "amount": 800.00,
+  "month": 11,
+  "year": 2025,
+  "category": {
+    "id": 9,
+    "name": "string",
+    "description": "string",
+    "icon": "fa-pencil",
+    "color": "text-red-500"
+  }
+}
+###

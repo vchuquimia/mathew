@@ -4,5 +4,6 @@ export interface IncomeBudgetMontlySummaryDto {
     incomeAmount?: number;
     budgetAmount?: number;
     balance?: number;
+    userName?: string;
 
 }

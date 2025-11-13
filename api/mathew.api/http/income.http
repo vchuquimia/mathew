@@ -1,13 +1,20 @@
 
 ###
-GET {{mathew_api_HostAddress}}/income
+GET {{mathew_api_HostAddress}}/income?userName=
 Accept: application/json
 Content-Type: application/json
 
 ###
-GET {{mathew_api_HostAddress}}/income/getincomebudgetsummary/2025/10
+GET {{mathew_api_HostAddress}}/income/getincomebudgetsummary/2025/10?username=
 Accept: application/json
 Content-Type: application/json
+
+###
+GET {{mathew_api_HostAddress}}/income/getincomebudgetsummary-by-date-and-user/2025/10?username=mp
+Accept: application/json
+Content-Type: application/json
+
+
 
 ### new
 

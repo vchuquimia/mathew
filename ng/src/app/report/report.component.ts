@@ -9,7 +9,7 @@ import { Dialog } from 'primeng/dialog';
 
 
 import { InputText } from 'primeng/inputtext';
-import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgForOf, NgIf, PercentPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Toolbar } from 'primeng/toolbar';
@@ -22,11 +22,34 @@ import { DataView } from 'primeng/dataview';
 import { Expense } from '@/models/expense';
 import { ExpensesService } from '@/service/expenses.service';
 import { Avatar } from 'primeng/avatar';
+import { CategoryViewerComponent } from '@/shared/category-viewer/category-viewer.component';
+import { TimeagoModule } from 'ngx-timeago';
+import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
 
 @Component({
     selector: 'report',
     standalone: true,
-    imports: [Button, ConfirmDialog, Dialog, ReactiveFormsModule, TableModule, Toolbar, NgClass, FormsModule, CurrencyPipe, DatePicker, DataView, DatePipe, NgForOf, Avatar, DecimalPipe],
+    imports: [
+        Button,
+        ConfirmDialog,
+        Dialog,
+        ReactiveFormsModule,
+        TableModule,
+        Toolbar,
+        NgClass,
+        FormsModule,
+        CurrencyPipe,
+        DatePicker,
+        DataView,
+        DatePipe,
+        NgForOf,
+        Avatar,
+        DecimalPipe,
+        CategoryViewerComponent,
+        TimeagoModule,
+        UserAvatarComponent,
+        PercentPipe
+    ],
     providers: [BudgetService, MessageService, ConfirmationService, CategoryService],
     templateUrl: './report.component.html',
     styleUrl: './report.component.css'

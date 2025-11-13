@@ -11,6 +11,9 @@ public class ExpenseDbContext : DbContext
     public DbSet<Budget> Budgets => Set<Budget>();
     public DbSet<IncomeSource> IncomeSources => Set<IncomeSource>();
     public DbSet<Income> Incomes => Set<Income>();
+    public DbSet<User> Users => Set<User>();
+
+    public DbSet<Reimbursement> Reimbursements => Set<Reimbursement>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,12 +21,14 @@ public class ExpenseDbContext : DbContext
             .HasIndex(c => c.Name)
             .IsUnique();
 
-        modelBuilder.Entity<Budget>()
-            .HasIndex(b => new { b.CategoryId, b.Month, b.Year })
-            .IsUnique();
+        modelBuilder.Entity<Budget>();
 
         modelBuilder.Entity<IncomeSource>()
             .HasIndex(s => s.Name)
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .HasIndex(c => c.Name)
             .IsUnique();
     }
 }

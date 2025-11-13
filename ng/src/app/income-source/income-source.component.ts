@@ -9,7 +9,7 @@ import { Dialog } from 'primeng/dialog';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgClass, NgForOf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { Toolbar } from 'primeng/toolbar';
@@ -17,11 +17,31 @@ import { Toolbar } from 'primeng/toolbar';
 import { Toast } from 'primeng/toast';
 import { IncomeSource } from '@/models/income-source';
 import { IncomeSourceService } from '@/service/income-source.service';
+import { CategoryViewerComponent } from '@/shared/category-viewer/category-viewer.component';
+import { DataView } from 'primeng/dataview';
+import { TimeagoModule } from 'ngx-timeago';
+import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
 
 @Component({
     selector: 'income-source',
     standalone: true,
-    imports: [Button, ConfirmDialog, Dialog, IconField, InputIcon, InputText, ReactiveFormsModule, TableModule, Textarea, Toolbar, FormsModule, CurrencyPipe, Toast],
+    imports: [
+        Button,
+        ConfirmDialog,
+        Dialog,
+        InputText,
+        ReactiveFormsModule,
+        TableModule,
+        Textarea,
+        Toolbar,
+        FormsModule,
+        CurrencyPipe,
+        Toast,
+        DataView,
+        NgForOf,
+        TimeagoModule,
+        NgClass
+    ],
     providers: [IncomeSourceService, MessageService, ConfirmationService, CategoryService],
     templateUrl: './income-source.component.html',
     styleUrl: './income-source.component.css'

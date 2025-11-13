@@ -4,6 +4,6 @@
 @import 'primeicons/primeicons.css';
 @import './assets/demo/demo.css';
 
-.test{
-    color: blue;
+.chk{
+    color: red;
 }

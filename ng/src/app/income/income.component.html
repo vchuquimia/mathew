@@ -1,73 +1,45 @@
 
 <p-toolbar styleClass="mb-6">
     <ng-template #start>
-        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+        <span class="text-base font-bold"> Ingresos </span>
     </ng-template>
 
     <ng-template #end>
-        <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+        <p-button label="Nuevo" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
     </ng-template>
 </p-toolbar>
+<p-toolbar class="mb-2">
+    <user-filter [(userParameter)]="currentUserPeriodParameter.userName" (onFilter)="userFilter($event)"></user-filter>
+    <period-filter [(periodParameter)]="currentUserPeriodParameter.period" (onFilter)="periodFilter($event)" ></period-filter>
+</p-toolbar>
+<user-financial-summary [currentParameter]="currentUserPeriodParameter" ></user-financial-summary>
 <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
-<p-table
-    responsiveLayout="stack"
-    scrollHeight="flex"
-    #dt
-    [value]="incomes"
-    [rows]="30"
 
-    [globalFilterFields]="['name', 'description']"
-    [rowHover]="true"
-    dataKey="id"
+<p-dataview [value]="incomes" [layout]="'list'">
 
-    [rowsPerPageOptions]="[10, 20, 30]"
->
-    <ng-template #caption>
-        <div class="flex items-center justify-between">
-            <h5 class="m-0">Ingresos</h5>
-            <p-iconfield>
-                <p-inputicon styleClass="pi pi-search" />
-                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
-            </p-iconfield>
+    <ng-template #list let-incomes>
+        <div class="flex flex-col">
+            <div *ngFor="let income of incomes; let i = index">
+                <div class="flex flex-row sm:items-center p-3 " [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="basis-2/3 flex flex-col gap-2s">
+                        <div class="flex-row" >
+                            <p-tag severity="info"> {{income.incomeSource.name}} </p-tag>
+                        </div>
+                        <span class="text-surface-500 dark:text-surface-400 text-sm">{{ income.date| date:'shortDate' }} - {{ income.date| timeago }} </span>
+                    </div>
+                    <div class="flex basis-1/3 flex-col items-end gap-2">
+                        <span class="text-sm font-semibold items-end items">{{ income.amount | currency:'BOB':'symbol-narrow' }}</span>
+                        <div class="flex flex-row gap-2 items-center">
+                            <user-avatar [userName]="income.userName" [disableUserFilter]="currentUserPeriodParameter.userName == undefined"></user-avatar>
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(income)" />
+                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="edit(income)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </ng-template>
-    <ng-template #header>
-        <tr>
-            <th style="width: 15px" >
-                <p-tableHeaderCheckbox />
-            </th>
-            <th pSortableColumn="Name" style="width: 15px">
-                Valor
-                <p-sortIcon field="Name" />
-            </th>
-            <th>Descripción</th>
-            <th>Ingreso proyectado</th>
-            <th pSortableColumn="Description" >
-                Acciones
-                <p-sortIcon field="Description" />
-            </th>
-
-        </tr>
-    </ng-template>
-    <ng-template #body let-income>
-        <tr>
-            <td style="width: 3rem">
-                <p-tableCheckbox [value]="income" />
-            </td>
-            <td style="min-width: 16rem">{{ income.date| date:'dd/MM/yy' }}</td>
-            <td>
-                <p-tag severity="info">
-                {{income.incomeSource.name}}
-            </p-tag>
-                {{ income.description }}</td>
-            <td>{{ income.amount| currency:'BOB':'symbol-narrow' }}</td>
-            <td>
-                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="edit(income)" />
-                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(income)" />
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+</p-dataview>
 
 <p-dialog [(visible)]="showDialog" [style]="{ width: '450px' }" header="Ingreso" [modal]="true">
     <ng-template #content>

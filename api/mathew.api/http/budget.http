@@ -1,6 +1,6 @@
 
 ###
-GET {{mathew_api_HostAddress}}/budget/2025/10
+GET {{mathew_api_HostAddress}}/budget/2025/11?username=
 Accept: application/json
 Content-Type: application/json
 
@@ -14,7 +14,7 @@ Content-Type: application/json
 {
   "categoryId": 0,
   "amount": 15.5,
-  "month": 12,
+  "month": 11,
   "year": 2025,
   "category": {
     "id": 4,
@@ -23,7 +23,10 @@ Content-Type: application/json
     "icon": "string",
     "color": "string"
   }
+,
+  "userName": "vh"
 }
+
 
 ### update
 POST {{mathew_api_HostAddress}}/budget
@@ -44,6 +47,19 @@ Content-Type: application/json
     "color": null
   }
 }
+### copy budget
+
+POST {{mathew_api_HostAddress}}/budget/copybudget
+Accept: application/json
+Content-Type: application/json
+
+{
+  "sourceMonth": 10,
+  "sourceYear": 2025,
+  "targetMonth": 11,
+  "targetYear": 2025,
+  "overwriteExisting": true
+}
 ###
 
 
@@ -52,17 +68,17 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "id": 2,
-  "categoryId": 4,
-  "amount": 15.50,
-  "month": 12,
+  "id": 2009,
+  "categoryId": 9,
+  "amount": 800.00,
+  "month": 11,
   "year": 2025,
   "category": {
-    "id": 4,
-    "name": "gatos",
-    "description": "comida, insumos, veterinario, paseos\n",
-    "icon": null,
-    "color": null
+    "id": 9,
+    "name": "string",
+    "description": "string",
+    "icon": "fa-pencil",
+    "color": "text-red-500"
   }
 }
 ###

@@ -28,6 +28,7 @@
         "@tailwindcss/postcss": "^4.1.16",
         "chart.js": "4.4.2",
         "linq-to-typescript": "^12.0.0",
+        "ngx-cookie-service": "^20.1.1",
         "ngx-timeago": "^4.0.0",
         "primeclt": "^0.1.5",
         "primeicons": "^7.0.0",

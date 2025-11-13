@@ -1,0 +1,62 @@
+
+### all expenses
+GET {{mathew_api_HostAddress}}/expense/2025/10?registeredBy=
+Accept: application/json
+Content-Type: application/json
+
+### expense by date and category
+GET {{mathew_api_HostAddress}}/expense/by-date-category/2025-10-01T00:00:00.000-0400/2025-10-31T00:00:00.000-0400/1
+Accept: application/json
+Content-Type: application/json
+
+
+### new
+
+POST {{mathew_api_HostAddress}}/expense
+Accept: application/json
+Content-Type: application/json
+
+{
+  "amount": 345,
+  "description": "323452",
+  "category": {
+    "id": 4,
+    "name": "Construcción Casa",
+    "description": "gastos de construcción de casa"
+  },
+
+  "date": "2025-10-02T04:00:00.000Z",
+  "registeredBy": "vh"
+}
+
+### update
+POST {{mathew_api_HostAddress}}/expense
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 20,
+  "amount": 345.00,
+  "description": "323452",
+  "date": "2025-10-02T04:00:00",
+  "categoryId": 4,
+  "category": {
+    "id": 4,
+    "name": "gatos",
+    "description": "comida, insumos, veterinario, paseos\n"
+  }
+}
+###
+
+
+DELETE {{mathew_api_HostAddress}}/expense
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id":1,
+  "Amount": 15.5,
+  "description": "pan",
+  "date": "2025-10-10",
+  "CategoryId": 2
+}

@@ -7,18 +7,23 @@ import { Expense } from '@/models/expense';
 import { Budget } from '@/models/budget';
 import { ExpenseSummaryDto } from '@/models/expense-summary-dto';
 import { formatDate } from '@angular/common';
+import { UserService } from '@/service/user.service';
+import { UserPeriodParameter } from '@/models/user-period-parameter';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ExpensesService {
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private userService: UserService) {}
 
-    getData(): Observable<Expense[]> {
-        return this.http.get<Expense[]>(environment.apiUrl + 'expense');
+    getData(param:UserPeriodParameter): Observable<Expense[]> {
+        const queryString = param.userName ? `?registeredBy=${param.userName}` : '';
+        return this.http.get<Expense[]>(`${environment.apiUrl}expense/${param.year}/${param.period.value}${queryString}`);
     }
 
     save(data: Expense) {
+        data.registeredBy = this.userService.currentUser?.name;
+        data.date = new Date(data.date.toISOString());
         return this.http.post<Expense>(environment.apiUrl + 'expense', data);
     }
 

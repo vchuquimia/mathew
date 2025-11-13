@@ -7,6 +7,7 @@ export class Income {
     id?: number;
     amount?: number;
     description?: string;
+    userName?: string;
     date: Date;
     incomeSourceId?: number;
     incomeSource?: IncomeSource;

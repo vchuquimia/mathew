@@ -11,7 +11,7 @@ public class CategoryController : ControllerBase
     [HttpGet("")]
     public async Task<List<Category>> SendCommand(ExpenseDbContext context)
     {
-        return await context.Categories.ToListAsync();
+        return await context.Categories.OrderBy(c => c.Name).ToListAsync();
     }
 
     [HttpPost]

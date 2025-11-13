@@ -16,10 +16,14 @@ public class Expense
     public string Description { get; set; } = string.Empty;
 
     [Required]
-    public DateTime Date { get; set; }
+    public DateTimeOffset Date { get; set; }
 
     [Required]
     public int CategoryId { get; set; }
 
     public Category? Category { get; set; } = null!;
+    [Required]
+    public string RegisteredBy { get; set; }
+
+
 }
