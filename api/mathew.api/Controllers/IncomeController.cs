@@ -44,18 +44,19 @@ public class IncomeController : ControllerBase
     }
 
     [HttpGet("getincomebudgetsummary/{year:int}/{month:int}")]
-    public async Task<List<IncomeBudgetMontlySummaryDto>> ByDate(ExpenseDbContext context, int year, int month, string? userName)
+    public async Task<List<FinantialSummaryDto>> ByDate(ExpenseDbContext context, int year, int month, string? userName)
     {
         //test
         var result = await context.Database
-            .SqlQueryRaw<IncomeBudgetMontlySummaryDto>(@"
+            .SqlQueryRaw<FinantialSummaryDto>(@"
                     SELECT
                         u.Name AS UserName,
                         @year AS Year,
                         @month AS Month,
                         COALESCE(i.IncomeAmount, 0) AS IncomeAmount,
                         COALESCE(b.BudgetAmount, 0) AS BudgetAmount,
-                       COALESCE(IncomeAmount, 0) - COALESCE(BudgetAmount, 0) AS Balance
+                        COALESCE(e.ExpenseAmount, 0) AS ExpenseAmount,
+                       COALESCE(IncomeAmount, 0) - COALESCE(ExpenseAmount, 0) AS Balance
                     FROM Users u
                     LEFT JOIN (
                             SELECT UserName, sum(amount) AS IncomeAmount
@@ -64,25 +65,45 @@ public class IncomeController : ControllerBase
                             GROUP BY UserName
                                 ) i ON i.UserName = u.Name
                     LEFT JOIN (
-                        select UserName, sum(Amount) AS BudgetAmount
-                        from Budgets b
-                        WHERE b.Year = @year AND b.Month = @month
-                        GROUP BY UserName
-                        ) b ON b.UserName = u.Name
+                            select UserName, sum(Amount) AS BudgetAmount
+                            from Budgets b
+                            WHERE b.Year = @year AND b.Month = @month
+                            GROUP BY UserName
+                            ) b ON b.UserName = u.Name
+                     LEFT JOIN (
+                            select RegisteredBy, sum(Amount) AS ExpenseAmount
+                            from Expenses e
+                            where  YEAR(e.Date) = @year AND MONTH(e.Date) = @month
+                            GROUP BY RegisteredBy
+                            ) e ON e.RegisteredBy = u.Name
                     WHERE u.Name = @userName OR @userName IS NULL",
                 new SqlParameter("@year", year),
                 new SqlParameter("@month", month),
                 new SqlParameter("@userName", (object)userName??DBNull.Value))
             .ToListAsync();
 
+        if (userName == null)
+        {
+            result.Add(new FinantialSummaryDto
+            {
+                Balance = result.Sum(i=>i.Balance),
+                IncomeAmount = result.Sum(i=>i.IncomeAmount),
+                BudgetAmount = result.Sum(i=>i.BudgetAmount),
+                ExpenseAmount = result.Sum(i=>i.ExpenseAmount),
+                Month = month,
+                UserName = "General",
+                Year = year,
+            });
+        }
+
         return result;
     }
 
     [HttpGet("getincomebudgetsummary-by-date-and-user/{year:int}/{month:int}")]
-    public async Task<List<IncomeBudgetMontlySummaryDto>> ByDateAndUser(ExpenseDbContext context, int year, int month, string? userName)
+    public async Task<List<FinantialSummaryDto>> ByDateAndUser(ExpenseDbContext context, int year, int month, string? userName)
     {
         var result = await context.Database
-            .SqlQueryRaw<IncomeBudgetMontlySummaryDto>(@"
+            .SqlQueryRaw<FinantialSummaryDto>(@"
          SELECT
             u.Name AS UserName,
             @year AS Year,

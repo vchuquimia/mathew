@@ -27,7 +27,9 @@ export class PeriodFilterComponent implements OnInit {
 
     periods!: Period[];
     // currentPeriod!: Period;
-    constructor(private periodService: PeriodService) {}
+    constructor(private periodService: PeriodService) {
+
+    }
     @Output()
     onFilter = new EventEmitter<Period>();
 
@@ -35,12 +37,13 @@ export class PeriodFilterComponent implements OnInit {
         this.periods = this.periodService.getMonths();
         const period = new Date().getMonth() + 1;
         this.periodParameter = { ...from(this.periods).first((i) => i.value == period) };
-
         this.onFilter.emit(this.periodParameter);
+        console.log(this.periodParameter, "period filter Init");
     }
 
     protected filterMonth($event: SelectChangeEvent) {
         this.periodParameter = $event.value;
         this.onFilter.emit(this.periodParameter);
+        console.log(this.periodParameter, "period filter");
     }
 }

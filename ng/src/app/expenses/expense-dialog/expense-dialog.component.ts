@@ -89,6 +89,7 @@ export class ExpenseDialogComponent {
             if (this._isReimbursment) {
                 this.reimbursment.expenseId = data.id;
                 this.reimbursment.expense = data;
+                this.reimbursment.pending = true;
                 this.reimbursementService.save(this.reimbursment).subscribe((reimbursement) => {
                     this.messageService.add({
                         severity: 'success',

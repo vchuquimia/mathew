@@ -10,7 +10,6 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
-import { SelectChangeEvent, SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
@@ -18,29 +17,28 @@ import { TagModule } from 'primeng/tag';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { Product, ProductService } from '@/pages/service/product.service';
-import { CategoryService } from '@/service/category.service';
+import { ProductService } from '@/pages/service/product.service';
 import { Expense } from '@/models/expense';
 import { ExpensesService } from '@/service/expenses.service';
 import { Category } from '@/models/category';
 import { FluidModule } from 'primeng/fluid';
 import { DataView } from 'primeng/dataview';
 import { ExpenseDialogComponent } from '@/expenses/expense-dialog/expense-dialog.component';
-import { TimeagoFormatter, TimeagoModule } from 'ngx-timeago';
-import { Avatar } from 'primeng/avatar';
+import { TimeagoModule } from 'ngx-timeago';
+
 import { UserService } from '@/service/user.service';
-import { User } from '@/models/user';
-import { SelectButton } from 'primeng/selectbutton';
 import { CategoryViewerComponent } from '@/shared/category-viewer/category-viewer.component';
 import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
 import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
 import { UserPeriodParameter } from '@/models/user-period-parameter';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { Period } from '@/models/period';
+import { from } from 'linq-to-typescript';
+import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
 
 @Component({
     selector: 'expenses',
-    // standalone: true,
+    standalone: true,
     imports: [
         CommonModule,
         TableModule,
@@ -52,7 +50,6 @@ import { Period } from '@/models/period';
         RatingModule,
         InputTextModule,
         TextareaModule,
-        SelectModule,
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
@@ -68,7 +65,8 @@ import { Period } from '@/models/period';
         CategoryViewerComponent,
         UserAvatarComponent,
         UserFilterComponent,
-        PeriodFilterComponent
+        PeriodFilterComponent,
+        FinancialSummaryComponent
     ],
     templateUrl: './expenses.component.html',
     providers: [MessageService, ProductService, ConfirmationService]
@@ -91,13 +89,16 @@ export class ExpensesComponent implements OnInit {
         public userService: UserService
     ) {}
 
-    currentUserPeriodParameter = new  UserPeriodParameter();
+    currentUserPeriodParameter = new UserPeriodParameter();
+    totalExpenses: number = 0;
 
     ngOnInit() {}
 
     loadData(parameter: UserPeriodParameter) {
+
         this.expenseService.getData(parameter).subscribe((data) => {
             this.expenses = data;
+            this.totalExpenses = from(this.expenses).sum((i) => i.amount ?? 0);
         });
     }
 
@@ -112,8 +113,6 @@ export class ExpensesComponent implements OnInit {
         console.log(expense);
         this.expense = { ...expense };
         this.expense.date = new Date(expense.date);
-
-        // this.test.dateProperty = new Date(this.expense.date);K
         this.showDialog = true;
     }
 
@@ -142,12 +141,17 @@ export class ExpensesComponent implements OnInit {
     }
 
     protected filter(parameter: string) {
+        console.log(parameter, "filter user");
         this.currentUserPeriodParameter.userName = parameter;
+        this.currentUserPeriodParameter = {... this.currentUserPeriodParameter};
         this.loadData(this.currentUserPeriodParameter);
+
     }
 
     protected filterPeriod(parameter: Period) {
+        console.log(parameter, "filter period");
         this.currentUserPeriodParameter.period = parameter;
+        this.currentUserPeriodParameter = {... this.currentUserPeriodParameter};
         this.loadData(this.currentUserPeriodParameter);
     }
 }

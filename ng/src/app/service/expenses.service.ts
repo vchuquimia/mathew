@@ -18,7 +18,7 @@ export class ExpensesService {
 
     getData(param:UserPeriodParameter): Observable<Expense[]> {
         const queryString = param.userName ? `?registeredBy=${param.userName}` : '';
-        return this.http.get<Expense[]>(`${environment.apiUrl}expense/${param.year}/${param.period.value}${queryString}`);
+        return this.http.get<Expense[]>(`${environment.apiUrl}expense/${param.year}/${param.period?.value}${queryString}`);
     }
 
     save(data: Expense) {

@@ -6,9 +6,6 @@ import { CategoryService } from '@/service/category.service';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
-import { IconField } from 'primeng/iconfield';
-import { InputIcon } from 'primeng/inputicon';
-import { InputText } from 'primeng/inputtext';
 import { CurrencyPipe, DatePipe, NgClass, NgForOf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
@@ -20,7 +17,7 @@ import { Toast } from 'primeng/toast';
 import { PeriodService } from '@/service/period.service';
 import { Tooltip } from 'primeng/tooltip';
 import { IncomeService } from '@/service/income.service';
-import { IncomeBudgetMontlySummaryDto } from '@/models/income-budget-montly-summary-dto';
+import { FinantialSummaryDto } from '@/models/finantial-summary-dto';
 import { BudgetCopyComponent } from '@/budget/budget-copy/budget-copy.component';
 import { UserPeriodParameter } from '@/models/user-period-parameter';
 import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
@@ -31,6 +28,8 @@ import { TimeagoModule } from 'ngx-timeago';
 import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { Period } from '@/models/period';
+import { Panel } from 'primeng/panel';
+import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
 
 @Component({
     selector: 'budget',
@@ -57,7 +56,9 @@ import { Period } from '@/models/period';
         NgForOf,
         TimeagoModule,
         UserAvatarComponent,
-        PeriodFilterComponent
+        PeriodFilterComponent,
+        Panel,
+        FinancialSummaryComponent
     ],
     providers: [BudgetService, MessageService, ConfirmationService, CategoryService],
     templateUrl: './budget.component.html',
@@ -75,7 +76,7 @@ export class BudgetComponent implements OnInit {
 
     statuses!: any[];
 
-    incomeBudgetSummary!: IncomeBudgetMontlySummaryDto[];
+    incomeBudgetSummary!: FinantialSummaryDto[];
 
     showBudgetCopyDialog: boolean = false;
 
@@ -169,11 +170,13 @@ export class BudgetComponent implements OnInit {
 
     protected filter(param: string) {
         this.currentUserPeriodParameter.userName = param;
+        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.loadBudget(this.currentUserPeriodParameter);
     }
 
     protected filterPeriod($event: Period) {
         this.currentUserPeriodParameter.period = $event;
+        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.loadBudget(this.currentUserPeriodParameter);
     }
 }

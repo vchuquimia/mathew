@@ -1,8 +1,9 @@
-public class IncomeBudgetMontlySummaryDto {
+public class FinantialSummaryDto {
         public int Year { get; set; }
         public int Month { get; set; }
         public decimal IncomeAmount { get; set; }
         public decimal BudgetAmount { get; set; }
+        public decimal ExpenseAmount { get; set; }
         public decimal Balance { get; set; }
         public string UserName { get; set; }
 }

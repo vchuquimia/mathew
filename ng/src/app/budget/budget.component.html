@@ -18,24 +18,9 @@
     </ng-template >
 </p-toolbar>
 
-<p-toolbar class="mb-2">
-    <ng-template #start>
-        @for (budget of incomeBudgetSummary; track budget.userName) {
-            <div class="flex items-center  gap-3 text-sm">
-                <div>
-                    <i class="pi pi-fw pi-arrow-right"></i><span pTooltip="'Ingresos'">{{ budget?.incomeAmount| currency:'BOB':'symbol-narrow' }}</span>
-                </div>
-                <div>
-                    <i class="pi pi-fw pi-flag"></i><span>{{ budget?.budgetAmount| currency:'BOB':'symbol-narrow' }}</span>
-                </div>
-                <span> Diff. {{ budget?.balance| currency:'BOB':'symbol-narrow' }}</span>
-            </div>
-        }
-    </ng-template>
-</p-toolbar>
+<financial-summary [(currentUserPeriodParameter)]="currentUserPeriodParameter" ></financial-summary>
 
 <p-dataview [value]="budgets" [layout]="'list'">
-
     <ng-template #list let-budgets>
         <div class="flex flex-col">
             <div *ngFor="let budget of budgets; let i = index">

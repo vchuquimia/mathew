@@ -20,7 +20,14 @@
     </ng-template >
 </p-toolbar>
 
+<financial-summary [(currentUserPeriodParameter)]="currentUserPeriodParameter" ></financial-summary>
+
 <p-dataview [value]="expenses" [layout]="'list'">
+    <ng-template #header>
+        <div class="flex gap-2">
+            <span class="block font-bold mb-3">Total Gastos.</span> {{ totalExpenses | currency:'BOB':'symbol-narrow' }}
+        </div>
+    </ng-template>
     <ng-template #list let-expenses>
         <div class="flex flex-col">
             <div *ngFor="let expense of expenses; let i = index">

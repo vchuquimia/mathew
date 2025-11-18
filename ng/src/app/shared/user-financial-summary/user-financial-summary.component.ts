@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CurrencyPipe, NgForOf } from '@angular/common';
 import { Toolbar } from 'primeng/toolbar';
 import { Tooltip } from 'primeng/tooltip';
-import { IncomeBudgetMontlySummaryDto } from '@/models/income-budget-montly-summary-dto';
+import { FinantialSummaryDto } from '@/models/finantial-summary-dto';
 import { IncomeService } from '@/service/income.service';
 import { UserPeriodParameter } from '@/models/user-period-parameter';
 
@@ -21,7 +21,7 @@ export class UserFinancialSummaryComponent {
         });
     }
 
-    incomeBudgetSummaries!: IncomeBudgetMontlySummaryDto[];
+    incomeBudgetSummaries!: FinantialSummaryDto[];
 
     private _currentParameter!: UserPeriodParameter;
     constructor(private incomeService: IncomeService) {}

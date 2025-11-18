@@ -17,7 +17,7 @@ export class BudgetService {
 
     getData(param: UserPeriodParameter): Observable<Budget[]> {
         const queryString = param.userName ? `?username=${param.userName}` : '';
-        return this.http.get<Budget[]>(`${environment.apiUrl}budget/${param.year}/${param.period.value}${queryString}`);
+        return this.http.get<Budget[]>(`${environment.apiUrl}budget/${param.year}/${param.period?.value}${queryString}`);
     }
 
     save(data: Budget) {

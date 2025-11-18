@@ -12,7 +12,7 @@
     <user-filter [(userParameter)]="currentUserPeriodParameter.userName" (onFilter)="userFilter($event)"></user-filter>
     <period-filter [(periodParameter)]="currentUserPeriodParameter.period" (onFilter)="periodFilter($event)" ></period-filter>
 </p-toolbar>
-<user-financial-summary [currentParameter]="currentUserPeriodParameter" ></user-financial-summary>
+<financial-summary [(currentUserPeriodParameter)]="currentUserPeriodParameter" ></financial-summary>
 <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
 
 <p-dataview [value]="incomes" [layout]="'list'">

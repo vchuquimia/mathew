@@ -14,7 +14,9 @@ public class ReimbursementController : ControllerBase
         return await context.Reimbursements
             .Where(b => (b.UserName == userName || userName == null) && (b.Pending == pending || pending == null))
             .Include(i=> i.Expense)
-            .Include(i=>i.Expense.Category).ToListAsync();
+            .Include(i=>i.Expense.Category)
+            .OrderByDescending(i=> i.Expense.Date)
+            .ToListAsync();
     }
 
     [HttpGet("getbyexpenseid/{expenseid:int}")]

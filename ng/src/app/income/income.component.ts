@@ -28,6 +28,7 @@ import { UserFinancialSummaryComponent } from '@/shared/user-financial-summary/u
 import { UserPeriodParameter } from '@/models/user-period-parameter';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { Period } from '@/models/period';
+import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
 
 @Component({
     selector: 'income',
@@ -57,7 +58,8 @@ import { Period } from '@/models/period';
         UserAvatarComponent,
         UserFinancialSummaryComponent,
         NgForOf,
-        PeriodFilterComponent
+        PeriodFilterComponent,
+        FinancialSummaryComponent
     ],
     providers: [IncomeService, MessageService, ConfirmationService, CategoryService],
     templateUrl: './income.component.html',
@@ -158,11 +160,13 @@ export class IncomeComponent {
 
     protected userFilter(param: string) {
         this.currentUserPeriodParameter.userName = param;
+        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.loadData(this.currentUserPeriodParameter);
     }
 
     protected periodFilter(parameter: Period) {
         this.currentUserPeriodParameter.period = parameter;
+        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.loadData(this.currentUserPeriodParameter);
     }
 }
