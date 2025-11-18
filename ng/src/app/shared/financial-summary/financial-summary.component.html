@@ -1,0 +1,45 @@
+<p-panel class="mb-2" showHeader="false">
+    <div class="flex flex-col text-xs pt-4">
+
+        <div class=" flex flex-row items-end gap-2 text-sm text-primary last:border-t border-surface"
+             [ngClass]="{'last:border-t':  incomeBudgetSummary.length>1 }" >
+            <div class="basis-1/8 flex flex-col items-start">
+                <i class="pi pi-fw pi-users"></i>
+            </div>
+            <div class="basis-2/8 flex flex-col items-center">
+                <i class="pi pi-fw pi-arrow-right"></i>
+            </div>
+            <div class="basis-2/8 flex flex-col items-center">
+                <i class="pi pi-fw pi-money-bill"></i>
+            </div>
+            <div class="basis-2/8 flex flex-col items-center">
+                <span>Diff.</span>
+            </div>
+            <div class="basis-2/8 flex flex-col items-center">
+                <i class="pi pi-fw pi-flag"></i>
+            </div>
+        </div>
+        @for (budget of incomeBudgetSummary; track budget.userName) {
+            <div class=" flex flex-row items-end gap-2 text-sm last:border-t border-surface" [ngClass]="{'last:border-t':  incomeBudgetSummary.length>1 }" >
+                <div class="basis-1/9 flex flex-col items-start">
+                    <span>{{budget.userName}}</span>
+                </div>
+                <div class="basis-2/9 flex flex-col items-end">
+                    <span pTooltip="'Ingresos'">
+                    {{ budget?.incomeAmount| currency:'BOB':'symbol-narrow' }}</span>
+                </div>
+                <div class="basis-2/9 flex flex-col items-end">
+                    <span pTooltip="'Ingresos'">
+                    {{ budget?.expenseAmount| currency:'BOB':'symbol-narrow' }}</span>
+                </div>
+                <div class="basis-2/9 flex flex-col items-end">
+                    <span>{{ budget?.balance| currency:'BOB':'symbol-narrow' }}</span>
+                </div>
+                <div class="basis-2/9 flex flex-col items-end">
+                    <span>
+                    {{ budget?.budgetAmount| currency:'BOB':'symbol-narrow' }}</span>
+                </div>
+            </div>
+        }
+    </div>
+</p-panel>
