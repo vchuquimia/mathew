@@ -40,12 +40,6 @@ public class ExpenseController : ControllerBase
         }
         else
         {
-            // Verify the expense belongs to the specified family
-            var existingExpense = await context.Expenses
-                .FirstOrDefaultAsync(e => e.Id == expense.Id && e.FamilyId == expense.FamilyId);
-            if (existingExpense == null)
-                return Forbid("Expense does not belong to your family");
-            
             context.Expenses.Update(expense);
         }
 

@@ -9,10 +9,10 @@ namespace mathew.api.Controllers;
 public class UserController : ControllerBase
 {
     [HttpGet("")]
-    public async Task<List<User>> GetAll(ExpenseDbContext context, int familyId)
+    public async Task<List<User>> GetAll(ExpenseDbContext context, int? familyId)
     {
         return await context.Users
-            .Where(u => u.FamilyId == familyId)
+            .Where(u => u.FamilyId == familyId || familyId == null)
             .ToListAsync();
     }
 

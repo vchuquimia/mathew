@@ -35,12 +35,6 @@ public class IncomeController : ControllerBase
         }
         else
         {
-            // Verify the income belongs to the specified family
-            var existingIncome = await context.Incomes
-                .FirstOrDefaultAsync(i => i.Id == income.Id && i.FamilyId == income.FamilyId);
-            if (existingIncome == null)
-                return Forbid("Income does not belong to your family");
-            
             context.Incomes.Update(income);
         }
 

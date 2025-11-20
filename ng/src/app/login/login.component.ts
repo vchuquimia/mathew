@@ -52,8 +52,8 @@ export class LoginComponent {
     onSubmit(): void {
         const code = Object.values(this.codeForm.value).join('');
 
-        if (this.userService.users.some((user) => user.password == code.toString())) {
-            const user = this.userService.users.find((user) => user.password == code.toString());
+        if (this.userService.allUsers.some((user) => user.password == code.toString())) {
+            const user = this.userService.allUsers.find((user) => user.password == code.toString());
             if (user != undefined) {
                 this.userService.setCurrentUser(user);
                 this.location.back();

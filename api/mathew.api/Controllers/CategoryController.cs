@@ -32,12 +32,6 @@ public class CategoryController : ControllerBase
         }
         else
         {
-            // Verify the category belongs to the specified family
-            var existingCategory = await context.Categories
-                .FirstOrDefaultAsync(c => c.Id == category.Id && c.FamilyId == category.FamilyId);
-            if (existingCategory == null)
-                return BadRequest("Category does not belong to your family");
-            
             context.Categories.Update(category);
         }
 

@@ -59,12 +59,6 @@ public class ReimbursementController : ControllerBase
         }
         else
         {
-            // Verify the reimbursement belongs to the specified family
-            var existingReimbursement = await context.Reimbursements
-                .FirstOrDefaultAsync(r => r.Id == reimbursement.Id && r.FamilyId == reimbursement.FamilyId);
-            if (existingReimbursement == null)
-                return Forbid("Reimbursement does not belong to your family");
-            
             context.Reimbursements.Update(reimbursement);
         }
 

@@ -34,12 +34,6 @@ public class BudgetController : ControllerBase
         }
         else
         {
-            // Verify the budget belongs to the specified family
-            var existingBudget = await context.Budgets
-                .FirstOrDefaultAsync(b => b.Id == budget.Id && b.FamilyId == budget.FamilyId);
-            if (existingBudget == null)
-                return Forbid("Budget does not belong to your family");
-            
             context.Budgets.Update(budget);
         }
 

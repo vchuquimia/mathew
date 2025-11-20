@@ -1,6 +1,6 @@
 
 ###
-GET {{mathew_api_HostAddress}}/user?familyId=1
+GET {{mathew_api_HostAddress}}/user?familyId=
 Accept: application/json
 Content-Type: application/json
 
