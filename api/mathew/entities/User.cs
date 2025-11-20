@@ -10,4 +10,9 @@ public class User
     public string Password { get; set; }
     [Required]
     public string ColorClass { get; set; }
+
+    [Required]
+    public int FamilyId { get; set; }
+    
+    public Family? Family { get; set; } = null!;
 }

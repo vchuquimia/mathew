@@ -16,20 +16,27 @@ export class BudgetService {
     constructor(private http: HttpClient, private userService: UserService) {}
 
     getData(param: UserPeriodParameter): Observable<Budget[]> {
-        const queryString = param.userName ? `?username=${param.userName}` : '';
-        return this.http.get<Budget[]>(`${environment.apiUrl}budget/${param.year}/${param.period?.value}${queryString}`);
+        const familyId = this.userService.currentUser?.familyId || 0;
+        const queryString = param.userName ? `&userName=${param.userName}` : '';
+        return this.http.get<Budget[]>(`${environment.apiUrl}budget/${param.year}/${param.period?.value}?familyId=${familyId}${queryString}`);
     }
 
     save(data: Budget) {
+        const familyId = this.userService.currentUser?.familyId || 0;
         data.userName = this.userService.currentUser?.name;
-        return this.http.post<Budget>(environment.apiUrl + 'budget', data);
+        data.familyId = familyId;
+        return this.http.post<Budget>(`${environment.apiUrl}budget`, data);
     }
 
     delete(budget: Budget) {
-        return this.http.delete<Budget>(environment.apiUrl + 'budget', { body: budget });
+        const familyId = this.userService.currentUser?.familyId || 0;
+        budget.familyId = familyId;
+        return this.http.delete<Budget>(`${environment.apiUrl}budget`, { body: budget });
     }
 
     copyBudget(copyParams: BudgetCopyParameter): Observable<number> {
-        return this.http.post<number>(environment.apiUrl + 'budget/copy', copyParams);
+        const familyId = this.userService.currentUser?.familyId || 0;
+        copyParams.familyId = familyId;
+        return this.http.post<number>(`${environment.apiUrl}budget/copy`, copyParams);
     }
 }

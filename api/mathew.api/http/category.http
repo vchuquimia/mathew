@@ -1,0 +1,38 @@
+###
+GET {{mathew_api_HostAddress}}/category?familyId=1
+Accept: application/json
+Content-Type: application/json
+
+### new
+
+POST {{mathew_api_HostAddress}}/category?familyId=1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "strin2g",
+  "description": "string"
+}
+
+### update
+POST {{mathew_api_HostAddress}}/category?familyId=1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 8,
+  "name": "string",
+  "description": "string"
+}
+
+### delete
+DELETE {{mathew_api_HostAddress}}/category?familyId=1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 8,
+  "name": "string",
+  "description": "string"
+}
+

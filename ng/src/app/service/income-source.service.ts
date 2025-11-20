@@ -6,23 +6,29 @@ import { environment } from '../../environments/environment';
 import { Expense } from '@/models/expense';
 import { Budget } from '@/models/budget';
 import { IncomeSource } from '@/models/income-source';
+import { UserService } from '@/service/user.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class IncomeSourceService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private userService: UserService) { }
 
     getData():Observable<IncomeSource[]> {
-        return this.http.get<IncomeSource[]>(environment.apiUrl+'incomesource');
+        const familyId = this.userService.currentUser?.familyId || 0;
+        return this.http.get<IncomeSource[]>(`${environment.apiUrl}incomesource?familyId=${familyId}`);
     }
 
     save(data:IncomeSource){
-        return this.http.post<IncomeSource>(environment.apiUrl+'incomesource',data);
+        const familyId = this.userService.currentUser?.familyId || 0;
+        data.familyId = familyId;
+        return this.http.post<IncomeSource>(`${environment.apiUrl}incomesource`, data);
     }
 
     delete(incomesource:IncomeSource){
-        return this.http.delete<IncomeSource>(environment.apiUrl+'incomesource', {body: incomesource});
+        const familyId = this.userService.currentUser?.familyId || 0;
+        incomesource.familyId = familyId;
+        return this.http.delete<IncomeSource>(`${environment.apiUrl}incomesource`, {body: incomesource});
     }
 }

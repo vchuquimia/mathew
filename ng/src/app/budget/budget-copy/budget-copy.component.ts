@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { Category } from '@/models/category';
 import { Textarea } from 'primeng/textarea';
 import { InputText } from 'primeng/inputtext';
+import { UserService } from '@/service/user.service';
 
 @Component({
     selector: 'budget-copy',
@@ -34,14 +35,16 @@ export class BudgetCopyComponent {
 
     constructor(
         private budgetService: BudgetService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private userService: UserService
     ) {
         this.budgetCopyParams = {
             sourceMonth: new Date().getMonth(),
             sourceYear: new Date().getFullYear(),
             targetMonth: new Date().getMonth() + 1,
             targetYear: new Date().getFullYear(),
-            overwriteExisting: true
+            overwriteExisting: true,
+            familyId: this.userService.currentUser.familyId,
         };
     }
 

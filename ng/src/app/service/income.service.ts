@@ -14,26 +14,33 @@ export class IncomeService {
     constructor(private http: HttpClient, private userService: UserService) {}
 
     getData(parameter:UserPeriodParameter): Observable<Income[]> {
-        const queryString = parameter.userName ? `?username=${parameter.userName}` : '';
-        return this.http.get<Income[]>(`${environment.apiUrl}income/${parameter.year}/${parameter.period?.value}${queryString}`);
+        const familyId = this.userService.currentUser?.familyId || 0;
+        const queryString = parameter.userName ? `&userName=${parameter.userName}` : '';
+        return this.http.get<Income[]>(`${environment.apiUrl}income/${parameter.year}/${parameter.period?.value}?familyId=${familyId}${queryString}`);
     }
 
     save(data: Income) {
+        const familyId = this.userService.currentUser?.familyId || 0;
         data.userName = this.userService.currentUser?.name;
-        return this.http.post<Income>(environment.apiUrl + 'income', data);
+        data.familyId = familyId;
+        return this.http.post<Income>(`${environment.apiUrl}income`, data);
     }
 
     delete(income: Income) {
-        return this.http.delete<Income>(environment.apiUrl + 'income', { body: income });
+        const familyId = this.userService.currentUser?.familyId || 0;
+        income.familyId = familyId;
+        return this.http.delete<Income>(`${environment.apiUrl}income`, { body: income });
     }
 
     getIncomeBudgetMontlySummaryDto(param:UserPeriodParameter): Observable<FinantialSummaryDto[]> {
-        const queryString = param.userName ? `?username=${param.userName}` : '';
-        return this.http.get<FinantialSummaryDto[]>(`${environment.apiUrl}income/getincomebudgetsummary/${param.year}/${param.period?.value}${queryString}`);
+        const familyId = this.userService.currentUser?.familyId || 0;
+        const queryString = param.userName ? `&userName=${param.userName}` : '';
+        return this.http.get<FinantialSummaryDto[]>(`${environment.apiUrl}income/getincomebudgetsummary/${param.year}/${param.period?.value}?familyId=${familyId}${queryString}`);
     }
 
     getIncomeBudgetMontlySummaryByDateAndUser(year:number, month:number, userName: string): Observable<FinantialSummaryDto> {
-        const queryString = userName ? `?username=${userName}` : '';
-        return this.http.get<FinantialSummaryDto>(`${environment.apiUrl}income/getincomebudgetsummary-by-date-and-user/${year}/${month}${queryString}`);
+        const familyId = this.userService.currentUser?.familyId || 0;
+        const queryString = userName ? `&userName=${userName}` : '';
+        return this.http.get<FinantialSummaryDto>(`${environment.apiUrl}income/getincomebudgetsummary-by-date-and-user/${year}/${month}?familyId=${familyId}${queryString}`);
     }
 }

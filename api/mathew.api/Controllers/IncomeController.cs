@@ -10,10 +10,12 @@ namespace mathew.api.Controllers;
 public class IncomeController : ControllerBase
 {
     [HttpGet("{year:int}/{month:int}")]
-    public async Task<List<Income>> GetAll(ExpenseDbContext context, int year, int month, string? userName = null)
+    public async Task<List<Income>> GetAll(ExpenseDbContext context, int year, int month, int familyId, string? userName = null)
     {
         return await context.Incomes
-            .Where(i=> (i.UserName == userName || userName == null) && i.Date.Year == year && i.Date.Month == month)
+            .Where(i=> (i.UserName == userName || userName == null) 
+                && i.Date.Year == year && i.Date.Month == month
+                && i.FamilyId == familyId)
             .Include(i=>i.IncomeSource).ToListAsync();
     }
 
@@ -23,12 +25,22 @@ public class IncomeController : ControllerBase
         income.IncomeSourceId = income.IncomeSource.Id;
         income.IncomeSource = null;
 
+        // Validate FamilyId is set
+        if (income.FamilyId == 0)
+            return BadRequest("FamilyId is required");
+
         if (income.Id == 0)
         {
             context.Incomes.Add(income);
         }
         else
         {
+            // Verify the income belongs to the specified family
+            var existingIncome = await context.Incomes
+                .FirstOrDefaultAsync(i => i.Id == income.Id && i.FamilyId == income.FamilyId);
+            if (existingIncome == null)
+                return Forbid("Income does not belong to your family");
+            
             context.Incomes.Update(income);
         }
 
@@ -37,16 +49,25 @@ public class IncomeController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<int> DeleteCategory(ExpenseDbContext context, Income income)
+    public async Task<ActionResult<int>> DeleteCategory(ExpenseDbContext context, Income income)
     {
+        // Validate FamilyId is set
+        if (income.FamilyId == 0)
+            return BadRequest("FamilyId is required");
+
+        var existingIncome = await context.Incomes
+            .FirstOrDefaultAsync(i => i.Id == income.Id && i.FamilyId == income.FamilyId);
+        if (existingIncome == null)
+            return Forbid("Income does not belong to your family");
+
         context.Incomes.Remove(income);
         return await context.SaveChangesAsync();
     }
 
     [HttpGet("getincomebudgetsummary/{year:int}/{month:int}")]
-    public async Task<List<FinantialSummaryDto>> ByDate(ExpenseDbContext context, int year, int month, string? userName)
+    public async Task<List<FinantialSummaryDto>> ByDate(ExpenseDbContext context, int year, int month, int familyId, string? userName = null)
     {
-        //test
+
         var result = await context.Database
             .SqlQueryRaw<FinantialSummaryDto>(@"
                     SELECT
@@ -62,24 +83,29 @@ public class IncomeController : ControllerBase
                             SELECT UserName, sum(amount) AS IncomeAmount
                                 from Incomes i
                             where  YEAR(i.Date) = @year AND MONTH(i.Date) = @month
+                                AND i.FamilyId = @familyId
                             GROUP BY UserName
                                 ) i ON i.UserName = u.Name
                     LEFT JOIN (
                             select UserName, sum(Amount) AS BudgetAmount
                             from Budgets b
                             WHERE b.Year = @year AND b.Month = @month
+                                AND b.FamilyId = @familyId
                             GROUP BY UserName
                             ) b ON b.UserName = u.Name
                      LEFT JOIN (
                             select RegisteredBy, sum(Amount) AS ExpenseAmount
                             from Expenses e
                             where  YEAR(e.Date) = @year AND MONTH(e.Date) = @month
+                                AND e.FamilyId = @familyId
                             GROUP BY RegisteredBy
                             ) e ON e.RegisteredBy = u.Name
-                    WHERE u.Name = @userName OR @userName IS NULL",
+                    WHERE u.FamilyId = @familyId
+                        AND (u.Name = @userName OR @userName IS NULL)",
                 new SqlParameter("@year", year),
                 new SqlParameter("@month", month),
-                new SqlParameter("@userName", (object)userName??DBNull.Value))
+                new SqlParameter("@userName", (object)userName??DBNull.Value),
+                new SqlParameter("@familyId", familyId))
             .ToListAsync();
 
         if (userName == null)
@@ -100,8 +126,9 @@ public class IncomeController : ControllerBase
     }
 
     [HttpGet("getincomebudgetsummary-by-date-and-user/{year:int}/{month:int}")]
-    public async Task<List<FinantialSummaryDto>> ByDateAndUser(ExpenseDbContext context, int year, int month, string? userName)
+    public async Task<List<FinantialSummaryDto>> ByDateAndUser(ExpenseDbContext context, int year, int month, int familyId, string? userName = null)
     {
+
         var result = await context.Database
             .SqlQueryRaw<FinantialSummaryDto>(@"
          SELECT
@@ -112,14 +139,20 @@ public class IncomeController : ControllerBase
             COALESCE(SUM(b.Amount), 0) AS BudgetAmount,
             COALESCE(SUM(i.Amount), 0) - COALESCE(SUM(b.Amount), 0) AS Balance
         FROM Users u
-                 LEFT JOIN Incomes i ON i.UserName = u.Name AND YEAR(i.Date) = @year AND MONTH(i.Date) = @month
-                 LEFT JOIN Budgets b ON b.UserName = u.Name AND  b.Year = @year AND b.Month = @month
-        WHERE u.Name = @userName OR @userName IS NULL
+                 LEFT JOIN Incomes i ON i.UserName = u.Name 
+                    AND YEAR(i.Date) = @year AND MONTH(i.Date) = @month
+                    AND i.FamilyId = @familyId
+                 LEFT JOIN Budgets b ON b.UserName = u.Name 
+                    AND b.Year = @year AND b.Month = @month
+                    AND b.FamilyId = @familyId
+        WHERE u.FamilyId = @familyId
+            AND (u.Name = @userName OR @userName IS NULL)
         GROUP BY u.Name
         ",
                 new SqlParameter("@year", year),
                 new SqlParameter("@month", month),
-                new SqlParameter("@userName", (object)userName??DBNull.Value)).ToListAsync();
+                new SqlParameter("@userName", (object)userName??DBNull.Value),
+                new SqlParameter("@familyId", familyId)).ToListAsync();
 
         return result;
     }

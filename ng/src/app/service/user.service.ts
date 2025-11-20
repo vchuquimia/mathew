@@ -13,8 +13,8 @@ export class UserService {
     }
 
     public users: Array<User> = [
-        { name: 'vh', password: '1611', colorClass:'bg-yellow-100!' },
-        { name: 'mp', password: '0910' ,colorClass:'bg-pink-100!'}
+        { name: 'vh', password: '1611', colorClass:'bg-yellow-100!', familyId : 1 },
+        { name: 'mp', password: '0910' ,colorClass:'bg-pink-100!', familyId : 1}
     ];
 
     public getColorClass(user:string):string{

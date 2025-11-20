@@ -4,4 +4,5 @@ export interface BudgetCopyParameter {
     targetMonth: number;
     targetYear: number;
     overwriteExisting: boolean;
+    familyId: number;
 }

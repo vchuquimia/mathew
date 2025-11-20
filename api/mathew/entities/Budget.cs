@@ -23,4 +23,9 @@ public class Budget
     public Category Category { get; set; } = null!;
     [Required]
     public string UserName { get; set; }
+
+    [Required]
+    public int FamilyId { get; set; }
+    
+    public Family? Family { get; set; } = null!;
 }

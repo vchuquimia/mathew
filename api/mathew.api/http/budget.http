@@ -1,13 +1,13 @@
 
 ###
-GET {{mathew_api_HostAddress}}/budget/2025/11?username=
+GET {{mathew_api_HostAddress}}/budget/2025/11?familyId=1&userName=
 Accept: application/json
 Content-Type: application/json
 
 
 ### new
 
-POST {{mathew_api_HostAddress}}/budget
+POST {{mathew_api_HostAddress}}/budget?familyId=1
 Accept: application/json
 Content-Type: application/json
 
@@ -22,14 +22,13 @@ Content-Type: application/json
     "description": "string",
     "icon": "string",
     "color": "string"
-  }
-,
+  },
   "userName": "vh"
 }
 
 
 ### update
-POST {{mathew_api_HostAddress}}/budget
+POST {{mathew_api_HostAddress}}/budget?familyId=1
 Accept: application/json
 Content-Type: application/json
 
@@ -49,7 +48,7 @@ Content-Type: application/json
 }
 ### copy budget
 
-POST {{mathew_api_HostAddress}}/budget/copybudget
+POST {{mathew_api_HostAddress}}/budget/copy?familyId=1
 Accept: application/json
 Content-Type: application/json
 
@@ -63,7 +62,7 @@ Content-Type: application/json
 ###
 
 
-DELETE {{mathew_api_HostAddress}}/budget
+DELETE {{mathew_api_HostAddress}}/budget?familyId=1
 Accept: application/json
 Content-Type: application/json
 

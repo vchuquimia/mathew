@@ -9,10 +9,12 @@ namespace mathew.api.Controllers;
 public class ReimbursementController : ControllerBase
 {
     [HttpGet("")]
-    public async Task<List<Reimbursement>> Get(ExpenseDbContext context, bool? pending, string? userName)
+    public async Task<List<Reimbursement>> Get(ExpenseDbContext context, bool? pending, int familyId, string? userName = null)
     {
         return await context.Reimbursements
-            .Where(b => (b.UserName == userName || userName == null) && (b.Pending == pending || pending == null))
+            .Where(b => (b.UserName == userName || userName == null) 
+                && (b.Pending == pending || pending == null)
+                && b.FamilyId == familyId)
             .Include(i=> i.Expense)
             .Include(i=>i.Expense.Category)
             .OrderByDescending(i=> i.Expense.Date)
@@ -20,10 +22,11 @@ public class ReimbursementController : ControllerBase
     }
 
     [HttpGet("getbyexpenseid/{expenseid:int}")]
-    public async Task<Reimbursement?> GetByExpense(ExpenseDbContext context, int expenseid)
+    public async Task<Reimbursement?> GetByExpense(ExpenseDbContext context, int expenseid, int familyId)
     {
         return await context.Reimbursements
-            .Where(b => b.ExpenseId == expenseid)
+            .Where(b => b.ExpenseId == expenseid
+                && b.FamilyId == familyId)
             .Include(i=> i.Expense)
             .Include(i=>i.Expense.Category)
             .FirstOrDefaultAsync();
@@ -32,14 +35,36 @@ public class ReimbursementController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Reimbursement>> Create(ExpenseDbContext context, Reimbursement reimbursement)
     {
+        // Validate FamilyId is set
+        if (reimbursement.FamilyId == 0)
+            return BadRequest("FamilyId is required");
+
         reimbursement.ExpenseId = reimbursement.Expense.Id;
+        
+        // Get the expense to ensure it belongs to the same family
+        var expense = await context.Expenses
+            .FirstOrDefaultAsync(e => e.Id == reimbursement.Expense.Id);
+        
+        if (expense == null)
+            return BadRequest("Expense not found");
+
+        if (expense.FamilyId != reimbursement.FamilyId)
+            return Forbid("Expense does not belong to your family");
+
         reimbursement.Expense = null;
+        
         if (reimbursement.Id == 0)
         {
             context.Reimbursements.Add(reimbursement);
         }
         else
         {
+            // Verify the reimbursement belongs to the specified family
+            var existingReimbursement = await context.Reimbursements
+                .FirstOrDefaultAsync(r => r.Id == reimbursement.Id && r.FamilyId == reimbursement.FamilyId);
+            if (existingReimbursement == null)
+                return Forbid("Reimbursement does not belong to your family");
+            
             context.Reimbursements.Update(reimbursement);
         }
 
@@ -48,8 +73,17 @@ public class ReimbursementController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<int> DeleteBudget(ExpenseDbContext context, Reimbursement reimbursement)
+    public async Task<ActionResult<int>> DeleteBudget(ExpenseDbContext context, Reimbursement reimbursement)
     {
+        // Validate FamilyId is set
+        if (reimbursement.FamilyId == 0)
+            return BadRequest("FamilyId is required");
+
+        var existingReimbursement = await context.Reimbursements
+            .FirstOrDefaultAsync(r => r.Id == reimbursement.Id && r.FamilyId == reimbursement.FamilyId);
+        if (existingReimbursement == null)
+            return Forbid("Reimbursement does not belong to your family");
+
         context.Reimbursements.Remove(reimbursement);
         return await context.SaveChangesAsync();
     }

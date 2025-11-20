@@ -25,5 +25,8 @@ public class Expense
     [Required]
     public string RegisteredBy { get; set; }
 
-
+    [Required]
+    public int FamilyId { get; set; }
+    
+    public Family? Family { get; set; } = null!;
 }

@@ -12,7 +12,8 @@ public class ReportController : ControllerBase
     [HttpGet("")]
     public async Task<List<ExpenseSummaryDto>> GetExpenseSummaryByDateRangeAsync(ExpenseDbContext context,
         DateTime startDate,
-        DateTime endDate)
+        DateTime endDate,
+        int familyId)
     {
         var sql = @"
         SELECT 
@@ -31,17 +32,21 @@ public class ReportController : ControllerBase
         LEFT JOIN Expenses e ON c.Id = e.CategoryId 
             AND CAST(e.Date AS DATE) >= @startDate 
             AND CAST(e.Date AS DATE) <= @endDate
-        LEFT JOIN Budgets b ON c.Id = b.CategoryId AND b.Year = YEAR(@endDate) 
-                                   AND b.Month = MONTH(@endDate)
-        
+            AND e.FamilyId = @familyId
+        LEFT JOIN Budgets b ON c.Id = b.CategoryId 
+            AND b.Year = YEAR(@endDate) 
+            AND b.Month = MONTH(@endDate)
+            AND b.FamilyId = @familyId
+        WHERE c.FamilyId = @familyId
         GROUP BY c.Id, c.Name
         ORDER BY TotalAmount DESC";
 
         var startParam = new SqlParameter("@startDate", startDate.Date);
         var endParam = new SqlParameter("@endDate", endDate.Date);
+        var familyIdParam = new SqlParameter("@familyId", familyId);
 
         var summary = await context.Database
-            .SqlQueryRaw<ExpenseSummaryDto>(sql, startParam, endParam)
+            .SqlQueryRaw<ExpenseSummaryDto>(sql, startParam, endParam, familyIdParam)
             .ToListAsync();
 
         return summary;
@@ -50,7 +55,9 @@ public class ReportController : ControllerBase
     [HttpGet("SummaryByDateRangeAndCategory")]
     public async Task<ExpenseSummaryDto?> GetSummaryByDateRangeAndCategoryAsync(ExpenseDbContext context,
         DateTime startDate,
-        DateTime endDate, int categoryId)
+        DateTime endDate, 
+        int categoryId,
+        int familyId)
     {
         var sql = @"
                SELECT
@@ -65,23 +72,27 @@ public class ReportController : ControllerBase
                 ELSE 0
                 END AS BudgetUsedPercentage
             FROM
-                (SELECT e.CategoryId, e.Amount, e.Date
+                (SELECT e.CategoryId, e.Amount, e.Date, e.FamilyId
                 FROM Expenses e
-                WHERE e.CategoryId = @categoryId) e
-                 LEFT JOIN Budgets b ON e.CategoryId = b.CategoryId AND b.Year = YEAR(@endDate)
-            AND CAST(e.Date AS DATE) >= @startDate
-            AND CAST(e.Date AS DATE) <= @endDate
-            AND e.CategoryId = @categoryId
-            AND b.Month = MONTH(@endDate)
+                WHERE e.CategoryId = @categoryId
+                    AND e.FamilyId = @familyId) e
+                 LEFT JOIN Budgets b ON e.CategoryId = b.CategoryId 
+                    AND b.Year = YEAR(@endDate)
+                    AND b.Month = MONTH(@endDate)
+                    AND b.FamilyId = @familyId
+            WHERE CAST(e.Date AS DATE) >= @startDate
+                AND CAST(e.Date AS DATE) <= @endDate
+                AND e.CategoryId = @categoryId
             GROUP BY e.categoryId
             ";
 
         var startParam = new SqlParameter("@startDate", startDate.Date);
         var endParam = new SqlParameter("@endDate", endDate.Date);
         var categoryIdParam = new SqlParameter("@categoryId", categoryId);
+        var familyIdParam = new SqlParameter("@familyId", familyId);
 
         var result = await context.Database
-            .SqlQueryRaw<ExpenseSummaryDto>(sql, startParam, endParam, categoryIdParam)
+            .SqlQueryRaw<ExpenseSummaryDto>(sql, startParam, endParam, categoryIdParam, familyIdParam)
             .FirstOrDefaultAsync();
 
         return result;

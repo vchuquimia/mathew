@@ -3,4 +3,5 @@ export interface IncomeSource {
     name?: string;
     description?: string;
     projectedIncome?: number;
+    familyId?: number;
 }

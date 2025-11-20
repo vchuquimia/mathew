@@ -7,6 +7,7 @@ export class Expense {
         this.description = '';
         this.categoryId = 0;
         this.registeredBy = '';
+        this.familyId = 0;
     }
 
     id: number;
@@ -16,4 +17,5 @@ export class Expense {
     categoryId: number;
     registeredBy: string;
     date: Date;
+    familyId: number;
 }

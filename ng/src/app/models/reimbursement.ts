@@ -7,6 +7,7 @@ export class Reimbursement {
         this.amount = 0;
         this.expenseId = 0;
         this.userName = '';
+        this.familyId = 0;
         //this.percentage = 0;
         // this.pending = true;
     }
@@ -18,4 +19,5 @@ export class Reimbursement {
     percentage?: number;
     pending?: boolean;
     expense?: Expense;
+    familyId: number;
 }

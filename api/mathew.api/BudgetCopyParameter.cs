@@ -5,4 +5,5 @@ public class BudgetCopyParameter
     public int TargetMonth{ get; set; }
     public int TargetYear{ get; set; }
     public bool OverwriteExisting{ get; set; }
+    public int FamilyId{ get; set; }
 }

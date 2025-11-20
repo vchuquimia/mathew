@@ -1,0 +1,10 @@
+### Expense Summary by Date Range
+GET {{mathew_api_HostAddress}}/report?startDate=2025-10-1&endDate=2025-10-30&familyId=1
+Accept: application/json
+Content-Type: application/json
+
+### Summary by Date Range and Category
+GET {{mathew_api_HostAddress}}/report/SummaryByDateRangeAndCategory?startDate=2025-10-1&endDate=2025-10-30&categoryId=4&familyId=1
+Accept: application/json
+Content-Type: application/json
+

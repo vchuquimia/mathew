@@ -16,4 +16,9 @@ public class Category
     public string? Icon { get; set; }
     [MaxLength(50)]
     public string? Color { get; set; }
+
+    [Required]
+    public int FamilyId { get; set; }
+    
+    public Family? Family { get; set; }
 }

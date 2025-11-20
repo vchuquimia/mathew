@@ -1,0 +1,37 @@
+###
+GET {{mathew_api_HostAddress}}/family
+Accept: application/json
+Content-Type: application/json
+
+###
+GET {{mathew_api_HostAddress}}/family/1
+Accept: application/json
+Content-Type: application/json
+
+### new
+
+POST {{mathew_api_HostAddress}}/family
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Familia Chuquimia",
+  "description": "Familia principal"
+}
+
+### update
+PUT {{mathew_api_HostAddress}}/family/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Familia Chuquimia",
+  "description": "Familia principal actualizada"
+}
+
+### delete
+DELETE {{mathew_api_HostAddress}}/family/1
+Accept: application/json
+Content-Type: application/json
+

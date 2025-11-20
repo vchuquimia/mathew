@@ -4,4 +4,5 @@ export interface Category {
     description?: string;
     icon?: string;
     color?: string;
+    familyId?: number;
 }

@@ -1,18 +1,18 @@
 
 ###
-GET {{mathew_api_HostAddress}}/reimbursement/?username=vh
+GET {{mathew_api_HostAddress}}/reimbursement?familyId=1&pending=&userName=vh
 Accept: application/json
 Content-Type: application/json
 
 ### get by expense id
-GET {{mathew_api_HostAddress}}/reimbursement/getbyexpenseid/2021
+GET {{mathew_api_HostAddress}}/reimbursement/getbyexpenseid/2021?familyId=1
 Accept: application/json
 Content-Type: application/json
 
 
 ### new
 
-POST {{mathew_api_HostAddress}}/reimbursement
+POST {{mathew_api_HostAddress}}/reimbursement?familyId=1
 Accept: application/json
 Content-Type: application/json
 
@@ -36,13 +36,13 @@ Content-Type: application/json
     "registeredBy": "vh"
   },
   "userName": "vh",
-  "percent": 0,
+  "percentage": 0,
   "pending": true
 }
 
 
 ### update
-POST {{mathew_api_HostAddress}}/reimbursement
+POST {{mathew_api_HostAddress}}/reimbursement?familyId=1
 Accept: application/json
 Content-Type: application/json
 
@@ -50,10 +50,6 @@ Content-Type: application/json
   "id": 1,
   "amount": 50,
   "expenseId": 21,
-  "expense": null,
-  "userName": "string",
-  "percent": 0,
-  "pending": true,
   "expense": {
     "id": 21,
     "amount": 0,
@@ -68,11 +64,14 @@ Content-Type: application/json
       "color": "string"
     },
     "registeredBy": "string"
-  }
+  },
+  "userName": "string",
+  "percentage": 0,
+  "pending": true
 }
 ###
 
-DELETE {{mathew_api_HostAddress}}/reimbursement
+DELETE {{mathew_api_HostAddress}}/reimbursement?familyId=1
 Accept: application/json
 Content-Type: application/json
 
@@ -90,7 +89,7 @@ Content-Type: application/json
     "registeredBy": "vh"
   },
   "userName": "string",
-  "percent": 0,
+  "percentage": 0,
   "pending": true
 }
 ###

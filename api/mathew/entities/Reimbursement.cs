@@ -22,4 +22,9 @@ public class Reimbursement
     public int Percentage { get; set; }
 
     [Required] public bool Pending { get; set; }
+
+    [Required]
+    public int FamilyId { get; set; }
+    
+    public Family? Family { get; set; } = null!;
 }

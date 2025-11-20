@@ -12,4 +12,4 @@
 
 ## Description
 
-Mathew is an web app for managing your finances. from expenses, budgets, incomes and reimbursements
+Mathew is a web app for managing your finances. from expenses, budgets, incomes and reimbursements.

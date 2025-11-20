@@ -1,18 +1,18 @@
 
 ###
-GET {{mathew_api_HostAddress}}/incomesource
+GET {{mathew_api_HostAddress}}/incomesource?familyId=1
 Accept: application/json
 Content-Type: application/json
 
 ###
-GET {{mathew_api_HostAddress}}/incomesource/4
+GET {{mathew_api_HostAddress}}/incomesource/4?familyId=1
 Accept: application/json
 Content-Type: application/json
 
 
 ### new
 
-POST {{mathew_api_HostAddress}}/incomesource
+POST {{mathew_api_HostAddress}}/incomesource?familyId=1
 Accept: application/json
 Content-Type: application/json
 
@@ -20,29 +20,31 @@ Content-Type: application/json
   "id": 0,
   "name": "string",
   "description": "string",
-  "projectedincome":7500
+  "projectedIncome": 7500
 }
 
 ### update
-POST {{mathew_api_HostAddress}}/incomesource
+POST {{mathew_api_HostAddress}}/incomesource?familyId=1
 Accept: application/json
 Content-Type: application/json
 
 {
   "id": 1,
   "name": "salario",
-  "description": "salario"
+  "description": "salario",
+  "projectedIncome": 0
 }
 ###
 
 
-DELETE {{mathew_api_HostAddress}}/incomesource
+DELETE {{mathew_api_HostAddress}}/incomesource?familyId=1
 Accept: application/json
 Content-Type: application/json
 
 {
   "id": 1,
   "name": "salario",
-  "description": "salario"
+  "description": "salario",
+  "projectedIncome": 0
 }
 ###

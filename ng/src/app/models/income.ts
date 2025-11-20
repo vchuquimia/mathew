@@ -11,4 +11,5 @@ export class Income {
     date: Date;
     incomeSourceId?: number;
     incomeSource?: IncomeSource;
+    familyId?: number;
 }

@@ -8,4 +8,5 @@ export interface Budget {
     year?: number;
     category?: Category;
     userName?: string;
+    familyId?: number;
 }

@@ -9,10 +9,12 @@ namespace mathew.api.Controllers;
 public class BudgetController : ControllerBase
 {
     [HttpGet("{year:int}/{period:int}")]
-    public async Task<List<Budget>> Get(ExpenseDbContext context, int year, int period, string? userName)
+    public async Task<List<Budget>> Get(ExpenseDbContext context, int year, int period, int familyId, string? userName = null)
     {
         return await context.Budgets
-            .Where(b => b.Year == year && b.Month == period && (b.UserName == userName || userName == null))
+            .Where(b => b.Year == year && b.Month == period 
+                && b.FamilyId == familyId
+                && (b.UserName == userName || userName == null))
             .Include(i=> i.Category).ToListAsync();
     }
 
@@ -21,12 +23,23 @@ public class BudgetController : ControllerBase
     {
         budget.CategoryId = budget.Category.Id;
         budget.Category = null;
+        
+        // Validate FamilyId is set
+        if (budget.FamilyId == 0)
+            return BadRequest("FamilyId is required");
+
         if (budget.Id == 0)
         {
             context.Budgets.Add(budget);
         }
         else
         {
+            // Verify the budget belongs to the specified family
+            var existingBudget = await context.Budgets
+                .FirstOrDefaultAsync(b => b.Id == budget.Id && b.FamilyId == budget.FamilyId);
+            if (existingBudget == null)
+                return Forbid("Budget does not belong to your family");
+            
             context.Budgets.Update(budget);
         }
 
@@ -35,8 +48,17 @@ public class BudgetController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<int> DeleteBudget(ExpenseDbContext context, Budget budget)
+    public async Task<ActionResult<int>> DeleteBudget(ExpenseDbContext context, Budget budget)
     {
+        // Validate FamilyId is set
+        if (budget.FamilyId == 0)
+            return BadRequest("FamilyId is required");
+
+        var existingBudget = await context.Budgets
+            .FirstOrDefaultAsync(b => b.Id == budget.Id && b.FamilyId == budget.FamilyId);
+        if (existingBudget == null)
+            return Forbid("Budget does not belong to your family");
+
         context.Budgets.Remove(budget);
         return await context.SaveChangesAsync();
     }
@@ -44,11 +66,17 @@ public class BudgetController : ControllerBase
     [HttpPost("copy")]
     public async Task<ActionResult<int>> CopyBudgetsAsync(
         ExpenseDbContext context,
-        [FromBody] BudgetCopyParameter budgetCopy )
+        [FromBody] BudgetCopyParameter budgetCopy)
     {
-        // Get source budgets
+        // Validate FamilyId is set
+        if (budgetCopy.FamilyId == 0)
+            return BadRequest("FamilyId is required");
+
+        // Get source budgets filtered by family
         var sourceBudgets = await context.Budgets
-            .Where(b => b.Month == budgetCopy.SourceMonth && b.Year == budgetCopy.SourceYear)
+            .Where(b => b.Month == budgetCopy.SourceMonth 
+                && b.Year == budgetCopy.SourceYear
+                && b.FamilyId == budgetCopy.FamilyId)
             .AsNoTracking()
             .ToListAsync();
 
@@ -58,9 +86,11 @@ public class BudgetController : ControllerBase
                 $"No budgets found for {budgetCopy.SourceMonth}/{budgetCopy.SourceYear}");
         }
 
-        // Check if target budgets already exist
+        // Check if target budgets already exist (filtered by family)
         var existingTargetBudgets = await context.Budgets
-            .Where(b => b.Month == budgetCopy.TargetMonth && b.Year == budgetCopy.TargetYear)
+            .Where(b => b.Month == budgetCopy.TargetMonth 
+                && b.Year == budgetCopy.TargetYear
+                && b.FamilyId == budgetCopy.FamilyId)
             .ToListAsync();
 
         if (existingTargetBudgets.Any() && !budgetCopy.OverwriteExisting)
@@ -83,7 +113,8 @@ public class BudgetController : ControllerBase
             Amount = sb.Amount,
             Month = budgetCopy.TargetMonth,
             Year = budgetCopy.TargetYear,
-            UserName = sb.UserName
+            UserName = sb.UserName,
+            FamilyId = budgetCopy.FamilyId
         }).ToList();
 
         await context.Budgets.AddRangeAsync(newBudgets);

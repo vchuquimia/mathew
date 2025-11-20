@@ -25,4 +25,9 @@ public class
     public int IncomeSourceId { get; set; }
 
     public IncomeSource IncomeSource { get; set; } = null!;
+
+    [Required]
+    public int FamilyId { get; set; }
+    
+    public Family? Family { get; set; } = null!;
 }

@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace mathew.entities;
-public class IncomeSource
+
+public class Family
 {
     public int Id { get; set; }
 
@@ -12,11 +13,5 @@ public class IncomeSource
     [MaxLength(500)]
     public string? Description { get; set; }
 
-    [Required]
-    public decimal ProjectedIncome { get; set; }
-
-    [Required]
-    public int FamilyId { get; set; }
-    
-    public Family? Family { get; set; } = null!;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
