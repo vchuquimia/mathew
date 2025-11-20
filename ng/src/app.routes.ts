@@ -13,6 +13,8 @@ import { IncomeComponent } from '@/income/income.component';
 import { LoginComponent } from '@/login/login.component';
 import { loginGuard } from '@/login-guard';
 import { ReimbursementComponent } from '@/reimbursement/reimbursement.component';
+import { UserComponent } from '@/user/user.component';
+import { FamilyComponent } from '@/family/family.component';
 export const appRoutes: Routes = [
     {
         path: '',
@@ -29,7 +31,8 @@ export const appRoutes: Routes = [
             {path: 'incomesource', component: IncomeSourceComponent, canActivate: [loginGuard]},
             {path: 'income', component: IncomeComponent, canActivate: [loginGuard]},
             {path: 'reinbursement', component: ReimbursementComponent, canActivate: [loginGuard]},
-
+            {path: 'user', component: UserComponent, canActivate: [loginGuard]},
+            {path: 'family', component: FamilyComponent, canActivate: [loginGuard]},
 
         ]
     },

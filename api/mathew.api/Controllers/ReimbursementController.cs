@@ -79,10 +79,6 @@ public class ReimbursementController : ControllerBase
         if (reimbursement.FamilyId == 0)
             return BadRequest("FamilyId is required");
 
-        var existingReimbursement = await context.Reimbursements
-            .FirstOrDefaultAsync(r => r.Id == reimbursement.Id && r.FamilyId == reimbursement.FamilyId);
-        if (existingReimbursement == null)
-            return Forbid("Reimbursement does not belong to your family");
 
         context.Reimbursements.Remove(reimbursement);
         return await context.SaveChangesAsync();

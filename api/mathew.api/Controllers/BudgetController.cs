@@ -54,10 +54,6 @@ public class BudgetController : ControllerBase
         if (budget.FamilyId == 0)
             return BadRequest("FamilyId is required");
 
-        var existingBudget = await context.Budgets
-            .FirstOrDefaultAsync(b => b.Id == budget.Id && b.FamilyId == budget.FamilyId);
-        if (existingBudget == null)
-            return Forbid("Budget does not belong to your family");
 
         context.Budgets.Remove(budget);
         return await context.SaveChangesAsync();

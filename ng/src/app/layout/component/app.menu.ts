@@ -29,7 +29,9 @@ export class AppMenu {
                     { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },
                     { label: 'Fuente de ingresos', icon: 'pi pi-fw pi-reply', routerLink: ['/incomesource'] },
                     { label: 'Registro de ingresos', icon: 'pi pi-fw pi-arrow-right', routerLink: ['/income'] },
-                    { label: 'Reembolsos', icon: 'pi pi-fw pi-history', routerLink: ['/reinbursement'] }
+                    { label: 'Reembolsos', icon: 'pi pi-fw pi-history', routerLink: ['/reinbursement'] },
+                    { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/user'] },
+                    { label: 'Familias', icon: 'pi pi-fw pi-sitemap', routerLink: ['/family'] }
                 ]
             },
 

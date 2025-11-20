@@ -27,37 +27,26 @@ public class FamilyController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Family>> Create(ExpenseDbContext context, Family family)
     {
-        context.Families.Add(family);
+        if (family.Id == 0)
+        {
+            context.Families.Add(family);
+        }
+        else
+        {
+            context.Families.Update(family);
+        }
+
         await context.SaveChangesAsync();
         return family;
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult<Family>> Update(ExpenseDbContext context, int id, Family family)
+
+    [HttpDelete()]
+    public async Task<ActionResult<int>> Delete(ExpenseDbContext context, Family family)
     {
-        if (id != family.Id)
-            return BadRequest();
-
-        var existingFamily = await context.Families.FindAsync(id);
-        if (existingFamily == null)
-            return NotFound();
-
-        existingFamily.Name = family.Name;
-        existingFamily.Description = family.Description;
-
-        await context.SaveChangesAsync();
-        return existingFamily;
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult<int>> Delete(ExpenseDbContext context, int id)
-    {
-        var family = await context.Families.FindAsync(id);
-        if (family == null)
-            return NotFound();
 
         // Check if family has users
-        var hasUsers = await context.Users.AnyAsync(u => u.FamilyId == id);
+        var hasUsers = await context.Users.AnyAsync(u => u.FamilyId == family.Id);
         if (hasUsers)
             return BadRequest("Cannot delete family with existing users");
 
@@ -65,4 +54,3 @@ public class FamilyController : ControllerBase
         return await context.SaveChangesAsync();
     }
 }
-

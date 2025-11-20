@@ -5,7 +5,7 @@ Content-Type: application/json
 
 ### new
 
-POST {{mathew_api_HostAddress}}/category?familyId=1
+POST {{mathew_api_HostAddress}}/category
 Accept: application/json
 Content-Type: application/json
 
@@ -15,24 +15,24 @@ Content-Type: application/json
 }
 
 ### update
-POST {{mathew_api_HostAddress}}/category?familyId=1
+POST {{mathew_api_HostAddress}}/category
 Accept: application/json
 Content-Type: application/json
 
 {
-  "id": 8,
+  "id": 11,
   "name": "string",
   "description": "string"
 }
 
 ### delete
-DELETE {{mathew_api_HostAddress}}/category?familyId=1
+DELETE {{mathew_api_HostAddress}}/category
 Accept: application/json
 Content-Type: application/json
 
 {
-  "id": 8,
+  "id": 11,
   "name": "string",
-  "description": "string"
+  "description": "string",
+  "familyId": 1
 }
-

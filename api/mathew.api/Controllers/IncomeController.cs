@@ -55,10 +55,6 @@ public class IncomeController : ControllerBase
         if (income.FamilyId == 0)
             return BadRequest("FamilyId is required");
 
-        var existingIncome = await context.Incomes
-            .FirstOrDefaultAsync(i => i.Id == income.Id && i.FamilyId == income.FamilyId);
-        if (existingIncome == null)
-            return Forbid("Income does not belong to your family");
 
         context.Incomes.Remove(income);
         return await context.SaveChangesAsync();

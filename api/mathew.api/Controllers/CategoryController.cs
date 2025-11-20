@@ -36,7 +36,7 @@ public class CategoryController : ControllerBase
             var existingCategory = await context.Categories
                 .FirstOrDefaultAsync(c => c.Id == category.Id && c.FamilyId == category.FamilyId);
             if (existingCategory == null)
-                return Forbid("Category does not belong to your family");
+                return BadRequest("Category does not belong to your family");
             
             context.Categories.Update(category);
         }
@@ -51,11 +51,6 @@ public class CategoryController : ControllerBase
         // Validate FamilyId is set
         if (category.FamilyId == 0)
             return BadRequest("FamilyId is required");
-
-        var existingCategory = await context.Categories
-            .FirstOrDefaultAsync(c => c.Id == category.Id && c.FamilyId == category.FamilyId);
-        if (existingCategory == null)
-            return Forbid("Category does not belong to your family");
 
         context.Categories.Remove(category);
         return await context.SaveChangesAsync();

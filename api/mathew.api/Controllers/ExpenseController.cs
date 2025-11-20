@@ -60,10 +60,6 @@ public class ExpenseController : ControllerBase
         if (expense.FamilyId == 0)
             return BadRequest("FamilyId is required");
 
-        var existingExpense = await context.Expenses
-            .FirstOrDefaultAsync(e => e.Id == expense.Id && e.FamilyId == expense.FamilyId);
-        if (existingExpense == null)
-            return Forbid("Expense does not belong to your family");
 
         context.Expenses.Remove(expense);
         return await context.SaveChangesAsync();

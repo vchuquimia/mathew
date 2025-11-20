@@ -14,13 +14,22 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 errorMessage = `Error: ${error.error.message}`;
             } else {
                 // Server-side error
-                errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+                if (error.status === 400) {
+                    // Show a user-friendly message for Bad Request
+                    errorMessage = 'Solicitud inválida. Por favor revise los datos ingresados.';
+                    if (error.error && typeof error.error === 'string') {
+                        errorMessage += ` Detalle: ${error.error}`;
+                    } else if (error.error && error.error.message) {
+                        errorMessage += ` Detalle: ${error.error.message}`;
+                    }
+                } else {
+                    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+                }
                 // You can add more specific handling based on error.status here
                 // e.g., redirect to login for 401, show a specific message for 404
             }
             console.error(errorMessage);
             messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage, sticky: true });
-            // You might want to display a user-friendly message using a service (e.g., a Toastr service)
             return throwError(() => new Error(errorMessage)); // Re-throw the error to propagate it
         })
     );

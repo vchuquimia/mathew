@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { User } from '@/models/user';
 import { CookieService } from 'ngx-cookie-service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-    constructor(private cookieService: CookieService) {
+    constructor(private cookieService: CookieService, private http: HttpClient) {
       if (this.cookieService.check('user')){
         this._currentUser = this.users.find((user) => user.name === this.cookieService.get('user'))?? new User();
       }
@@ -28,7 +31,6 @@ export class UserService {
 
     get currentUser(): User {
         return this._currentUser;
-
     }
 
     public setCurrentUser(user: User) {
@@ -38,5 +40,28 @@ export class UserService {
     public clearCurrentUser() {
         this.currentUser = new User();
         this.cookieService.delete('user');
+    }
+
+    // --- API methods similar to IncomeService ---
+    getUsers(): Observable<User[]> {
+        const familyId = this.currentUser?.familyId || 0;
+        return this.http.get<User[]>(`${environment.apiUrl}user?familyId=${familyId}`);
+    }
+
+    save(user: User): Observable<User> {
+        const familyId = this.currentUser?.familyId || 0;
+        user.familyId = familyId;
+        return this.http.post<User>(`${environment.apiUrl}user`, user);
+    }
+
+    delete(user: User): Observable<User> {
+        const familyId = this.currentUser?.familyId || 0;
+        user.familyId = familyId;
+        return this.http.delete<User>(`${environment.apiUrl}user`, { body: user });
+    }
+
+    getUserByName(name: string): Observable<User> {
+        const familyId = this.currentUser?.familyId || 0;
+        return this.http.get<User>(`${environment.apiUrl}user/byname?name=${name}&familyId=${familyId}`);
     }
 }
