@@ -17,7 +17,6 @@ export class UserService {
             this._currentUser = this.allUsers.find((user) => user.name === this.cookieService.get('user'))?? new User();
           }
         });
-
     }
 
     public allUsers = new Array<User>();
@@ -54,6 +53,7 @@ export class UserService {
 
     // --- API methods similar to IncomeService ---
     getUsers(familyId?:number): Observable<User[]> {
+        console.log('getUsers User Service',familyId);
         return this.http.get<User[]>(`${environment.apiUrl}user?familyId=${familyId??''}`);
     }
 

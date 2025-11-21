@@ -16,9 +16,10 @@ export class BudgetService {
     constructor(private http: HttpClient, private userService: UserService) {}
 
     getData(param: UserPeriodParameter): Observable<Budget[]> {
+        console.log(param,'GET Budget');
         const familyId = this.userService.currentUser?.familyId || 0;
         const queryString = param.userName ? `&userName=${param.userName}` : '';
-        return this.http.get<Budget[]>(`${environment.apiUrl}budget/${param.year}/${param.period?.value}?familyId=${familyId}${queryString}`);
+        return this.http.get<Budget[]>(`${environment.apiUrl}budget/${param.year}/${param.period?.number}?familyId=${familyId}${queryString}`);
     }
 
     save(data: Budget) {

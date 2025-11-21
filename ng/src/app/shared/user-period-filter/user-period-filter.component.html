@@ -1,0 +1,8 @@
+<p-toolbar class="mb-2">
+    <ng-template #start>
+        <user-filter [(userParameter)]="parameter.userName" (onFilter)="filterUser($event)" [emitOnFilterAfterInit]="false"></user-filter>
+    </ng-template >
+    <ng-template #end>
+        <period-filter [(periodParameter)]="parameter.period"  (onFilter)="filterPeriod($event)"> </period-filter>
+    </ng-template >
+</p-toolbar>

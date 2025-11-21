@@ -16,7 +16,7 @@ export class IncomeService {
     getData(parameter:UserPeriodParameter): Observable<Income[]> {
         const familyId = this.userService.currentUser?.familyId || 0;
         const queryString = parameter.userName ? `&userName=${parameter.userName}` : '';
-        return this.http.get<Income[]>(`${environment.apiUrl}income/${parameter.year}/${parameter.period?.value}?familyId=${familyId}${queryString}`);
+        return this.http.get<Income[]>(`${environment.apiUrl}income/${parameter.year}/${parameter.period?.number}?familyId=${familyId}${queryString}`);
     }
 
     save(data: Income) {
@@ -35,7 +35,7 @@ export class IncomeService {
     getIncomeBudgetMontlySummaryDto(param:UserPeriodParameter): Observable<FinantialSummaryDto[]> {
         const familyId = this.userService.currentUser?.familyId || 0;
         const queryString = param.userName ? `&userName=${param.userName}` : '';
-        return this.http.get<FinantialSummaryDto[]>(`${environment.apiUrl}income/getincomebudgetsummary/${param.year}/${param.period?.value}?familyId=${familyId}${queryString}`);
+        return this.http.get<FinantialSummaryDto[]>(`${environment.apiUrl}income/getincomebudgetsummary/${param.year}/${param.period?.number}?familyId=${familyId}${queryString}`);
     }
 
     getIncomeBudgetMontlySummaryByDateAndUser(year:number, month:number, userName: string): Observable<FinantialSummaryDto> {

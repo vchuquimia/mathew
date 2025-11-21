@@ -1,8 +1,8 @@
 export class Period {
     constructor() {
-        this.label = '';
-        this.value = 0;
+        this.name = '';
+        this.number = 0;
     }
-    label: string;
-    value: number;
+    name: string;
+    number: number;
 }

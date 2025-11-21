@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     providers: [
         MessageService,
         provideRouter(appRoutes, withHashLocation(), withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
-        provideHttpClient(withFetch(), withInterceptors([errorInterceptor])),
+        provideHttpClient(withInterceptors([errorInterceptor])),
         provideAnimationsAsync(),
         providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } } }),
         importProvidersFrom(TimeagoModule.forRoot())

@@ -19,7 +19,7 @@ export class ExpensesService {
     getData(param:UserPeriodParameter): Observable<Expense[]> {
         const familyId = this.userService.currentUser?.familyId || 0;
         const queryString = param.userName ? `&registeredBy=${param.userName}` : '';
-        return this.http.get<Expense[]>(`${environment.apiUrl}expense/${param.year}/${param.period?.value}?familyId=${familyId}${queryString}`);
+        return this.http.get<Expense[]>(`${environment.apiUrl}expense/${param.year}/${param.period?.number}?familyId=${familyId}${queryString}`);
     }
 
     save(data: Expense) {

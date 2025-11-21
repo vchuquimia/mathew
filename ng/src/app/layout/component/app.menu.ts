@@ -24,12 +24,12 @@ export class AppMenu {
                 label: 'Home',
                 items: [
                     { label: 'Gastos', icon: 'pi pi-fw pi-money-bill', routerLink: ['/expenses'] },
-                    { label: 'Categorias', icon: 'pi pi-fw pi-list-check', routerLink: ['/category'] },
+                    { label: 'Ingresos', icon: 'pi pi-fw pi-arrow-down', routerLink: ['/income'] },
                     { label: 'Presupuesto', icon: 'pi pi-fw pi-flag', routerLink: ['/budget'] },
-                    { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },
                     { label: 'Fuente de ingresos', icon: 'pi pi-fw pi-reply', routerLink: ['/incomesource'] },
-                    { label: 'Registro de ingresos', icon: 'pi pi-fw pi-arrow-right', routerLink: ['/income'] },
                     { label: 'Reembolsos', icon: 'pi pi-fw pi-history', routerLink: ['/reinbursement'] },
+                    { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },
+                    { label: 'Categorias', icon: 'pi pi-fw pi-list-check', routerLink: ['/category'] },
                     { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/user'] },
                     { label: 'Familias', icon: 'pi pi-fw pi-sitemap', routerLink: ['/family'] }
                 ]

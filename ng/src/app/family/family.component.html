@@ -3,7 +3,10 @@
 
 <p-toolbar styleClass="mb-6">
     <ng-template #start>
-        <span class="text-base font-bold"> Familias </span>
+        <div class=" flex flex-row gap-1 items-center">
+            <i class="text-2xl! pi pi-fw pi-sitemap "></i>
+            <span class="text-base">Familias</span>
+        </div>
     </ng-template>
     <ng-template #end>
         <p-button label="Nuevo" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />

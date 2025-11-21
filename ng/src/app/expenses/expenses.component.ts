@@ -35,6 +35,7 @@ import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.comp
 import { Period } from '@/models/period';
 import { from } from 'linq-to-typescript';
 import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
+import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-period-filter.component';
 
 @Component({
     selector: 'expenses',
@@ -66,7 +67,8 @@ import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-
         UserAvatarComponent,
         UserFilterComponent,
         PeriodFilterComponent,
-        FinancialSummaryComponent
+        FinancialSummaryComponent,
+        UserPeriodFilterComponent
     ],
     templateUrl: './expenses.component.html',
     providers: [MessageService, ProductService, ConfirmationService]
@@ -95,7 +97,7 @@ export class ExpensesComponent implements OnInit {
     ngOnInit() {}
 
     loadData(parameter: UserPeriodParameter) {
-
+        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.expenseService.getData(parameter).subscribe((data) => {
             this.expenses = data;
             this.totalExpenses = from(this.expenses).sum((i) => i.amount ?? 0);
@@ -138,20 +140,5 @@ export class ExpensesComponent implements OnInit {
     protected hideDialog() {
         this.loadData(this.currentUserPeriodParameter);
         this.showDialog = false;
-    }
-
-    protected filter(parameter: string) {
-        console.log(parameter, "filter user");
-        this.currentUserPeriodParameter.userName = parameter;
-        this.currentUserPeriodParameter = {... this.currentUserPeriodParameter};
-        this.loadData(this.currentUserPeriodParameter);
-
-    }
-
-    protected filterPeriod(parameter: Period) {
-        console.log(parameter, "filter period");
-        this.currentUserPeriodParameter.period = parameter;
-        this.currentUserPeriodParameter = {... this.currentUserPeriodParameter};
-        this.loadData(this.currentUserPeriodParameter);
     }
 }

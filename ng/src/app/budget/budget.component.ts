@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Category } from '@/models/category';
 import { Table, TableModule } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -30,6 +30,7 @@ import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.comp
 import { Period } from '@/models/period';
 import { Panel } from 'primeng/panel';
 import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
+import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-period-filter.component';
 
 @Component({
     selector: 'budget',
@@ -58,13 +59,26 @@ import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-
         UserAvatarComponent,
         PeriodFilterComponent,
         Panel,
-        FinancialSummaryComponent
+        FinancialSummaryComponent,
+        UserPeriodFilterComponent
     ],
     providers: [BudgetService, MessageService, ConfirmationService, CategoryService],
     templateUrl: './budget.component.html',
     styleUrl: './budget.component.css'
 })
 export class BudgetComponent implements OnInit {
+    @ViewChild('financialSummaryComponent') financialSummaryComponent!: FinancialSummaryComponent;
+
+    get currentUserPeriodParameter(): UserPeriodParameter {
+        return this._currentUserPeriodParameter;
+    }
+    @Input()
+    set currentUserPeriodParameter(value: UserPeriodParameter) {
+        this._currentUserPeriodParameter = value;
+        this.currentUserPeriodParameterChange.emit(value);
+    }
+    @Output() currentUserPeriodParameterChange = new EventEmitter<UserPeriodParameter>();
+
     productDialog: boolean = false;
 
     public categories = new Array<Category>();
@@ -101,9 +115,7 @@ export class BudgetComponent implements OnInit {
         });
     }
 
-    currentUserPeriodParameter: UserPeriodParameter = new UserPeriodParameter();
-
-
+    private _currentUserPeriodParameter: UserPeriodParameter = new UserPeriodParameter();
 
     openNew() {
         this.budget = { year: new Date().getFullYear() };
@@ -122,7 +134,7 @@ export class BudgetComponent implements OnInit {
     }
 
     delete(budget: Budget) {
-        console.log(this.currentUserPeriodParameter);
+        console.log(this._currentUserPeriodParameter);
         this.confirmationService.confirm({
             message: 'Are you sure you want to delete budget for ' + budget.category?.name + '?',
             header: 'Confirm',
@@ -130,7 +142,8 @@ export class BudgetComponent implements OnInit {
             accept: () => {
                 this.budgetService.delete(budget).subscribe((data) => {
                     this.budget = {};
-                    this.loadBudget(this.currentUserPeriodParameter);
+                    this.currentUserPeriodParameter = { ...this._currentUserPeriodParameter };
+                    this.loadBudget(this._currentUserPeriodParameter);
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Successful',
@@ -145,7 +158,8 @@ export class BudgetComponent implements OnInit {
     save() {
         this.submitted = true;
         this.budgetService.save(this.budget).subscribe((data) => {
-            this.loadBudget(this.currentUserPeriodParameter);
+            this.currentUserPeriodParameter = { ...this._currentUserPeriodParameter };
+            this.loadBudget(this._currentUserPeriodParameter);
             this.messageService.add({
                 severity: 'success',
                 summary: 'Successful',
@@ -161,24 +175,11 @@ export class BudgetComponent implements OnInit {
         this.showBudgetCopyDialog = true;
     }
 
-    protected filter(param: string) {
-        this.currentUserPeriodParameter.userName = param;
-        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
-        this.loadBudget(this.currentUserPeriodParameter);
-    }
-
-    protected filterPeriod($event: Period) {
-        this.currentUserPeriodParameter.period = $event;
-        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
-        this.loadBudget(this.currentUserPeriodParameter);
-    }
-
     loadBudget(param: UserPeriodParameter) {
+        console.log(param, 'LOAD BUDGETS');
         this.budgetService.getData(param).subscribe((data) => {
             this.budgets = data;
         });
-        // this.incomeService.getIncomeBudgetMontlySummaryDto(param).subscribe((data) => {
-        //     this.incomeBudgetSummary = {... data };
-        // });
+        // this.financialSummaryComponent.load();
     }
 }

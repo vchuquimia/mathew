@@ -9,9 +9,6 @@ import { InputText } from 'primeng/inputtext';
 import { Textarea } from 'primeng/textarea';
 import { Toast } from 'primeng/toast';
 import { Toolbar } from 'primeng/toolbar';
-import { IncomeSource } from '@/models/income-source';
-import { Table } from 'primeng/table';
-import { IncomeSourceService } from '@/service/income-source.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Reimbursement } from '@/models/reimbursement';
 import { ReimbursementService } from '@/service/reimbursement.service';
@@ -47,10 +44,10 @@ export class ReimbursementComponent {
         private confirmationService: ConfirmationService
     ) {
         this.reimbursement.expense = new Expense();
-        this.loadData();
     }
 
     loadData() {
+        console.log(this.currentUser,'loading Reimbursements');
         this.reimbursementService.getData(this.currentUser, this.pendingOnly).subscribe((data) => {
             this.reimbursements = data;
             this.totalReimbursement = from(this.reimbursements).sum((i) => i.amount ?? 0);
@@ -130,11 +127,13 @@ export class ReimbursementComponent {
     }
 
     protected userFilter(param: string) {
+        console.log('userFilter', param);
         this.currentUser = param;
         this.loadData();
     }
 
     protected filterPending() {
+        console.log('filterPending', this.pendingOnly);
         this.loadData();
     }
 }

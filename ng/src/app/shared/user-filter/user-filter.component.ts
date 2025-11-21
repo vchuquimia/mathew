@@ -21,6 +21,7 @@ export class UserFilterComponent implements OnInit {
     @Input()
     set userParameter(value: string) {
         this._userParameter = value;
+        this.userParameterChange.emit(this._userParameter);
     }
     @Output()
     userParameterChange = new EventEmitter<string>();
@@ -30,7 +31,7 @@ export class UserFilterComponent implements OnInit {
 
     filterUserOptions!: any[];
 
-    @Input() showPeriodFilter: boolean = true;
+    @Input() emitOnFilterAfterInit: boolean = true;
 
     constructor(
         public userService: UserService,
@@ -38,15 +39,15 @@ export class UserFilterComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        // this.filterUserOptions = this.userService.users.map((user) => ({ name: user.name, value: user.name }));
-        // this.userService.getUsers(this.userService.currentUser.familyId).subscribe(users =>
-        // {
             this.filterUserOptions = this.userService.getFamilyUsers().map(user => ({ name: user.name, value: user.name }));
-            this.filterUserOptions.push({ name: 'Todos' });
+            if(this.filterUserOptions.length > 1)
+                this.filterUserOptions.push({ name: 'Todos' });
+
             this.userParameter = this.userService.currentUser?.name ?? '';
-            this.onFilter.emit(this.userService.currentUser?.name ?? '');
             console.log(this.userService.currentUser, "on user filter Init");
-        // });
+            if(this.emitOnFilterAfterInit){
+                this.onFilter.emit(this.userService.currentUser?.name ?? '');
+            }
     }
 
     protected filter() {

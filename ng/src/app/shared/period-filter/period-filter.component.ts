@@ -21,6 +21,7 @@ export class PeriodFilterComponent implements OnInit {
     @Input()
     set periodParameter(value: Period) {
         this._periodParameter = value;
+        this.periodParameterChange.emit(value);
     }
     @Output()
     periodParameterChange = new EventEmitter<Period>();
@@ -34,15 +35,17 @@ export class PeriodFilterComponent implements OnInit {
     onFilter = new EventEmitter<Period>();
 
     ngOnInit() {
-        this.periods = this.periodService.getMonths();
+        this.periods = this.periodService.getPeriods();
         const period = new Date().getMonth() + 1;
-        this.periodParameter = { ...from(this.periods).first((i) => i.value == period) };
+        this.periodParameter = {... from(this.periods).first((i) => i.number == period)};
+
         this.onFilter.emit(this.periodParameter);
+
         console.log(this.periodParameter, "period filter Init");
     }
 
-    protected filterMonth($event: SelectChangeEvent) {
-        this.periodParameter = $event.value;
+    protected filterMonth($event: Period) {
+        this.periodParameter = $event;
         this.onFilter.emit(this.periodParameter);
         console.log(this.periodParameter, "period filter");
     }

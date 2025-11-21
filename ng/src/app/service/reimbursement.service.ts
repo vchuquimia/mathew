@@ -17,6 +17,7 @@ export class ReimbursementService {
     constructor(private http: HttpClient, private userService: UserService) {}
 
     getData(userName: string, pending:boolean): Observable<Reimbursement[]> {
+        console.log(userName, 'rembursement service call GET');
         const familyId = this.userService.currentUser?.familyId || 0;
         let params = new HttpParams();
         params = params.append('familyId', familyId);
