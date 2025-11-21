@@ -39,6 +39,10 @@ export class UserService {
         return this._currentUser;
     }
 
+    public getFamilyUsers(): User[]{
+        return this.allUsers.filter((u) => u.familyId === this.currentUser.familyId);
+    }
+
     public setCurrentUser(user: User) {
         this.currentUser = user;
         this.cookieService.set('user', this.currentUser.name ?? '' , 1300, '/', '', false, 'Strict');
@@ -65,5 +69,9 @@ export class UserService {
     getAllUsers():Observable<User[]>{
         if(this.allUsers.length > 0) return of(this.allUsers);
         return this.getUsers();
+    }
+
+    isAdmin(){
+        return this.currentUser.name === 'vh';
     }
 }

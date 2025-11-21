@@ -39,13 +39,14 @@ export class UserFilterComponent implements OnInit {
 
     ngOnInit() {
         // this.filterUserOptions = this.userService.users.map((user) => ({ name: user.name, value: user.name }));
-        this.userService.getUsers(this.userService.currentUser.familyId).subscribe(users =>
-        {
-            this.filterUserOptions = users.map((user) => ({ name: user.name, value: user.name }));
-            this.filterUserOptions.push({ name: 'Todo' });
+        // this.userService.getUsers(this.userService.currentUser.familyId).subscribe(users =>
+        // {
+            this.filterUserOptions = this.userService.getFamilyUsers().map(user => ({ name: user.name, value: user.name }));
+            this.filterUserOptions.push({ name: 'Todos' });
+            this.userParameter = this.userService.currentUser?.name ?? '';
             this.onFilter.emit(this.userService.currentUser?.name ?? '');
             console.log(this.userService.currentUser, "on user filter Init");
-        });
+        // });
     }
 
     protected filter() {

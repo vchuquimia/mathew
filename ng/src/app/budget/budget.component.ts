@@ -103,14 +103,7 @@ export class BudgetComponent implements OnInit {
 
     currentUserPeriodParameter: UserPeriodParameter = new UserPeriodParameter();
 
-    loadBudget(param: UserPeriodParameter) {
-        this.budgetService.getData(param).subscribe((data) => {
-            this.budgets = data;
-        });
-        this.incomeService.getIncomeBudgetMontlySummaryDto(param).subscribe((data) => {
-            this.incomeBudgetSummary = data;
-        });
-    }
+
 
     openNew() {
         this.budget = { year: new Date().getFullYear() };
@@ -178,5 +171,14 @@ export class BudgetComponent implements OnInit {
         this.currentUserPeriodParameter.period = $event;
         this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.loadBudget(this.currentUserPeriodParameter);
+    }
+
+    loadBudget(param: UserPeriodParameter) {
+        this.budgetService.getData(param).subscribe((data) => {
+            this.budgets = data;
+        });
+        // this.incomeService.getIncomeBudgetMontlySummaryDto(param).subscribe((data) => {
+        //     this.incomeBudgetSummary = {... data };
+        // });
     }
 }
