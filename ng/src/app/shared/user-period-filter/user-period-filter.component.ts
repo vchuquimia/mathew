@@ -47,9 +47,9 @@ export class UserPeriodFilterComponent implements OnInit {
         this.onFilter.emit(this.parameter);
     }
 
-    filterPeriod($event: Period) {
-        this.parameter.period = $event;
-        this.parameter = {...this.parameter};
+    filterPeriod(period: Period) {
+        //this.parameter.period = period;
+        this.parameter = {...this.parameter, period};
         this.onFilter.emit(this.parameter);
     }
 }
