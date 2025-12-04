@@ -25,7 +25,8 @@ export class LoginComponent {
         private userService: UserService,
         private messageService: MessageService,
         private fb: FormBuilder,
-        private location: Location
+        private location: Location,
+        private router: Router,
     ) {
         this.codeForm = this.fb.group({
             digit1: ['', [Validators.required, Validators.pattern('[0-9]')]],
@@ -56,7 +57,7 @@ export class LoginComponent {
             const user = this.userService.allUsers.find((user) => user.password == code.toString());
             if (user != undefined) {
                 this.userService.setCurrentUser(user);
-                this.location.back();
+                this.router.navigate(['/']).then();
             }
         } else {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Code' });

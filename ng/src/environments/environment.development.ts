@@ -1,3 +1,3 @@
 export const environment = {
-    apiUrl: 'http://localhost:5147/',
+    apiUrl: 'https://mathew-api.runasp.net/',
 };

@@ -18,7 +18,7 @@ export class ReimbursementService {
 
     getData(userName: string, pending:boolean): Observable<Reimbursement[]> {
         console.log(userName, 'rembursement service call GET');
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         let params = new HttpParams();
         params = params.append('familyId', familyId);
         params = params.append('pending', pending);
@@ -28,19 +28,19 @@ export class ReimbursementService {
     }
 
     getByExpense(expenseId: number): Observable<Reimbursement> {
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         return this.http.get<Reimbursement>(`${environment.apiUrl}reimbursement/getbyexpenseid/${expenseId}?familyId=${familyId}`);
     }
 
     save(data: Reimbursement) {
-        const familyId = this.userService.currentUser?.familyId || 0;
-        data.userName = this.userService.currentUser?.name??'';
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
+        data.userName = this.userService.CurrentUser.value?.name??'';
         data.familyId = familyId;
         return this.http.post<Reimbursement>(`${environment.apiUrl}reimbursement`, data);
     }
 
     delete(data: Reimbursement) {
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         data.familyId = familyId;
         return this.http.delete<Reimbursement>(`${environment.apiUrl}reimbursement`, { body: data });
     }

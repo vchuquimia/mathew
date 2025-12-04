@@ -45,7 +45,7 @@ import { UserService } from '@/service/user.service';
 
             <div class="layout-topbar-actions">
                 <div class="layout-config-menu items-center">
-                    <p-avatar class="" [textContent]="userService.currentUser?.name"></p-avatar>
+                    <p-avatar class="" [textContent]="userService.CurrentUser.value?.name"></p-avatar>
 
                     <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
                         <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>

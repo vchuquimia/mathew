@@ -15,7 +15,7 @@ export class ReportService {
     constructor(private http: HttpClient, private userService: UserService) {}
 
     getExpenseSummaryByDateRange(startDate: Date, endDate: Date): Observable<Budget[]> {
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         var params = new HttpParams();
         params = params.append('familyId', familyId);
         params = params.append('startDate', startDate.toISOString());
@@ -24,7 +24,7 @@ export class ReportService {
     }
 
     getSummaryByDateRangeAndCategory(startDate: Date, endDate: Date, categoryId: number): Observable<ExpenseSummaryDto> {
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         var params = new HttpParams();
         params = params.append('familyId', familyId);
         params = params.append('startDate', startDate.toISOString());

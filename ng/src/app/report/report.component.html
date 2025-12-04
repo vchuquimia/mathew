@@ -10,37 +10,54 @@
     <ng-template #end>
     </ng-template>
 </p-toolbar>
-<p-toolbar styleClass="mb-2">
-    <ng-template #start>
-        <div class="flex flex-wrap sm:flex-row items-center">
-            <div class="w-1/4">
-                <label for="startDate"> Inicio:</label>
-            </div>
-            <div class="w-1/4 ">
-                <p-datePicker id="startDate" [(ngModel)]="startDate"></p-datePicker>
-            </div>
-        </div>
-    </ng-template>
-    <ng-template #center>
-        <div class="flex flex-wrap flex-row  items-center">
-            <div class="w-1/4">
-                <label for="endDate"> Fin:</label>
-            </div>
-            <div class="w-1/4 ">
-                <p-datePicker id="endDate" [(ngModel)]="endDate"></p-datePicker>
-            </div>
-        </div>
-    </ng-template>
-    <ng-template #end>
-        <div class="flex flex-wrap flex-row items-center">
-            <div class="w-1/2 ">
-                <p-button label="" icon="pi pi-search" severity="secondary" class="mr-2"
-                          (onClick)="loadReport()" />
-            </div>
-        </div>
-    </ng-template>
-</p-toolbar>
+<!--<p-toolbar styleClass="mb-2">-->
+<!--    <ng-template #start>-->
+<!--        <div class="flex flex-wrap sm:flex-row items-center">-->
+<!--            <div class="w-1/4">-->
+<!--                <label for="startDate"> Inicio:</label>-->
+<!--            </div>-->
+<!--            <div class="w-1/4 ">-->
+<!--                <p-datePicker id="startDate" [(ngModel)]="startDate"></p-datePicker>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </ng-template>-->
+<!--    <ng-template #center>-->
+<!--        <div class="flex flex-wrap flex-row  items-center">-->
+<!--            <div class="w-1/4">-->
+<!--                <label for="endDate"> Fin:</label>-->
+<!--            </div>-->
+<!--            <div class="w-1/4 ">-->
+<!--                <p-datePicker id="endDate" [(ngModel)]="endDate"></p-datePicker>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </ng-template>-->
+<!--    <ng-template #end>-->
+<!--        <div class="flex flex-wrap flex-row items-center">-->
+<!--            <div class="w-1/2 ">-->
+<!--                <p-button label="" icon="pi pi-search" severity="secondary" class="mr-2"-->
+<!--                          (onClick)="loadReport()" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </ng-template>-->
+<!--</p-toolbar>-->
 
+<p-fluid class="grid grid-cols-12 gap-8 mb-4">
+    <div class="col-span-12 xl:col-span-12">
+        <div class="card">
+            <div class="font-semibold text-xl mb-4">Mes</div>
+            <period-filter (onFilter)="onPeriodFilter($event)"></period-filter>
+        </div>
+    </div>
+</p-fluid>
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+<p-fluid class="grid grid-cols-12 gap-8 mb-4">
+    <div class="col-span-12 xl:col-span-12">
+        <div class="card">
+            <div class="font-semibold text-xl mb-4">Linear</div>
+            <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+        </div>
+    </div>
+</p-fluid>
 
 <p-dataview [value]="itemsSource" [layout]="'list'">
     <ng-template #list let-itemsSource>

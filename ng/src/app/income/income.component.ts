@@ -85,6 +85,7 @@ export class IncomeComponent {
     ) {}
 
     loadData(param: UserPeriodParameter) {
+        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.incomeService.getData(param).subscribe((data) => {
             this.incomes = data;
         });
@@ -160,13 +161,11 @@ export class IncomeComponent {
 
     protected userFilter(param: string) {
         this.currentUserPeriodParameter.userName = param;
-        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.loadData(this.currentUserPeriodParameter);
     }
 
     protected periodFilter(parameter: Period) {
         this.currentUserPeriodParameter.period = parameter;
-        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         this.loadData(this.currentUserPeriodParameter);
     }
 }

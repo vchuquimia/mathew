@@ -67,6 +67,16 @@ import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-peri
     styleUrl: './budget.component.css'
 })
 export class BudgetComponent implements OnInit {
+    get showBudgetCopyDialog(): boolean {
+        return this._showBudgetCopyDialog;
+    }
+
+    set showBudgetCopyDialog(value: boolean) {
+        if (!value) {
+            this.loadBudget(this.currentUserPeriodParameter)
+        }
+        this._showBudgetCopyDialog = value;
+    }
     @ViewChild('financialSummaryComponent') financialSummaryComponent!: FinancialSummaryComponent;
 
     get currentUserPeriodParameter(): UserPeriodParameter {
@@ -92,7 +102,7 @@ export class BudgetComponent implements OnInit {
 
     incomeBudgetSummary!: FinantialSummaryDto[];
 
-    showBudgetCopyDialog: boolean = false;
+    private _showBudgetCopyDialog: boolean = false;
 
     @ViewChild('dt') dt!: Table;
 
@@ -172,10 +182,11 @@ export class BudgetComponent implements OnInit {
     }
 
     protected openCopy() {
-        this.showBudgetCopyDialog = true;
+        this._showBudgetCopyDialog = true;
     }
 
     loadBudget(param: UserPeriodParameter) {
+        this.currentUserPeriodParameter = { ...this.currentUserPeriodParameter };
         console.log(param, 'LOAD BUDGETS');
         this.budgetService.getData(param).subscribe((data) => {
             this.budgets = data;

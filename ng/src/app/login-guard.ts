@@ -11,6 +11,7 @@ export const loginGuard: CanActivateFn = (route, state) => {
     const userService = inject(UserService);
 
     if (!cookieService.check('user')) {
+        console.log('No user cookie found, redirecting to login');
         return of(router.parseUrl('/login'));
     }
 

@@ -16,18 +16,18 @@ export class IncomeSourceService {
     constructor(private http: HttpClient, private userService: UserService) { }
 
     getData():Observable<IncomeSource[]> {
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         return this.http.get<IncomeSource[]>(`${environment.apiUrl}incomesource?familyId=${familyId}`);
     }
 
     save(data:IncomeSource){
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         data.familyId = familyId;
         return this.http.post<IncomeSource>(`${environment.apiUrl}incomesource`, data);
     }
 
     delete(incomesource:IncomeSource){
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         incomesource.familyId = familyId;
         return this.http.delete<IncomeSource>(`${environment.apiUrl}incomesource`, {body: incomesource});
     }

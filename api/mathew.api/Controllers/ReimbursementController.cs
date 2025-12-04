@@ -67,7 +67,7 @@ public class ReimbursementController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult<int>> DeleteBudget(ExpenseDbContext context, Reimbursement reimbursement)
+    public async Task<ActionResult<int>> Delete(ExpenseDbContext context, Reimbursement reimbursement)
     {
         // Validate FamilyId is set
         if (reimbursement.FamilyId == 0)

@@ -12,18 +12,18 @@ export class CategoryService {
     constructor(private http: HttpClient, private userService: UserService) {}
 
     getData(): Observable<Category[]> {
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         return this.http.get<Category[]>(`${environment.apiUrl}category?familyId=${familyId}`);
     }
 
     save(data: Category) {
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         data.familyId = familyId;
         return this.http.post<Category>(`${environment.apiUrl}category`, data);
     }
 
     delete(category: Category) {
-        const familyId = this.userService.currentUser?.familyId || 0;
+        const familyId = this.userService.CurrentUser.value?.familyId || 0;
         category.familyId = familyId;
         return this.http.delete<Category>(`${environment.apiUrl}category`, {
             body: category

@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
-#nvm use 24
-#ng build --configuration=production
+nvm use 24
+ng build --configuration=production
 
 # Configuration variables
 SFTP_USER="site40371"

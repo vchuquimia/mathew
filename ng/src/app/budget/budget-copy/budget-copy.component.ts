@@ -44,7 +44,7 @@ export class BudgetCopyComponent {
             targetMonth: new Date().getMonth() + 1,
             targetYear: new Date().getFullYear(),
             overwriteExisting: true,
-            familyId: this.userService.currentUser.familyId,
+            familyId: this.userService.CurrentUser.value?.familyId??-1,
         };
     }
 
