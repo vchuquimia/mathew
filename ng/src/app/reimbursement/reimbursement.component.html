@@ -16,8 +16,9 @@
     </ng-template >
     <ng-template #end>
         <div class="flex items-center gap-2 text-sm mt-2">
-            <span class="font-bold"> Pendiente: </span>
-            <p-check-box [(ngModel)]="pendingOnly" [binary]="true" (ngModelChange)="filterPending()" />
+            <p-selectbutton [options]="filterOptions" [(ngModel)]="pendingOnly" (click)="filterPending()" allowEmpty="false"
+                            optionLabel="name" optionValue="value" aria-label="basic" />
+
         </div>
     </ng-template >
 </p-toolbar>
@@ -46,8 +47,16 @@
                         </div>
                         <div class="flex flex-row md:flex-col justify-between items-start gap-2 align-middle">
                             <div class=" flex gap-2 text-sm mt-2">
-                                <span class="font-bold"> Pendiente: </span>
-                                <p-check-box [(ngModel)]="reim.pending" [binary]="true" readonly />
+                                @if (reim.pending){
+
+                                        <i class="pi pi-clock "></i> Pendiente
+
+                                }
+                                @else{
+                                    <div class="text-green-700">
+                                        <i class="pi pi-check-square"></i> Reembolsado el {{reim.reimbursementDate | date: 'dd/MM/yy hh:mm'}}
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -59,6 +68,9 @@
                         <span class="text-xs font-semibold items-end items">Valor Gasto:</span>
                         <span class="text-base font-semibold items-end items text-gray-400">{{ reim.expense.amount | currency:'BOB':'symbol-narrow' }}</span>
                         <div class="flex flex-row gap-2 items-center">
+                            @if (reim.pending){
+                                <p-button icon="pi pi-thumbs-up" [rounded]="true" severity="secondary" [outlined]="true" (click)="reimburseExpense(reim)" />
+                            }
                             <p-button icon="pi pi-money-bill" [rounded]="true" [outlined]="true" (click)="editExpense(reim)" />
                             <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(reim)" />
                             <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="edit(reim)" />

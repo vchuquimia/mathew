@@ -27,4 +27,6 @@ public class Reimbursement
     public int FamilyId { get; set; }
     
     public Family? Family { get; set; } = null!;
+
+    public DateTimeOffset? ReimbursementDate { get; set; }
 }

@@ -16,12 +16,14 @@ import { Reimbursement } from '@/models/reimbursement';
 export class ReimbursementService {
     constructor(private http: HttpClient, private userService: UserService) {}
 
-    getData(userName: string, pending:boolean): Observable<Reimbursement[]> {
+    getData(userName: string, pending?:boolean): Observable<Reimbursement[]> {
         console.log(userName, 'rembursement service call GET');
         const familyId = this.userService.CurrentUser.value?.familyId || 0;
         let params = new HttpParams();
         params = params.append('familyId', familyId);
-        params = params.append('pending', pending);
+        if(pending!== undefined)
+            params = params.append('pending', pending);
+
         if (userName !== undefined)
             params = params.append('userName', userName);
         return this.http.get<Reimbursement[]>(`${environment.apiUrl}reimbursement/`, {params: params});
@@ -43,5 +45,10 @@ export class ReimbursementService {
         const familyId = this.userService.CurrentUser.value?.familyId || 0;
         data.familyId = familyId;
         return this.http.delete<Reimbursement>(`${environment.apiUrl}reimbursement`, { body: data });
+    }
+
+    reimburseExpense(data: Reimbursement) {
+
+        return this.http.post<Reimbursement>(`${environment.apiUrl}reimbursement/reimburse-expense`, data);
     }
 }

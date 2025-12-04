@@ -16,7 +16,7 @@ public class IncomeController : ControllerBase
             .Where(i=> (i.UserName == userName || userName == null) 
                 && i.Date.Year == year && i.Date.Month == month
                 && i.FamilyId == familyId)
-            .Include(i=>i.IncomeSource).ToListAsync();
+            .Include(i=>i.IncomeSource).OrderByDescending(i=> i.Date).ToListAsync();
     }
 
     [HttpPost]

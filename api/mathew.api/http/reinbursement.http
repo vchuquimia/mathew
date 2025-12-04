@@ -93,3 +93,38 @@ Content-Type: application/json
   "pending": true
 }
 ###
+
+POST {{mathew_api_HostAddress}}/Reimbursement/reimburse-expense
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": 1,
+    "amount": 275.00,
+    "expenseId": 21,
+    "expense": {
+      "id": 21,
+      "amount": 500.00,
+      "description": "saltenhas castores neftali",
+      "date": "2025-10-02T04:00:00+00:00",
+      "categoryId": 4,
+      "category": {
+        "id": 4,
+        "name": "gatos",
+        "description": "comida, insumos, veterinario, paseos\n",
+        "icon": "fa-trash",
+        "color": "#ff7373",
+        "familyId": 1,
+        "family": null
+      },
+      "registeredBy": "vh",
+      "familyId": 1,
+      "family": null
+    },
+    "userName": "vh",
+    "percentage": 55,
+    "pending": true,
+    "familyId": 1,
+    "family": null,
+    "reimbursementDate": null
+  }

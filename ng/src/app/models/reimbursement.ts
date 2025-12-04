@@ -20,4 +20,5 @@ export class Reimbursement {
     pending?: boolean;
     expense?: Expense;
     familyId: number;
+    reimbursementDate?: Date;
 }

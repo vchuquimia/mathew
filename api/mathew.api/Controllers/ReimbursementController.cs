@@ -78,6 +78,51 @@ public class ReimbursementController : ControllerBase
         return await context.SaveChangesAsync();
     }
 
+    [HttpPost("reimburse-expense")]
+    public async Task<ActionResult> ReimburseExpense(ExpenseDbContext context, Reimbursement reimbursement)
+    {
+
+        // Get or create the 'reembolsos' income source
+        var incomeSource = await context.IncomeSources
+            .FirstOrDefaultAsync(s => s.Name == "Reembolsos" && s.FamilyId == reimbursement.FamilyId);
+
+        if (incomeSource == null)
+        {
+            incomeSource = new IncomeSource
+            {
+                Name = "reembolsos",
+                Description = "Todos los reembolsos recibidos.",
+                FamilyId = reimbursement.FamilyId
+            };
+            context.IncomeSources.Add(incomeSource);
+            await context.SaveChangesAsync();
+        }
+
+
+
+
+        reimbursement.Pending = false;
+        reimbursement.ReimbursementDate = DateTime.UtcNow;
+
+
+
+        // Create an income entry for the reimbursement
+        var income = new Income
+        {
+            Amount = reimbursement.Amount,
+            Date = DateTime.UtcNow,
+            Description = $"[Reembolso] por: {reimbursement.Expense?.Description ?? "expense"}",
+            UserName = reimbursement.UserName,
+            FamilyId = reimbursement.FamilyId,
+            IncomeSourceId = incomeSource.Id
+
+        };
+        context.Incomes.Add(income);
+
+        context.Reimbursements.Update(reimbursement);
+        var result = await context.SaveChangesAsync();
+        return Ok(result);
+    }
 
 
 }

@@ -19,10 +19,32 @@ import { from } from 'linq-to-typescript';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
 import { Checkbox } from 'primeng/checkbox';
+import { UndoIcon } from 'primeng/icons';
+import { SelectButton } from 'primeng/selectbutton';
 
 @Component({
     selector: 'app-reimbursement.component',
-    imports: [Button, ConfirmDialog, CurrencyPipe, DataView, Dialog, FormsModule, InputText, NgForOf, Textarea, Toast, Toolbar, NgClass, DatePipe, ExpenseDialogComponent, ToggleSwitch, PeriodFilterComponent, UserFilterComponent, Checkbox],
+    imports: [
+        Button,
+        ConfirmDialog,
+        CurrencyPipe,
+        DataView,
+        Dialog,
+        FormsModule,
+        InputText,
+        NgForOf,
+        Textarea,
+        Toast,
+        Toolbar,
+        NgClass,
+        DatePipe,
+        ExpenseDialogComponent,
+        ToggleSwitch,
+        PeriodFilterComponent,
+        UserFilterComponent,
+        Checkbox,
+        SelectButton
+    ],
     templateUrl: './reimbursement.component.html',
     providers: [ReimbursementService, MessageService, ConfirmationService]
 })
@@ -36,7 +58,7 @@ export class ReimbursementComponent {
     totalReimbursement!: number;
 
     currentUser!: string;
-    pendingOnly = true;
+    pendingOnly? = true;
 
     constructor(
         private reimbursementService: ReimbursementService,
@@ -44,10 +66,17 @@ export class ReimbursementComponent {
         private confirmationService: ConfirmationService
     ) {
         this.reimbursement.expense = new Expense();
+        this.filterOptions = [
+            { name: 'Pendientes', value: true },
+            { name: 'Reembolsados', value: false },
+            { name: 'Todos', value: undefined }
+        ];
     }
 
+    filterOptions!: any[];
+
     loadData() {
-        console.log(this.currentUser,'loading Reimbursements');
+        console.log(this.currentUser, 'loading Reimbursements');
         this.reimbursementService.getData(this.currentUser, this.pendingOnly).subscribe((data) => {
             this.reimbursements = data;
             this.totalReimbursement = from(this.reimbursements).sum((i) => i.amount ?? 0);
@@ -112,8 +141,8 @@ export class ReimbursementComponent {
 
     protected editExpense(reim: Reimbursement) {
         this.reimbursement = { ...reim };
-        if(this.reimbursement.expense !== undefined){
-            this.reimbursement.expense.date = new Date(this.reimbursement?.expense?.date??new Date());
+        if (this.reimbursement.expense !== undefined) {
+            this.reimbursement.expense.date = new Date(this.reimbursement?.expense?.date ?? new Date());
         }
         this.showExpenseDialog = true;
     }
@@ -135,5 +164,17 @@ export class ReimbursementComponent {
     protected filterPending() {
         console.log('filterPending', this.pendingOnly);
         this.loadData();
+    }
+
+    protected reimburseExpense(reim: any) {
+        this.reimbursementService.reimburseExpense(reim).subscribe((data) => {
+            this.loadData();
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'Reembolso procesado, una ingreso fué generado por el valor total.',
+                life: 3000
+            });
+        });
     }
 }
