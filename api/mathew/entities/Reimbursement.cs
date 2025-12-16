@@ -19,7 +19,7 @@ public class Reimbursement
     public string UserName { get; set; }
 
     [Required]
-    public int Percentage { get; set; }
+    public double Percentage { get; set; }
 
     [Required] public bool Pending { get; set; }
 
@@ -29,4 +29,6 @@ public class Reimbursement
     public Family? Family { get; set; } = null!;
 
     public DateTimeOffset? ReimbursementDate { get; set; }
+    [Required]
+    public string? Description { get; set; }
 }

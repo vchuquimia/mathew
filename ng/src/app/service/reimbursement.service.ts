@@ -9,6 +9,8 @@ import { BudgetCopyParameter } from '@/models/budget-copy-parameter';
 import { UserPeriodParameter } from '@/models/user-period-parameter';
 import { UserService } from '@/service/user.service';
 import { Reimbursement } from '@/models/reimbursement';
+import { ReimbursementTemplate } from '@/models/reimbursement-template';
+import { FixedAmountReimbursement } from '@/models/fixed-amount-reimbursement';
 
 @Injectable({
     providedIn: 'root'
@@ -50,5 +52,36 @@ export class ReimbursementService {
     reimburseExpense(data: Reimbursement) {
 
         return this.http.post<Reimbursement>(`${environment.apiUrl}reimbursement/reimburse-expense`, data);
+    }
+
+    getFixedAmountReimbursementForIcloud(){
+        const result = new FixedAmountReimbursement();
+        result.fixedAmount = 53.1;
+        result.numberOfPayments = 3;
+        return result;
+    }
+
+    getReimbursementTemplateForIcloud(expense:Expense): ReimbursementTemplate {
+
+        let result = new ReimbursementTemplate();
+        result.fixedAmountReimbursement = this.getFixedAmountReimbursementForIcloud();
+
+        const reimbursements:Reimbursement[] = [];
+        const reimbursement = new Reimbursement();
+        reimbursement.expenseId = expense.id;
+        reimbursement.expense = expense;
+        reimbursement.pending = true;
+        reimbursement.amount = result.fixedAmountReimbursement.fixedAmount;
+        reimbursement.percentage = result.fixedAmountReimbursement.fixedAmount / (expense.amount ?? 1)*100;
+        reimbursement.description = `Cuota [ 1 de 3] Juan`;
+        reimbursements.push({ ...reimbursement });
+
+        reimbursement.description = `Cuota [ 2 de 3] Mois`;
+        reimbursements.push({ ...reimbursement });
+
+        reimbursement.description = `Cuota [ 3 de 3] Benjamin`;
+        reimbursements.push({ ...reimbursement });
+        result.reimbursements = reimbursements;
+        return result;
     }
 }

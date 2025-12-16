@@ -21,11 +21,14 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Reimbursement } from '@/models/reimbursement';
 import { ReimbursementService } from '@/service/reimbursement.service';
 import { data } from 'autoprefixer';
+import { SelectButton } from 'primeng/selectbutton';
+import { forkJoin } from 'rxjs';
+import { FixedAmountReimbursement } from '@/models/fixed-amount-reimbursement';
 
 @Component({
     standalone: true,
     selector: 'app-expense-dialog',
-    imports: [Dialog, FormsModule, InputGroup, InputGroupAddon, Select, Button, NgClass, DatePicker, Textarea, InputText, CurrencyPipe, CategorySelectComponent, ToggleSwitch, NgIf],
+    imports: [Dialog, FormsModule, InputGroup, InputGroupAddon, Select, Button, NgClass, DatePicker, Textarea, InputText, CurrencyPipe, CategorySelectComponent, ToggleSwitch, NgIf, SelectButton],
     templateUrl: './expense-dialog.component.html',
     styleUrl: './expense-dialog.component.css'
 })
@@ -38,8 +41,14 @@ export class ExpenseDialogComponent {
         this._isReimbursment = value;
         if (value) {
             this.reimbursment = new Reimbursement();
+            this.reimbursment.percentage = 100;
+            this.reimbursmentPercentageChange();
         }
     }
+
+    isICloudReimbursement:boolean = false;
+    fixedAmountReimbursement: FixedAmountReimbursement = new FixedAmountReimbursement();
+
     private _expense: Expense = new Expense();
     get expense(): Expense {
         return this._expense;
@@ -58,6 +67,11 @@ export class ExpenseDialogComponent {
     @Output() showDialogChange = new EventEmitter<boolean>();
     expenseSummary!: ExpenseSummaryDto | undefined;
     public categories = new Array<Category>();
+
+    protected reimbursementOptions = [
+        { name: 'Monto Fijo', value: 0 },
+        { name: 'Porcentaje', value: 1 }
+    ];
 
     hideDialog() {
         this.showDialogChange.emit(false);
@@ -87,18 +101,10 @@ export class ExpenseDialogComponent {
         // this.submitted = true;
         this.expenseService.save(this._expense).subscribe((data) => {
             if (this._isReimbursment) {
-                this.reimbursment.expenseId = data.id;
-                this.reimbursment.expense = data;
-                this.reimbursment.pending = true;
-                this.reimbursementService.save(this.reimbursment).subscribe((reimbursement) => {
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Guardado',
-                        detail: 'Reembolso guardado con exito.',
-                        life: 3000
-                    });
-                    this.reimbursment = new Reimbursement();
-                });
+                if(this.isPercentage)
+                    this.GenerateReimbursementByPercentage(data);
+                else
+                    this.GenerateReimbursementsByNumberOfPayments(data);
             } else {
             }
             this.messageService.add({
@@ -133,6 +139,89 @@ export class ExpenseDialogComponent {
     protected reimbursmentPercentageChange() {
         if (this._isReimbursment) {
             this.reimbursment.amount = ((this.reimbursment.percentage ?? 1) / 100) * (this._expense.amount ?? 1 ?? 1);
+        }
+    }
+    selectedImbursementOption:number = this.reimbursementOptions[1].value;
+
+    public isPercentage = true;
+    //fixedAmount:number = 0;
+    //numberOfPayments:number = 1;
+
+    protected reimbursementFilter() {
+        console.log('reimbursementFilter', this.selectedImbursementOption);
+        this.isPercentage = this.selectedImbursementOption === 1;
+        if(this.isPercentage) {
+            this.reimbursment.percentage = 100;
+        }
+        else {
+            this.fixedAmountReimbursement.fixedAmount = this._expense.amount ?? 0;
+            this.fixedAmountReimbursement.numberOfPayments = 1;
+        }
+    }
+
+    protected reimbursmentFixedAmountChange() {
+        this.reimbursment.amount = this.fixedAmountReimbursement.fixedAmount * this.fixedAmountReimbursement.numberOfPayments;
+    }
+
+    public GenerateReimbursementsByNumberOfPayments(data:Expense){
+        let reimbursements: Reimbursement[] = [];
+
+        if(this.isICloudReimbursement){
+            reimbursements = this.reimbursementService.getReimbursementTemplateForIcloud(data).reimbursements;
+        }
+        else{
+            for (let i = 0; i < this.fixedAmountReimbursement.numberOfPayments; i++) {
+                const reimbursement = new Reimbursement();
+                reimbursement.expenseId = data.id;
+                reimbursement.expense = data;
+                reimbursement.pending = true;
+                reimbursement.amount = this.fixedAmountReimbursement.fixedAmount;
+                reimbursement.description = `Cuota [${i + 1} de ${this.fixedAmountReimbursement.numberOfPayments}]`;
+                reimbursement.percentage = this.fixedAmountReimbursement.fixedAmount / (this._expense.amount ?? 1)*100;
+                reimbursements.push(reimbursement);
+            }
+        }
+
+        forkJoin(reimbursements.map(r => this.reimbursementService.save(r))).subscribe({
+            next: (results) => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Guardado',
+                    detail: `${results.length} reembolso(s) guardado(s) con éxito.`,
+                    life: 3000
+                });
+                this.reimbursment = new Reimbursement();
+            },
+            error: (error) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Error al guardar reembolsos.',
+                    life: 3000
+                });
+            }
+        });
+    }
+
+    public GenerateReimbursementByPercentage(data:Expense){
+        this.reimbursment.expenseId = data.id;
+        this.reimbursment.expense = data;
+        this.reimbursment.pending = true;
+        this.reimbursment.description = data.description;
+        this.reimbursementService.save(this.reimbursment).subscribe((reimbursement) => {
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Guardado',
+                detail: 'Reembolso guardado con exito.',
+                life: 3000
+            });
+            this.reimbursment = new Reimbursement();
+        });
+    }
+
+    public iCloudReimbursementChange() {
+        if(this.isICloudReimbursement){
+            this.fixedAmountReimbursement = {...this.reimbursementService.getFixedAmountReimbursementForIcloud()};
         }
     }
 }

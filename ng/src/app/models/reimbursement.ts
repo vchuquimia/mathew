@@ -8,6 +8,7 @@ export class Reimbursement {
         this.expenseId = 0;
         this.userName = '';
         this.familyId = 0;
+        this.description = '';
         //this.percentage = 0;
         // this.pending = true;
     }
@@ -21,4 +22,5 @@ export class Reimbursement {
     expense?: Expense;
     familyId: number;
     reimbursementDate?: Date;
+    description: string;
 }

@@ -38,6 +38,7 @@
                     <div class="basis-1/2 ">
                         <div class="flex-row" >
                             <div class="text-sm mt-2"><span class="font-bold"> Desc.: </span>{{ reim.expense.description }}</div>
+                            <div class="text-sm mt-2">{{ reim.description }}</div>
                         </div>
                         <div class="flex flex-row md:flex-col justify-between items-start gap-2">
 
@@ -62,7 +63,7 @@
                     </div>
                     <div class="flex basis-1/2 flex-col items-end gap-2">
                         <div class="text-sm text-blue-500 mt-2">  <span class="font-bold"> Porcentaje: </span>
-                            {{ reim.percentage }}%</div>
+                            {{ reim.percentage | number:'1.0-2' }}%</div>
                         <span class="text-xs font-semibold items-end items">Valor Reembolso:</span>
                         <span class="text-base font-bold items-end items text-primary">{{ reim.amount | currency:'BOB':'symbol-narrow' }}</span>
                         <span class="text-xs font-semibold items-end items">Valor Gasto:</span>
@@ -106,6 +107,11 @@
                 <div >
                     <span class="block font-bold mb-3">Pendiente</span>
                     <p-toggleswitch [(ngModel)]="reimbursement.pending" />
+                </div>
+                <div>
+                    <label for="amount" class="block font-bold mb-3">Description</label>
+                    <input type="text"
+                           [(ngModel)]="reimbursement.description" pInputText required rows="3" cols="20" fluid />
                 </div>
             </div>
             <div class="flex-col flex basis-1/2 items-end text-xl font-bold">

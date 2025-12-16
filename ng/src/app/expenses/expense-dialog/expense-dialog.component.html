@@ -46,16 +46,37 @@
                 <label for="amount" class="block font-bold mb-3">Reembolso</label>
                 <p-toggle-switch [(ngModel)]="isReimbursment"></p-toggle-switch>
             </div>
-                @if (isReimbursment) {
+            @if (isReimbursment) {
+                <p-selectbutton [options]="reimbursementOptions" [(ngModel)]="selectedImbursementOption"  (click)="reimbursementFilter()" allowEmpty="false"
+                                optionLabel="name" optionValue="value" aria-label="basic" />
+                @if (isPercentage){
                     <div class="flex flex-row items-center">
                         <span class="basis-1/3" > % Reemb. </span>
                         <input class="basis-1/3" type="number" inputmode="decimal" pattern="[0-9]*(\.[0-9]{0,2})?" id="amount" pInputText autocomplete="off"
                                [(ngModel)]="reimbursment.percentage" required rows="3" cols="20" fluid (ngModelChange)="reimbursmentPercentageChange()" />
                     </div>
-                    <div class="flex flex-row items-center h-12">
-                    <span class=" font-bold"> Valor Reembolso : {{reimbursment?.amount | currency:'BOB':'symbol-narrow'}}</span>
+                }
+                @if(!isPercentage) {
+                    <div>
+                        <label for="amount" class="block font-bold mb-3">ICloud</label>
+                        <p-toggle-switch [(ngModel)]="isICloudReimbursement" (ngModelChange)="iCloudReimbursementChange()"></p-toggle-switch>
+                    </div>
+                    <div class="flex flex-row items-center">
+                        <span class="basis-1/3" > Valor Fijo. </span>
+                        <input class="basis-1/3" type="number" inputmode="decimal" pattern="[0-9]*(\.[0-9]{0,2})?" id="amount" pInputText autocomplete="off"
+                               [(ngModel)]="fixedAmountReimbursement.fixedAmount" required rows="3" cols="20" fluid (ngModelChange)="reimbursmentFixedAmountChange()" />
+                    </div>
+                    <div class="flex flex-row items-center">
+                        <span class="basis-1/3" > Cuotas. </span>
+                        <input class="basis-1/3" type="number" inputmode="decimal" pattern="[0-9]*(\.[0-9]{0,2})?" id="amount" pInputText autocomplete="off"
+                               [(ngModel)]="fixedAmountReimbursement.numberOfPayments" required rows="3" cols="20" fluid (ngModelChange)="reimbursmentFixedAmountChange()" />
                     </div>
                 }
+
+                <div class="flex flex-row items-center h-12">
+                <span class=" font-bold"> Valor Reembolso : {{reimbursment?.amount | currency:'BOB':'symbol-narrow'}}</span>
+                </div>
+            }
 
         </div>
     </ng-template>

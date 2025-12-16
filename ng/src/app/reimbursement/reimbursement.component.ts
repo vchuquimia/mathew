@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { CurrencyPipe, DatePipe, NgClass, NgForOf } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgForOf } from '@angular/common';
 import { DataView } from 'primeng/dataview';
 import { Dialog } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
@@ -43,7 +43,8 @@ import { SelectButton } from 'primeng/selectbutton';
         PeriodFilterComponent,
         UserFilterComponent,
         Checkbox,
-        SelectButton
+        SelectButton,
+        DecimalPipe
     ],
     templateUrl: './reimbursement.component.html',
     providers: [ReimbursementService, MessageService, ConfirmationService]
