@@ -1,4 +1,3 @@
-
 using mathew.entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +14,8 @@ public class ExpenseDbContext : DbContext
     public DbSet<User> Users => Set<User>();
 
     public DbSet<Reimbursement> Reimbursements => Set<Reimbursement>();
+    public DbSet<ShoppingList> ShoppingLists => Set<ShoppingList>();
+    public DbSet<ShoppingListItem> ShoppingListItems => Set<ShoppingListItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

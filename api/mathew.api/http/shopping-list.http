@@ -1,0 +1,37 @@
+### Get Shopping Lists for a Family
+GET {{mathew_api_HostAddress}}/ShoppingList/1
+Accept: application/json
+
+### Create a new Shopping List
+POST {{mathew_api_HostAddress}}/ShoppingList
+Content-Type: application/json
+
+{
+  "name": "Weekly Groceries",
+  "familyId": 1
+}
+
+### Add Item to Shopping List
+POST {{mathew_api_HostAddress}}/ShoppingList/item
+Content-Type: application/json
+
+{
+  "name": "Milk",
+  "categoryId": 1,
+  "shoppingListId": 1
+}
+
+### Add Another Item to Shopping List
+POST {{mathew_api_HostAddress}}/ShoppingList/item
+Content-Type: application/json
+
+{
+  "name": "Bread",
+  "categoryId": 1,
+  "shoppingListId": 1
+}
+
+### Purchase Item (Convert to Expense)
+POST {{mathew_api_HostAddress}}/ShoppingList/purchase/1?amount=5.50&registeredBy=JohnDoe
+Content-Type: application/json
+
