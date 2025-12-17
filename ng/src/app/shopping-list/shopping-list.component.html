@@ -14,7 +14,7 @@
 </p-toolbar>
 
 <p-dataView [value]="shoppingLists" [layout]="'list'">
-    <ng-template pTemplate="list" let-shoppingLists>
+    <ng-template #list let-shoppingLists>
         <div class="flex flex-col">
             <div *ngFor="let list of shoppingLists; let i = index">
                 <div class="flex flex-col p-3 " [ngClass]="{ 'border-t border-surface': i !== 0 }">
@@ -35,12 +35,15 @@
                     </div>
 
                     <!-- Items -->
-                    <div class="ml-4 mt-2 border-l-2 border-gray-200 pl-2">
-                        <div *ngFor="let item of list.items" class="flex flex-row justify-between items-center py-1">
-                            <div class="flex flex-col">
-                                <span [ngClass]="{'line-through text-gray-400': item.done}">{{ item.name }}</span>
-                                <span class="text-xs text-gray-500" *ngIf="item.category">{{ item.category.name }}</span>
-                                <span class="text-xs font-semibold text-primary" *ngIf="item.budgetAmount">{{ item.budgetAmount | currency:'BOB':'symbol-narrow' }}</span>
+                    <div class="ml-4 mt-2 border-l-2 border-gray-200 pl-2" cdkDropList (cdkDropListDropped)="drop($event, list)">
+                        <div *ngFor="let item of list.items" class="flex flex-row justify-between items-center py-1" cdkDrag>
+                            <div class="flex flex-row items-center gap-2">
+                                <i class="pi pi-bars cursor-move text-gray-400" cdkDragHandle></i>
+                                <div class="flex flex-col">
+                                    <span [ngClass]="{'line-through text-gray-400': item.done}">{{ item.name }}</span>
+                                    <span class="text-xs text-gray-500" *ngIf="item.category">{{ item.category.name }}</span>
+                                    <span class="text-xs font-semibold text-primary" *ngIf="item.budgetAmount">{{ item.budgetAmount | currency:'BOB':'symbol-narrow' }}</span>
+                                </div>
                             </div>
                              <div class="flex flex-row gap-2 items-center">
                                 <p-toggleswitch [(ngModel)]="item.done" (onChange)="toggleItemDone(item)" />

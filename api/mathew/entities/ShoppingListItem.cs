@@ -15,4 +15,5 @@ public class ShoppingListItem
     [JsonIgnore]
     public ShoppingList? ShoppingList { get; set; }
     public bool Done { get; set; }
+    public int Order { get; set; }
 }

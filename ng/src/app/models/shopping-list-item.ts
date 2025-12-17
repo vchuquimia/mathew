@@ -9,5 +9,5 @@ export interface ShoppingListItem {
     shoppingListId: number;
     isBought: boolean;
     done: boolean;
+    order: number;
 }
-

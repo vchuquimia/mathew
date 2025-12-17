@@ -18,6 +18,7 @@ import { ShoppingListItem } from '@/models/shopping-list-item';
 import { UserService } from '@/service/user.service';
 import { CategorySelectComponent } from '@/shared/category-select/category-select.component';
 import { Category } from '@/models/category';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'app-shopping-list',
@@ -35,7 +36,8 @@ import { Category } from '@/models/category';
         ToggleSwitchModule,
         CategorySelectComponent,
         TooltipModule,
-        InputNumberModule
+        InputNumberModule,
+        DragDropModule
     ],
     templateUrl: './shopping-list.component.html',
     providers: [MessageService, ConfirmationService, ShoppingListService]
@@ -152,7 +154,8 @@ export class ShoppingListComponent implements OnInit {
             categoryId: 0,
             shoppingListId: list.id,
             isBought: false,
-            done: false
+            done: false,
+            order: list.items.length
         };
         this.submitted = false;
         this.itemDialog = true;
@@ -189,5 +192,19 @@ export class ShoppingListComponent implements OnInit {
             this.shoppingListItem.categoryId = category.id;
             this.shoppingListItem.category = category;
         }
+    }
+
+    drop(event: CdkDragDrop<ShoppingListItem[]>, list: ShoppingList) {
+        moveItemInArray(list.items, event.previousIndex, event.currentIndex);
+
+        // Update order property for all items in the list
+        list.items.forEach((item, index) => {
+            item.order = index;
+        });
+
+        // Save the new order
+        this.shoppingListService.reorderItems(list.items).subscribe(() => {
+             // Optional: Show success message or just silent update
+        });
     }
 }

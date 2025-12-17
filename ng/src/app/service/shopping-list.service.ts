@@ -32,6 +32,10 @@ export class ShoppingListService {
         return this.http.put<ShoppingListItem>(`${environment.apiUrl}ShoppingList/item`, item);
     }
 
+    reorderItems(items: ShoppingListItem[]): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}ShoppingList/reorder`, items);
+    }
+
     purchaseItem(itemId: number, amount: number, registeredBy: string): Observable<Expense> {
         let params = new HttpParams()
             .set('amount', amount)

@@ -13,12 +13,19 @@ public class ShoppingListController : ControllerBase
     [HttpGet("{familyId:int}")]
     public async Task<List<ShoppingList>> GetLists(ExpenseDbContext context, int familyId)
     {
-        return await context.Set<ShoppingList>()
+        var lists = await context.Set<ShoppingList>()
             .Where(l => l.FamilyId == familyId)
             .Include(l => l.Items)
             .ThenInclude(i => i.Category)
             .OrderByDescending(l => l.CreatedDate)
             .ToListAsync();
+
+        foreach (var list in lists)
+        {
+            list.Items = list.Items.OrderBy(i => i.Order).ToList();
+        }
+
+        return lists;
     }
 
     [HttpPost]
@@ -88,9 +95,25 @@ public class ShoppingListController : ControllerBase
         existing.BudgetAmount = item.BudgetAmount;
         existing.CategoryId = item.CategoryId;
         existing.Done = item.Done;
+        existing.Order = item.Order;
 
         await context.SaveChangesAsync();
         return existing;
+    }
+
+    [HttpPost("reorder")]
+    public async Task<ActionResult> ReorderItems(ExpenseDbContext context, List<ShoppingListItem> items)
+    {
+        foreach (var item in items)
+        {
+            var existing = await context.Set<ShoppingListItem>().FindAsync(item.Id);
+            if (existing != null)
+            {
+                existing.Order = item.Order;
+            }
+        }
+        await context.SaveChangesAsync();
+        return Ok();
     }
 
     [HttpPost("purchase/{itemId:int}")]
