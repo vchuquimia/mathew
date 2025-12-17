@@ -32,17 +32,65 @@ public class ShoppingListController : ControllerBase
         return list;
     }
 
+    [HttpPut]
+    public async Task<ActionResult<ShoppingList>> UpdateList(ExpenseDbContext context, ShoppingList list)
+    {
+        var existing = await context.Set<ShoppingList>().FindAsync(list.Id);
+        if (existing == null)
+            return NotFound();
+
+        existing.Name = list.Name;
+        existing.Done = list.Done;
+        // Update other fields if necessary
+
+        await context.SaveChangesAsync();
+        return existing;
+    }
+
+    [HttpGet("list/{id}")]
+    public async Task<ActionResult<ShoppingList>> GetList(ExpenseDbContext context, int id)
+    {
+        var list = await context.Set<ShoppingList>()
+            .Include(l => l.Items)
+            .ThenInclude(i => i.Category)
+            .FirstOrDefaultAsync(l => l.Id == id);
+
+        if (list == null)
+            return NotFound();
+
+        return list;
+    }
+
     [HttpPost("item")]
     public async Task<ActionResult<ShoppingListItem>> AddItem(ExpenseDbContext context, ShoppingListItem item)
     {
+        item.Category = null;
         if (item.ShoppingListId == 0)
             return BadRequest("ShoppingListId is required");
+        if (item.CategoryId == 0)
+            return BadRequest("CategoryId is required");
 
         context.Set<ShoppingListItem>().Add(item);
         await context.SaveChangesAsync();
 
         // Reload to include category details if needed for response
         return item;
+    }
+
+    [HttpPut("item")]
+    public async Task<ActionResult<ShoppingListItem>> UpdateItem(ExpenseDbContext context, ShoppingListItem item)
+    {
+        var existing = await context.Set<ShoppingListItem>().FindAsync(item.Id);
+        if (existing == null)
+            return NotFound();
+
+        existing.Name = item.Name;
+        existing.BudgetAmount = item.BudgetAmount;
+        existing.CategoryId = item.CategoryId;
+        existing.Done = item.Done;
+
+        await context.SaveChangesAsync();
+        return existing;
     }
 
     [HttpPost("purchase/{itemId:int}")]
@@ -60,11 +108,11 @@ public class ShoppingListController : ControllerBase
         if (item == null)
             return NotFound("Item not found");
 
-        if (item.IsBought)
+        if (item.Done)
             return BadRequest("Item is already bought");
 
         // 1. Mark item as bought
-        item.IsBought = true;
+        item.Done = true;
 
         // 2. Create the Expense
         var expense = new Expense
@@ -83,4 +131,3 @@ public class ShoppingListController : ControllerBase
         return expense;
     }
 }
-
