@@ -16,6 +16,7 @@ import { ReimbursementComponent } from '@/reimbursement/reimbursement.component'
 import { UserComponent } from '@/user/user.component';
 import { FamilyComponent } from '@/family/family.component';
 import { adminGuard } from '@/admin-guard';
+import { ShoppingListComponent } from '@/shopping-list/shopping-list.component';
 export const appRoutes: Routes = [
     {
         path: '',
@@ -34,6 +35,7 @@ export const appRoutes: Routes = [
             {path: 'reinbursement', component: ReimbursementComponent, canActivate: [loginGuard]},
             {path: 'user', component: UserComponent, canActivate: [loginGuard, adminGuard]},
             {path: 'family', component: FamilyComponent, canActivate: [loginGuard, adminGuard]},
+            {path: 'shopping-list', component: ShoppingListComponent, canActivate: [loginGuard]},
 
         ]
     },

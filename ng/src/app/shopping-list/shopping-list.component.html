@@ -1,0 +1,108 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template pTemplate="start">
+        <div class=" flex flex-row gap-1 items-center">
+            <i class="text-2xl! pi pi-fw pi-shopping-cart"></i>
+           <span class="text-base font-bold">
+            Lista de compras
+           </span>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="end">
+        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+    </ng-template>
+</p-toolbar>
+
+<p-dataView [value]="shoppingLists" [layout]="'list'">
+    <ng-template pTemplate="list" let-shoppingLists>
+        <div class="flex flex-col">
+            <div *ngFor="let list of shoppingLists; let i = index">
+                <div class="flex flex-col p-3 " [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="flex flex-row justify-between items-center">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-xl">{{ list.name }}</span>
+                            <span class="text-sm text-gray-500">{{ list.createdDate | date:'short' }}</span>
+                        </div>
+                        <div class="flex flex-row gap-4 items-center">
+                            <div class="flex flex-col items-center">
+                                <span class="text-sm font-bold mb-1">Done</span>
+                                <p-toggleswitch [(ngModel)]="list.done" (onChange)="toggleListDone(list)" />
+                            </div>
+                            <p-button icon="pi pi-plus" [rounded]="true" [outlined]="true" (click)="openNewItem(list)" pTooltip="Add Item" />
+                            <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="edit(list)" />
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(list)" />
+                        </div>
+                    </div>
+
+                    <!-- Items -->
+                    <div class="ml-4 mt-2 border-l-2 border-gray-200 pl-2">
+                        <div *ngFor="let item of list.items" class="flex flex-row justify-between items-center py-1">
+                            <div class="flex flex-col">
+                                <span [ngClass]="{'line-through text-gray-400': item.done}">{{ item.name }}</span>
+                                <span class="text-xs text-gray-500" *ngIf="item.category">{{ item.category.name }}</span>
+                                <span class="text-xs font-semibold text-primary" *ngIf="item.budgetAmount">{{ item.budgetAmount | currency:'BOB':'symbol-narrow' }}</span>
+                            </div>
+                             <div class="flex flex-row gap-2 items-center">
+                                <p-toggleswitch [(ngModel)]="item.done" (onChange)="toggleItemDone(item)" />
+                                <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" (click)="editItem(item)" />
+                             </div>
+                        </div>
+                        <div *ngIf="list.items.length === 0" class="text-sm text-gray-400 italic">No items</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataView>
+
+<p-dialog [(visible)]="shoppingListDialog" [style]="{ width: '450px' }" header="Shopping List Details" [modal]="true">
+    <ng-template pTemplate="content">
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="name" class="block font-bold mb-3">Name</label>
+                <input type="text" pInputText id="name" [(ngModel)]="shoppingList.name" required autofocus fluid />
+                <small class="text-red-500" *ngIf="submitted && !shoppingList.name">Name is required.</small>
+            </div>
+             <div>
+                <label class="block font-bold mb-3">Done</label>
+                <p-toggleswitch [(ngModel)]="shoppingList.done" />
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="saveShoppingList()" />
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" header="Item Details" [modal]="true">
+    <ng-template pTemplate="content">
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="itemName" class="block font-bold mb-3">Name</label>
+                <input type="text" pInputText id="itemName" [(ngModel)]="shoppingListItem.name" required autofocus fluid />
+                <small class="text-red-500" *ngIf="submitted && !shoppingListItem.name">Name is required.</small>
+            </div>
+            <div>
+                <label for="budgetAmount" class="block font-bold mb-3">Budget Amount</label>
+                <p-inputNumber id="budgetAmount" [(ngModel)]="shoppingListItem.budgetAmount" mode="currency" currency="BOB" locale="es-BO" fluid></p-inputNumber>
+            </div>
+            <div>
+                <label class="block font-bold mb-3">Category</label>
+                <category-select [(currenCategory)]="shoppingListItem.category" (currenCategoryChange)="onCategoryChange($event)"></category-select>
+            </div>
+             <div>
+                <label class="block font-bold mb-3">Done</label>
+                <p-toggleswitch [(ngModel)]="shoppingListItem.done" />
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="saveItem()" />
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

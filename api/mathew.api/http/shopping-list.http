@@ -1,8 +1,10 @@
-### Get Shopping Lists for a Family
+@mathew_api_HostAddress = https://localhost:7006
+
+### Get Shopping Lists for Family
 GET {{mathew_api_HostAddress}}/ShoppingList/1
 Accept: application/json
 
-### Create a new Shopping List
+### Create Shopping List
 POST {{mathew_api_HostAddress}}/ShoppingList
 Content-Type: application/json
 
@@ -11,27 +13,35 @@ Content-Type: application/json
   "familyId": 1
 }
 
+### Get Specific Shopping List
+GET {{mathew_api_HostAddress}}/ShoppingList/list/1
+Accept: application/json
+
 ### Add Item to Shopping List
 POST {{mathew_api_HostAddress}}/ShoppingList/item
 Content-Type: application/json
 
 {
   "name": "Milk",
+  "budgetAmount": 5.50,
   "categoryId": 1,
   "shoppingListId": 1
 }
 
-### Add Another Item to Shopping List
-POST {{mathew_api_HostAddress}}/ShoppingList/item
+### Update Item
+PUT {{mathew_api_HostAddress}}/ShoppingList/item
 Content-Type: application/json
 
 {
-  "name": "Bread",
+  "id": 1,
+  "name": "Milk (2 Gallons)",
+  "budgetAmount": 11.00,
   "categoryId": 1,
-  "shoppingListId": 1
+  "shoppingListId": 1,
+  "done": false
 }
 
-### Purchase Item (Convert to Expense)
-POST {{mathew_api_HostAddress}}/ShoppingList/purchase/1?amount=5.50&registeredBy=JohnDoe
+### Purchase Item (Mark as Done and Create Expense)
+POST {{mathew_api_HostAddress}}/ShoppingList/purchase/1?amount=10.50&registeredBy=Victor
 Content-Type: application/json
 
