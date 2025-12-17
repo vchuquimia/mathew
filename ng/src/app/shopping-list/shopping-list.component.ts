@@ -166,6 +166,7 @@ export class ShoppingListComponent implements OnInit {
     }
 
     openNewItem(list: ShoppingList) {
+        this.shoppingList = list;
         this.shoppingListItem = {
             id: 0,
             name: '',
@@ -181,6 +182,8 @@ export class ShoppingListComponent implements OnInit {
     }
 
     editItem(item: ShoppingListItem) {
+        const list = this.shoppingLists.find(l => l.id === item.shoppingListId);
+        this.shoppingList = <ShoppingList>list;
         this.shoppingListItem = { ...item };
         this.itemDialog = true;
     }

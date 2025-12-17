@@ -81,7 +81,7 @@
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" header="Item Details" [modal]="true">
+<p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" [header]="'Item Details - ' + shoppingList?.name" [modal]="true">
     <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
             <div>
