@@ -101,6 +101,18 @@ public class ShoppingListController : ControllerBase
         return existing;
     }
 
+    [HttpDelete("item/{id:int}")]
+    public async Task<ActionResult> DeleteItem(ExpenseDbContext context, int id)
+    {
+        var item = await context.Set<ShoppingListItem>().FindAsync(id);
+        if (item == null)
+            return NotFound();
+
+        context.Set<ShoppingListItem>().Remove(item);
+        await context.SaveChangesAsync();
+        return Ok();
+    }
+
     [HttpPost("reorder")]
     public async Task<ActionResult> ReorderItems(ExpenseDbContext context, List<ShoppingListItem> items)
     {

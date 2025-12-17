@@ -32,6 +32,10 @@ export class ShoppingListService {
         return this.http.put<ShoppingListItem>(`${environment.apiUrl}ShoppingList/item`, item);
     }
 
+    deleteItem(itemId: number): Observable<void> {
+        return this.http.delete<void>(`${environment.apiUrl}ShoppingList/item/${itemId}`);
+    }
+
     reorderItems(items: ShoppingListItem[]): Observable<void> {
         return this.http.post<void>(`${environment.apiUrl}ShoppingList/reorder`, items);
     }

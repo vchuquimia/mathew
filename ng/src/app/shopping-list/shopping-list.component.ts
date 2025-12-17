@@ -113,6 +113,25 @@ export class ShoppingListComponent implements OnInit {
         });
     }
 
+    deleteItem(item: ShoppingListItem) {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to delete ' + item.name + '?',
+            header: 'Confirm',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.shoppingListService.deleteItem(item.id).subscribe(() => {
+                    this.loadData();
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Successful',
+                        detail: 'Item Deleted',
+                        life: 3000
+                    });
+                });
+            }
+        });
+    }
+
     saveShoppingList() {
         this.submitted = true;
 
