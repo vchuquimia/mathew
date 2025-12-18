@@ -1,0 +1,68 @@
+
+### Get Projects for Family
+GET {{mathew_api_HostAddress}}/HomeProject/1
+Accept: application/json
+
+### Create Project
+POST {{mathew_api_HostAddress}}/HomeProject
+Content-Type: application/json
+
+{
+  "name": "Renovate Kitchen",
+  "familyId": 1,
+  "status": 0,
+  "description": "Full renovation of the kitchen including new cabinets and appliances.",
+  "feedback": 0,
+  "comment": "Initial planning phase."
+}
+
+### Update Project
+PUT {{mathew_api_HostAddress}}/HomeProject
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Renovate Kitchen (Updated)",
+  "status": 1,
+  "description": "Full renovation of the kitchen including new cabinets and appliances. Contractors hired.",
+  "feedback": 2,
+  "comment": "Work started."
+}
+
+### Delete Project
+DELETE {{mathew_api_HostAddress}}/HomeProject/1
+Accept: application/json
+
+### Add Log to Project
+POST {{mathew_api_HostAddress}}/HomeProject/log
+Content-Type: application/json
+
+{
+  "homeProjectId": 2,
+  "description": "Met with the contractor to discuss the timeline."
+}
+
+### Add Task to Project
+POST {{mathew_api_HostAddress}}/HomeProject/task
+Content-Type: application/json
+
+{
+  "homeProjectId": 2,
+  "description": "Buy paint",
+  "done": false
+}
+
+### Update Task
+PUT {{mathew_api_HostAddress}}/HomeProject/task
+Content-Type: application/json
+
+{
+  "id": 1,
+  "description": "Buy paint (White)",
+  "done": true
+}
+
+### Delete Task
+DELETE {{mathew_api_HostAddress}}/HomeProject/task/1
+Accept: application/json
+

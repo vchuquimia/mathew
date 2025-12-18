@@ -17,6 +17,10 @@ public class ExpenseDbContext : DbContext
     public DbSet<ShoppingList> ShoppingLists => Set<ShoppingList>();
     public DbSet<ShoppingListItem> ShoppingListItems => Set<ShoppingListItem>();
 
+    public DbSet<HomeProject> HomeProjects => Set<HomeProject>();
+    public DbSet<HomeProjectLog> HomeProjectLogs => Set<HomeProjectLog>();
+    public DbSet<HomeProjectTask> HomeProjectTasks => Set<HomeProjectTask>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Family configuration
