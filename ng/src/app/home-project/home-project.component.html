@@ -1,0 +1,135 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <div class="flex flex-row gap-1 items-center">
+            <i class="text-2xl! pi pi-fw pi-folder-open"></i>
+            <span class="text-base font-bold">Proyectos</span>
+        </div>
+    </ng-template>
+
+    <ng-template #end>
+        <p-button label="Nuevo" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+    </ng-template>
+</p-toolbar>
+
+<p-dataview [value]="projects" [layout]="'list'">
+    <ng-template #list let-projects>
+        <div class="flex flex-col">
+            <div *ngFor="let project of projects; let i = index">
+                <div class="flex flex-row sm:items-center p-3" [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="basis-2/3">
+                        <div class="flex flex-row items-center gap-2">
+                            <span class="font-bold text-lg">{{ project.name }}</span>
+                            <p-tag [value]="getStatusLabel(project.status)" [severity]="project.status === 2 ? 'success' : 'info'"></p-tag>
+                            <p-rating [ngModel]="project.feedback" [readonly]="true" [stars]="3"></p-rating>
+                        </div>
+                        <div class="flex flex-col gap-2 mt-2">
+                            <div class="text-sm">{{ project.description }}</div>
+                            <div class="text-xs text-gray-500">Creado: {{ project.creationDate | date }}</div>
+                        </div>
+                    </div>
+                    <div class="flex basis-1/3 flex-col items-end gap-4">
+                        <div class="flex flex-row gap-2 items-center">
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProject(project)" />
+                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProject(project)" />
+                            <p-button icon="pi pi-comment" severity="help" [rounded]="true" [outlined]="true" (click)="openFeedback(project)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataview>
+
+<p-dialog [(visible)]="projectDialog" [style]="{ width: '600px' }" header="Detalles del Proyecto" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-4">
+            <div>
+                <label for="name" class="block font-bold mb-2">Nombre</label>
+                <input type="text" pInputText id="name" [(ngModel)]="project.name" required autofocus fluid />
+                <small class="text-red-500" *ngIf="submitted && !project.name">El nombre es obligatorio.</small>
+            </div>
+
+            <div>
+                <label for="description" class="block font-bold mb-2">Descripción</label>
+                <textarea id="description" pTextarea [(ngModel)]="project.description" rows="3" fluid></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="status" class="block font-bold mb-2">Estado</label>
+                    <p-select [options]="statuses" [(ngModel)]="project.status" optionLabel="label" optionValue="value" placeholder="Selecciona un Estado" fluid></p-select>
+                </div>
+            </div>
+
+            <div *ngIf="project.id">
+                <p-divider align="center">
+                    <span class="p-tag">Tareas</span>
+                </p-divider>
+
+                <div class="flex flex-row gap-2 mb-2">
+                    <input type="text" pInputText [(ngModel)]="newTaskDescription" placeholder="Nueva tarea..." class="flex-auto" (keydown.enter)="addTask()" />
+                    <p-button icon="pi pi-plus" (click)="addTask()" [disabled]="!newTaskDescription"></p-button>
+                </div>
+
+                <div class="flex flex-col gap-2 max-h-40 overflow-y-auto">
+                    <div *ngFor="let task of project.tasks" class="flex items-center gap-2">
+                        <p-checkbox [(ngModel)]="task.done" [binary]="true" (onChange)="toggleTask(task)"></p-checkbox>
+                        <span [ngClass]="{'line-through text-gray-500': task.done}" class="flex-auto">{{ task.description }}</span>
+                        <p-button icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true" size="small" (click)="deleteTask(task)"></p-button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="project.id">
+                <p-divider align="center">
+                    <span class="p-tag">Registros</span>
+                </p-divider>
+
+                <div class="flex flex-row gap-2 mb-2">
+                    <input type="text" pInputText [(ngModel)]="newLogDescription" placeholder="Nueva entrada..." class="flex-auto" (keydown.enter)="addLog()" />
+                    <p-button icon="pi pi-plus" (click)="addLog()" [disabled]="!newLogDescription"></p-button>
+                </div>
+
+                <div class="flex flex-col gap-2 max-h-40 overflow-y-auto">
+                    <div *ngFor="let log of project.logs" class="text-sm border-b pb-1">
+                        <div class="font-bold text-xs text-gray-500">{{ log.creationDate | date:'short' }}</div>
+                        <div>{{ log.description }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!project.id" class="text-center text-gray-500 italic mt-4">
+                Guarda el proyecto para agregar tareas y registros.
+            </div>
+
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancelar" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Guardar" icon="pi pi-check" (click)="saveProject()" />
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="feedbackDialog" [style]="{ width: '450px' }" header="Feedback del Proyecto" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-4">
+            <div>
+                <label for="feedback" class="block font-bold mb-2">Feedback</label>
+                <p-rating [(ngModel)]="project.feedback" [stars]="3"></p-rating>
+            </div>
+
+            <div>
+                <label for="comment" class="block font-bold mb-2">Comentarios</label>
+                <textarea id="comment" pTextarea [(ngModel)]="project.comment" rows="4" fluid></textarea>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancelar" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Guardar" icon="pi pi-check" (click)="saveFeedback()" />
+    </ng-template>
+</p-dialog>
+
+<p-confirmdialog [style]="{ width: '450px' }" />

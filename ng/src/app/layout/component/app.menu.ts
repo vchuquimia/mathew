@@ -21,7 +21,8 @@ export class AppMenu {
     ngOnInit() {
         this.model = [
             {
-                label: 'Home',
+                label: 'Finanzas',
+                icon: 'pi pi-fw pi-wallet',
                 items: [
                     { label: 'Gastos', icon: 'pi pi-fw pi-money-bill', routerLink: ['/expenses'] },
                     { label: 'Ingresos', icon: 'pi pi-fw pi-arrow-down', routerLink: ['/income'] },
@@ -30,11 +31,24 @@ export class AppMenu {
                     { label: 'Reembolsos', icon: 'pi pi-fw pi-history', routerLink: ['/reinbursement'] },
                     { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },
                     { label: 'Categorias', icon: 'pi pi-fw pi-list-check', routerLink: ['/category'] },
-                    { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/user'] },
-                    { label: 'Familias', icon: 'pi pi-fw pi-sitemap', routerLink: ['/family'] },
-                    { label: 'Lista de compras', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/shopping-list'] }
                 ]
             },
+            {
+                label: 'Hogar',
+                icon: 'pi pi-fw pi-home',
+                items: [
+                    { label: 'Lista de compras', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/shopping-list'] },
+                    { label: 'Proyectos', icon: 'pi pi-fw pi-folder-open', routerLink: ['/home-project'] }
+                ]
+            },
+            {
+                label: 'Configuración',
+                icon: 'pi pi-fw pi-cog',
+                items: [
+                    { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/user'] },
+                    { label: 'Familias', icon: 'pi pi-fw pi-sitemap', routerLink: ['/family'] }
+                ]
+            }
 
             // {
             //     label: 'Home',
@@ -168,6 +182,6 @@ export class AppMenu {
             //         }
             //     ]
             // }
-         ];
+        ];
     }
 }
