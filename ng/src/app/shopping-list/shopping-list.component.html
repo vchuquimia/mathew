@@ -9,7 +9,7 @@
     </ng-template>
 
     <ng-template pTemplate="end">
-        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+        <p-button label="Nuevo" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
     </ng-template>
 </p-toolbar>
 
@@ -25,10 +25,10 @@
                         </div>
                         <div class="flex flex-row gap-4 items-center">
                             <div class="flex flex-col items-center">
-                                <span class="text-sm font-bold mb-1">Done</span>
-                                <p-toggleswitch [(ngModel)]="list.done" (onChange)="toggleListDone(list)" />
+                                <span class="text-sm font-bold mb-1">Completado</span>
+                                <p-checkbox [(ngModel)]="list.done" [binary]="true" (onChange)="toggleListDone(list)" class="scale-125" />
                             </div>
-                            <p-button icon="pi pi-plus" [rounded]="true" [outlined]="true" (click)="openNewItem(list)" pTooltip="Add Item" />
+                            <p-button icon="pi pi-plus" [rounded]="true" [outlined]="true" (click)="openNewItem(list)" pTooltip="Agregar ítem" />
                             <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="edit(list)" />
                             <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(list)" />
                         </div>
@@ -47,12 +47,12 @@
                                 </div>
                             </div>
                              <div class="flex flex-row gap-2 items-center">
-                                <p-toggleswitch [(ngModel)]="item.done" (onChange)="toggleItemDone(item)" />
+                                <p-checkbox [(ngModel)]="item.done" [binary]="true" (onChange)="toggleItemDone(item)" class="scale-125" />
                                 <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" (click)="editItem(item)" />
                                 <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [text]="true" (click)="deleteItem(item)" />
                              </div>
                         </div>
-                        <div *ngIf="list.items.length === 0" class="text-sm text-gray-400 italic">No items</div>
+                        <div *ngIf="list.items.length === 0" class="text-sm text-gray-400 italic">Sin ítems</div>
                     </div>
                 </div>
             </div>
@@ -60,54 +60,56 @@
     </ng-template>
 </p-dataView>
 
-<p-dialog [(visible)]="shoppingListDialog" [style]="{ width: '450px' }" header="Shopping List Details" [modal]="true">
+<p-dialog [(visible)]="shoppingListDialog" [style]="{ width: '450px' }" header="Detalles de la lista de compras" [modal]="true">
     <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
             <div>
-                <label for="name" class="block font-bold mb-3">Name</label>
+                <label for="name" class="block font-bold mb-3">Nombre</label>
                 <input type="text" pInputText id="name" [(ngModel)]="shoppingList.name" required autofocus fluid />
-                <small class="text-red-500" *ngIf="submitted && !shoppingList.name">Name is required.</small>
+                <small class="text-red-500" *ngIf="submitted && !shoppingList.name">El nombre es requerido.</small>
             </div>
              <div>
-                <label class="block font-bold mb-3">Done</label>
-                <p-toggleswitch [(ngModel)]="shoppingList.done" />
+                <label class="block font-bold mb-3">Completado</label>
+                <p-checkbox [(ngModel)]="shoppingList.done" [binary]="true" class="scale-125" />
             </div>
         </div>
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check" (click)="saveShoppingList()" />
+        <p-button label="Cancelar" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Guardar" icon="pi pi-check" (click)="saveShoppingList()" />
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" [header]="'Item Details - ' + shoppingList?.name" [modal]="true">
+<p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" [header]="'Detalles del ítem - ' + shoppingList?.name" [modal]="true">
     <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
             <div>
-                <label for="itemName" class="block font-bold mb-3">Name</label>
+                <label for="itemName" class="block font-bold mb-3">Nombre</label>
                 <input type="text" pInputText id="itemName" [(ngModel)]="shoppingListItem.name" required autofocus fluid />
-                <small class="text-red-500" *ngIf="submitted && !shoppingListItem.name">Name is required.</small>
+                <small class="text-red-500" *ngIf="submitted && !shoppingListItem.name">El nombre es requerido.</small>
             </div>
             <div>
-                <label for="budgetAmount" class="block font-bold mb-3">Budget Amount</label>
+                <label for="budgetAmount" class="block font-bold mb-3">Presupuesto</label>
                 <p-inputNumber id="budgetAmount" [(ngModel)]="shoppingListItem.budgetAmount" mode="currency" currency="BOB" locale="es-BO" fluid></p-inputNumber>
             </div>
             <div>
-                <label class="block font-bold mb-3">Category</label>
+                <label class="block font-bold mb-3">Categoría</label>
                 <category-select [(currenCategory)]="shoppingListItem.category" (currenCategoryChange)="onCategoryChange($event)"></category-select>
             </div>
              <div>
-                <label class="block font-bold mb-3">Done</label>
-                <p-toggleswitch [(ngModel)]="shoppingListItem.done" />
+                <label class="block font-bold mb-3">Completado</label>
+                <p-checkbox [(ngModel)]="shoppingListItem.done" [binary]="true" class="scale-125" />
             </div>
         </div>
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check" (click)="saveItem()" />
+        <p-button label="Cancelar" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Guardar" icon="pi pi-check" (click)="saveItem()" />
     </ng-template>
 </p-dialog>
+
+<p-toast></p-toast>
 
 <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

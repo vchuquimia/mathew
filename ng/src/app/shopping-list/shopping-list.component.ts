@@ -9,7 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ShoppingListService } from '@/service/shopping-list.service';
@@ -33,7 +33,7 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
         InputTextModule,
         ToastModule,
         ToolbarModule,
-        ToggleSwitchModule,
+        CheckboxModule,
         CategorySelectComponent,
         TooltipModule,
         InputNumberModule,
@@ -96,18 +96,18 @@ export class ShoppingListComponent implements OnInit {
 
     delete(list: ShoppingList) {
         this.confirmationService.confirm({
-            message: 'Are you sure you want to delete ' + list.name + '?',
-            header: 'Confirm',
+            message: '¿Estás seguro de que quieres eliminar ' + list.name + '?',
+            header: 'Confirmar',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                // Assuming there is a delete method in service, if not I might need to add it or skip for now.
-                // The user prompt didn't explicitly ask to add delete to service, but category component has it.
-                // I'll check service again.
-                this.messageService.add({
-                    severity: 'warn',
-                    summary: 'Warning',
-                    detail: 'Delete not implemented in service yet',
-                    life: 3000
+                this.shoppingListService.deleteList(list).subscribe(() => {
+                    this.loadData();
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Exitoso',
+                        detail: 'Lista eliminada',
+                        life: 3000
+                    });
                 });
             }
         });
@@ -115,16 +115,16 @@ export class ShoppingListComponent implements OnInit {
 
     deleteItem(item: ShoppingListItem) {
         this.confirmationService.confirm({
-            message: 'Are you sure you want to delete ' + item.name + '?',
-            header: 'Confirm',
+            message: '¿Estás seguro de que quieres eliminar ' + item.name + '?',
+            header: 'Confirmar',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
                 this.shoppingListService.deleteItem(item.id).subscribe(() => {
                     this.loadData();
                     this.messageService.add({
                         severity: 'success',
-                        summary: 'Successful',
-                        detail: 'Item Deleted',
+                        summary: 'Exitoso',
+                        detail: 'Ítem eliminado',
                         life: 3000
                     });
                 });
@@ -139,12 +139,12 @@ export class ShoppingListComponent implements OnInit {
             if (this.shoppingList.id) {
                 this.shoppingListService.updateList(this.shoppingList).subscribe(() => {
                     this.loadData();
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Shopping List Updated', life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Lista de compras actualizada', life: 3000 });
                 });
             } else {
                 this.shoppingListService.createList(this.shoppingList).subscribe(() => {
                     this.loadData();
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Shopping List Created', life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Lista de compras creada', life: 3000 });
                 });
             }
 
@@ -155,13 +155,13 @@ export class ShoppingListComponent implements OnInit {
 
     toggleListDone(list: ShoppingList) {
         this.shoppingListService.updateList(list).subscribe(() => {
-             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Status Updated', life: 3000 });
+             this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Estado actualizado', life: 3000 });
         });
     }
 
     toggleItemDone(item: ShoppingListItem) {
         this.shoppingListService.updateItem(item).subscribe(() => {
-             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Item Status Updated', life: 3000 });
+             this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Estado del ítem actualizado', life: 3000 });
         });
     }
 
@@ -195,12 +195,12 @@ export class ShoppingListComponent implements OnInit {
             if (this.shoppingListItem.id) {
                 this.shoppingListService.updateItem(this.shoppingListItem).subscribe(() => {
                     this.loadData();
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Item Updated', life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Ítem actualizado', life: 3000 });
                 });
             } else {
                 this.shoppingListService.addItem(this.shoppingListItem).subscribe(() => {
                     this.loadData();
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Item Added', life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Ítem agregado', life: 3000 });
                 });
             }
 

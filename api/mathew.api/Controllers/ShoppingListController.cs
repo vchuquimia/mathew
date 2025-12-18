@@ -54,6 +54,14 @@ public class ShoppingListController : ControllerBase
         return existing;
     }
 
+    [HttpDelete]
+    public async Task<ActionResult> DeleteList(ExpenseDbContext context, ShoppingList list)
+    {
+        context.Set<ShoppingList>().Remove(list);
+        await context.SaveChangesAsync();
+        return Ok();
+    }
+
     [HttpGet("list/{id}")]
     public async Task<ActionResult<ShoppingList>> GetList(ExpenseDbContext context, int id)
     {

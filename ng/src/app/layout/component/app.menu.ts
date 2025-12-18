@@ -30,9 +30,9 @@ export class AppMenu {
                     { label: 'Reembolsos', icon: 'pi pi-fw pi-history', routerLink: ['/reinbursement'] },
                     { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },
                     { label: 'Categorias', icon: 'pi pi-fw pi-list-check', routerLink: ['/category'] },
-                    { label: 'Lista de compras', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/shopping-list'] },
                     { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/user'] },
-                    { label: 'Familias', icon: 'pi pi-fw pi-sitemap', routerLink: ['/family'] }
+                    { label: 'Familias', icon: 'pi pi-fw pi-sitemap', routerLink: ['/family'] },
+                    { label: 'Lista de compras', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/shopping-list'] }
                 ]
             },
 

@@ -24,6 +24,10 @@ export class ShoppingListService {
         return this.http.put<ShoppingList>(`${environment.apiUrl}ShoppingList`, list);
     }
 
+    deleteList(list: ShoppingList): Observable<void> {
+        return this.http.delete<void>(`${environment.apiUrl}ShoppingList`, { body: list });
+    }
+
     addItem(item: ShoppingListItem): Observable<ShoppingListItem> {
         return this.http.post<ShoppingListItem>(`${environment.apiUrl}ShoppingList/item`, item);
     }
