@@ -42,7 +42,6 @@ import { PeriodParameter } from '@/models/period-parameter';
         NgClass,
         FormsModule,
         CurrencyPipe,
-        DatePicker,
         DataView,
         DatePipe,
         NgForOf,
@@ -187,8 +186,8 @@ export class ReportComponent implements OnInit {
     }
 
     protected onPeriodFilter(param: PeriodParameter) {
-        this.startDate = new Date(new Date().getFullYear(), param.period.number-1, 1);
-        this.endDate = new Date(new Date().getFullYear(), param.period.number, 0);
+        this.startDate = new Date(param.year, param.period.number-1, 1);
+        this.endDate = new Date(param.year, param.period.number, 0);
         this.loadReport();
     }
 }
