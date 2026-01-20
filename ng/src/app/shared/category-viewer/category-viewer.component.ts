@@ -4,7 +4,7 @@ import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
     selector: 'category-viewer',
-    imports: [NgClass, NgStyle],
+    imports: [NgClass],
     templateUrl: './category-viewer.component.html'
 })
 export class CategoryViewerComponent {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -15,7 +15,7 @@ import { AppMenuitem } from './app.menuitem';
         </ng-container>
     </ul> `
 })
-export class AppMenu {
+export class AppMenu implements OnInit {
     model: MenuItem[] = [];
 
     ngOnInit() {
@@ -30,7 +30,7 @@ export class AppMenu {
                     { label: 'Fuente de ingresos', icon: 'pi pi-fw pi-reply', routerLink: ['/incomesource'] },
                     { label: 'Reembolsos', icon: 'pi pi-fw pi-history', routerLink: ['/reinbursement'] },
                     { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },
-                    { label: 'Categorias', icon: 'pi pi-fw pi-list-check', routerLink: ['/category'] },
+                    { label: 'Categorias', icon: 'pi pi-fw pi-list-check', routerLink: ['/category'] }
                 ]
             },
             {
@@ -38,7 +38,8 @@ export class AppMenu {
                 icon: 'pi pi-fw pi-home',
                 items: [
                     { label: 'Lista de compras', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/shopping-list'] },
-                    { label: 'Proyectos', icon: 'pi pi-fw pi-folder-open', routerLink: ['/home-project'] }
+                    { label: 'Tareas de Casa', icon: 'pi pi-fw pi-check-square', routerLink: ['/home-task'] },
+                    { label: 'Proyectos', icon: 'pi pi-fw pi-folder-open', routerLink: ['/home-project'] },
                 ]
             },
             {
@@ -48,7 +49,7 @@ export class AppMenu {
                     { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/user'] },
                     { label: 'Familias', icon: 'pi pi-fw pi-sitemap', routerLink: ['/family'] }
                 ]
-            }
+            },
 
             // {
             //     label: 'Home',

@@ -3,6 +3,6 @@
         <user-filter [(userParameter)]="parameter.userName" (onFilter)="filterUser($event)" [emitOnFilterAfterInit]="false"></user-filter>
     </ng-template >
     <ng-template #end>
-        <period-filter [(periodParameter)]="parameter.period"  (onFilter)="filterPeriod($event)"> </period-filter>
+        <period-filter [(periodParameter)]="parameter.periodParameter"  (onFilter)="filterPeriod($event)"> </period-filter>
     </ng-template >
 </p-toolbar>

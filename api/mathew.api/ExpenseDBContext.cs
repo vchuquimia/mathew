@@ -21,6 +21,8 @@ public class ExpenseDbContext : DbContext
     public DbSet<HomeProjectLog> HomeProjectLogs => Set<HomeProjectLog>();
     public DbSet<HomeProjectTask> HomeProjectTasks => Set<HomeProjectTask>();
 
+    public DbSet<HomeTask> HomeTasks => Set<HomeTask>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Family configuration

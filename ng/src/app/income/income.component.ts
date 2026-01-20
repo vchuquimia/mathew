@@ -29,6 +29,7 @@ import { UserPeriodParameter } from '@/models/user-period-parameter';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { Period } from '@/models/period';
 import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
+import { PeriodParameter } from '@/models/period-parameter';
 
 @Component({
     selector: 'income',
@@ -164,8 +165,8 @@ export class IncomeComponent {
         this.loadData(this.currentUserPeriodParameter);
     }
 
-    protected periodFilter(parameter: Period) {
-        this.currentUserPeriodParameter.period = parameter;
+    protected periodFilter(parameter: PeriodParameter) {
+        this.currentUserPeriodParameter.periodParameter.period = parameter.period;
         this.loadData(this.currentUserPeriodParameter);
     }
 }

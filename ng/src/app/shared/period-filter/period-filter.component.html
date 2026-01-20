@@ -1,1 +1,5 @@
-<p-select class="flex w-56" [options]="periods" [(ngModel)]="periodParameter" (ngModelChange)="filterMonth($event)"  optionLabel="name" fluid />
+<div class="flex flex-col gap-2">
+
+<p-select class="flex w-56" [options]="periods" [(ngModel)]="periodParameter.period" (ngModelChange)="filterMonth($event)"  optionLabel="name" fluid />
+<p-select class="flex w-56" [options]="years" [(ngModel)]="periodParameter.year" (ngModelChange)="filterYear($event)" fluid />
+</div>

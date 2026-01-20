@@ -28,6 +28,7 @@ import { Toast } from 'primeng/toast';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { Period } from '@/models/period';
 import { from } from 'linq-to-typescript';
+import { PeriodParameter } from '@/models/period-parameter';
 
 @Component({
     selector: 'report',
@@ -185,9 +186,9 @@ export class ReportComponent implements OnInit {
         };
     }
 
-    protected onPeriodFilter(param: Period) {
-        this.startDate = new Date(new Date().getFullYear(), param.number-1, 1);
-        this.endDate = new Date(new Date().getFullYear(), param.number, 0);
+    protected onPeriodFilter(param: PeriodParameter) {
+        this.startDate = new Date(new Date().getFullYear(), param.period.number-1, 1);
+        this.endDate = new Date(new Date().getFullYear(), param.period.number, 0);
         this.loadReport();
     }
 }

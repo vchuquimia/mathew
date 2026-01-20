@@ -10,6 +10,7 @@ import { from } from 'linq-to-typescript';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { Toolbar } from 'primeng/toolbar';
 import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
+import { PeriodParameter } from '@/models/period-parameter';
 
 @Component({
     selector: 'user-period-filter',
@@ -31,25 +32,22 @@ export class UserPeriodFilterComponent implements OnInit {
 
     @Output() onFilter = new EventEmitter<UserPeriodParameter>();
 
-
     constructor(
         public userService: UserService,
         public periodService: PeriodService
     ) {}
 
-    ngOnInit() {
+    ngOnInit() {}
 
-    }
-
-    filterUser(userName:string) {
+    filterUser(userName: string) {
         this.parameter.userName = userName;
-        this.parameter = {...this.parameter};
+        this.parameter = { ...this.parameter };
         this.onFilter.emit(this.parameter);
     }
 
-    filterPeriod(period: Period) {
+    filterPeriod(periodParameter: PeriodParameter) {
         //this.parameter.period = period;
-        this.parameter = {...this.parameter, period};
+        this.parameter = { ...this.parameter, periodParameter };
         this.onFilter.emit(this.parameter);
     }
 }

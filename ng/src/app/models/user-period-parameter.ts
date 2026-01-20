@@ -1,12 +1,11 @@
 import { Period } from '@/models/period';
+import { PeriodParameter } from '@/models/period-parameter';
 
 export class UserPeriodParameter {
     constructor() {
-        this.period = new Period();
-        this.year = 2025;
+        this.periodParameter = new PeriodParameter(new Period(), new Date().getFullYear());
         this.userName = '';
     }
-    period: Period;
-    year: number;
+    periodParameter: PeriodParameter;
     userName: string;
 }

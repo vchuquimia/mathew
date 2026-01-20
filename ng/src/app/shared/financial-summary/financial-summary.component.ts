@@ -20,7 +20,7 @@ export class FinancialSummaryComponent {
     set currentUserPeriodParameter(value: UserPeriodParameter) {
         this._currentUserPeriodParameter = value;
         this.currentUserPeriodParameterChange.emit(value);
-        if(this.currentUserPeriodParameter.period.number != 0)
+        if(this.currentUserPeriodParameter.periodParameter.period.number != 0)
             this.load();
     }
     @Output() currentUserPeriodParameterChange = new EventEmitter<UserPeriodParameter>();

@@ -104,7 +104,7 @@ export class ShoppingListComponent implements OnInit {
                     this.loadData();
                     this.messageService.add({
                         severity: 'success',
-                        summary: 'Exitoso',
+                        summary: 'Exito',
                         detail: 'Lista eliminada',
                         life: 3000
                     });
@@ -123,7 +123,7 @@ export class ShoppingListComponent implements OnInit {
                     this.loadData();
                     this.messageService.add({
                         severity: 'success',
-                        summary: 'Exitoso',
+                        summary: 'Exito',
                         detail: 'Ítem eliminado',
                         life: 3000
                     });

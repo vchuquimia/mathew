@@ -124,7 +124,7 @@ export class HomeProjectComponent implements OnInit {
             accept: () => {
                 this.homeProjectService.deleteProject(project.id).subscribe(() => {
                     this.projects = this.projects.filter(val => val.id !== project.id);
-                    this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Proyecto Eliminado', life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Proyecto Eliminado', life: 3000 });
                 });
             }
         });
@@ -144,13 +144,13 @@ export class HomeProjectComponent implements OnInit {
                 this.homeProjectService.updateProject(this.project).subscribe(data => {
                     const index = this.projects.findIndex(p => p.id === data.id);
                     this.projects[index] = data;
-                    this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Proyecto Actualizado', life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Proyecto Actualizado', life: 3000 });
                     this.projectDialog = false;
                 });
             } else {
                 this.homeProjectService.createProject(this.project).subscribe(data => {
                     this.projects.push(data);
-                    this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Proyecto Creado', life: 3000 });
+                    this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Proyecto Creado', life: 3000 });
                     this.projectDialog = false;
                 });
             }
@@ -161,7 +161,7 @@ export class HomeProjectComponent implements OnInit {
         this.homeProjectService.updateProject(this.project).subscribe(data => {
             const index = this.projects.findIndex(p => p.id === data.id);
             this.projects[index] = data;
-            this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Feedback Guardado', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Feedback Guardado', life: 3000 });
             this.feedbackDialog = false;
         });
     }

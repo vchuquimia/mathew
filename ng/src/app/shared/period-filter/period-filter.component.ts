@@ -5,6 +5,7 @@ import { from } from 'linq-to-typescript';
 import { UserPeriodParameter } from '@/models/user-period-parameter';
 import { PeriodService } from '@/service/period.service';
 import { FormsModule } from '@angular/forms';
+import { PeriodParameter } from '@/models/period-parameter';
 
 @Component({
     selector: 'period-filter',
@@ -13,40 +14,49 @@ import { FormsModule } from '@angular/forms';
     standalone: true
 })
 export class PeriodFilterComponent implements OnInit {
-    private _periodParameter!: Period;
+    private _periodParameter!: PeriodParameter;
 
-    get periodParameter(): Period {
+    get periodParameter(): PeriodParameter {
         return this._periodParameter;
     }
     @Input()
-    set periodParameter(value: Period) {
+    set periodParameter(value: PeriodParameter) {
         this._periodParameter = value;
         this.periodParameterChange.emit(value);
     }
     @Output()
-    periodParameterChange = new EventEmitter<Period>();
+    periodParameterChange = new EventEmitter<PeriodParameter>();
 
     periods!: Period[];
+    years = [
+        2025,2026
+    ];
     // currentPeriod!: Period;
-    constructor(private periodService: PeriodService) {
-
-    }
+    constructor(private periodService: PeriodService) {}
     @Output()
-    onFilter = new EventEmitter<Period>();
+    onFilter = new EventEmitter<PeriodParameter>();
 
     ngOnInit() {
         this.periods = this.periodService.getPeriods();
         const period = new Date().getMonth() + 1;
-        this.periodParameter = {... from(this.periods).first((i) => i.number == period)};
 
+        this.periodParameter = new PeriodParameter(from(this.periods).first((i) => i.number == period), new Date().getFullYear());
         this.onFilter.emit(this.periodParameter);
 
-        console.log(this.periodParameter, "period filter Init");
+        console.log(this.periodParameter, 'period filter Init');
     }
 
     protected filterMonth($event: Period) {
-        this.periodParameter = $event;
+        this.periodParameter.period = $event;
+        this.periodParameter = {... this.periodParameter };
         this.onFilter.emit(this.periodParameter);
-        console.log(this.periodParameter, "period filter");
+        console.log(this.periodParameter, 'period filter');
+    }
+
+    protected filterYear($event: number) {
+        this.periodParameter.year = $event;
+        this.periodParameter = { ...this.periodParameter };
+        this.onFilter.emit(this.periodParameter);
+        console.log(this.periodParameter.year, 'year filter');
     }
 }

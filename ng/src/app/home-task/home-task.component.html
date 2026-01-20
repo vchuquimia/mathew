@@ -1,0 +1,95 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <div class="flex flex-row gap-1 items-center">
+            <i class="text-2xl! pi pi-fw pi-check-square"></i>
+            <span class="text-base font-bold">Tareas de Casa</span>
+        </div>
+    </ng-template>
+
+    <ng-template #end>
+        <p-button label="Nueva Tarea" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+    </ng-template>
+</p-toolbar>
+<p-toolbar class="mb-2">
+    <user-filter [(userParameter)]="currentUserName" (onFilter)="userFilter($event)"></user-filter>
+</p-toolbar>
+
+<p-dataview [value]="tasks" [layout]="'list'">
+    <ng-template #list let-tasks>
+        <div class="flex flex-col">
+            <div *ngFor="let task of tasks; let i = index">
+                <div class="flex flex-row sm:items-center p-3" [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="basis-2/3">
+                        <div class="flex flex-row items-center gap-2">
+                            <p-checkbox [(ngModel)]="task.done" [binary]="true" (onChange)="toggleDone(task)"></p-checkbox>
+                            <span class="font-bold text-lg" [ngClass]="{'line-through text-gray-500': task.done}">{{ task.description }}</span>
+                        </div>
+                        <div class="flex flex-col gap-1 mt-2 ml-8">
+                            <div class="text-sm text-gray-600">Asignado a: {{ task.userName }}</div>
+                            <div class="text-xs text-gray-500" [ngClass]="{'text-red-500 font-bold': isOverdue(task)}">Vence: {{ task.dueDate | date:'short' }}</div>
+                            <div *ngIf="task.rating" class="flex items-center gap-2">
+                                <p-rating [ngModel]="task.rating" [readonly]="true" [stars]="3"></p-rating>
+                                <span class="text-sm italic">{{ task.ratingComment }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex basis-1/3 flex-col items-end gap-4">
+                        <div class="flex flex-row gap-2 items-center">
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteTask(task)" />
+                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editTask(task)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataview>
+
+<p-dialog [(visible)]="taskDialog" [style]="{ width: '500px' }" header="Detalles de la Tarea" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-4">
+            <div>
+                <label for="description" class="block font-bold mb-2">Descripción</label>
+                <input type="text" pInputText id="description" [(ngModel)]="task.description" required autofocus fluid />
+                <small class="text-red-500" *ngIf="submitted && !task.description">La descripción es obligatoria.</small>
+            </div>
+
+            <div>
+                <label for="owner" class="block font-bold mb-2">Asignado a</label>
+                <p-select [options]="users" [(ngModel)]="task.userName" optionLabel="name" optionValue="name" placeholder="Selecciona un usuario" fluid></p-select>
+            </div>
+
+            <div>
+                <label for="dueDate" class="block font-bold mb-2">Fecha de Vencimiento</label>
+                <div class="flex gap-2">
+                    <p-datepicker [(ngModel)]="task.dueDate" dateFormat="dd/mm/yy" [showIcon]="true" fluid class="flex-auto"></p-datepicker>
+                    <p-datepicker [(ngModel)]="task.dueDate" [timeOnly]="true" [showIcon]="true" hourFormat="24" fluid class="w-32"></p-datepicker>
+                </div>
+            </div>
+
+            <div *ngIf="task.id">
+                <p-divider align="center">
+                    <span class="p-tag">Feedback</span>
+                </p-divider>
+
+                <div>
+                    <label for="rating" class="block font-bold mb-2">Calificación</label>
+                    <p-rating [(ngModel)]="task.rating" [stars]="3"></p-rating>
+                </div>
+
+                <div class="mt-2">
+                    <label for="comment" class="block font-bold mb-2">Comentario</label>
+                    <textarea id="comment" pTextarea [(ngModel)]="task.ratingComment" rows="2" fluid></textarea>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancelar" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Guardar" icon="pi pi-check" (click)="saveTask()" />
+    </ng-template>
+</p-dialog>
+
+<p-confirmdialog [style]="{ width: '450px' }" />
+

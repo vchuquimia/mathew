@@ -18,6 +18,7 @@ import { FamilyComponent } from '@/family/family.component';
 import { adminGuard } from '@/admin-guard';
 import { ShoppingListComponent } from '@/shopping-list/shopping-list.component';
 import { HomeProjectComponent } from '@/home-project/home-project.component';
+import { HomeTaskComponent } from '@/home-task/home-task.component';
 export const appRoutes: Routes = [
     {
         path: '',
@@ -38,6 +39,7 @@ export const appRoutes: Routes = [
             {path: 'family', component: FamilyComponent, canActivate: [loginGuard, adminGuard]},
             {path: 'shopping-list', component: ShoppingListComponent, canActivate: [loginGuard]},
             {path: 'home-project', component: HomeProjectComponent, canActivate: [loginGuard]},
+            {path: 'home-task', component: HomeTaskComponent, canActivate: [loginGuard]},
 
         ]
     },

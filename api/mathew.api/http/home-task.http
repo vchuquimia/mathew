@@ -1,0 +1,48 @@
+### Get Tasks for Family 1 (All)
+GET {{mathew_api_HostAddress}}/HomeTask/1
+Accept: application/json
+
+### Get Tasks for Family 1 (Pending)
+GET {{mathew_api_HostAddress}}/HomeTask/1?status=pending
+Accept: application/json
+
+### Get Tasks for Family 1 (Done)
+GET {{mathew_api_HostAddress}}/HomeTask/1?status=done
+Accept: application/json
+
+### Get Tasks for Family 1 (User: victor)
+GET {{mathew_api_HostAddress}}/HomeTask/1?userName=victor
+Accept: application/json
+
+### Create Task
+POST {{mathew_api_HostAddress}}/HomeTask
+Content-Type: application/json
+
+{
+  "description": "fix the pipes",
+  "done": false,
+  "dueDate": "2025-12-25T00:00:00",
+  "rating": 0,
+  "ratingComment": "",
+  "userName": "victor",
+  "familyId": 1
+}
+
+### Update Task
+PUT {{mathew_api_HostAddress}}/HomeTask
+Content-Type: application/json
+
+{
+  "id": 1,
+  "description": "Clean the garage and organize tools",
+  "done": true,
+  "dueDate": "2025-12-25T00:00:00",
+  "rating": 3,
+  "ratingComment": "Great job!",
+  "userName": "victor",
+  "familyId": 1
+}
+
+### Delete Task
+DELETE {{mathew_api_HostAddress}}/HomeTask/1
+
