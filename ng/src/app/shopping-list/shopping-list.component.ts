@@ -201,16 +201,17 @@ export class ShoppingListComponent implements OnInit {
                 this.shoppingListService.updateItem(this.shoppingListItem).subscribe(() => {
                     this.loadData();
                     this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Ítem actualizado', life: 3000 });
+                    this.itemDialog = false;
+                    this.shoppingListItem = {} as ShoppingListItem;
                 });
             } else {
                 this.shoppingListService.addItem(this.shoppingListItem).subscribe(() => {
+                    this.itemDialog = false;
+                    this.shoppingListItem = {} as ShoppingListItem;
                     this.loadData();
                     this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Ítem agregado', life: 3000 });
                 });
             }
-
-            this.itemDialog = false;
-            this.shoppingListItem = {} as ShoppingListItem;
         }
     }
 
