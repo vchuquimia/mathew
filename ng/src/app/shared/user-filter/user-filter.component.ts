@@ -2,9 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserService } from '@/service/user.service';
 import { SelectButton } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
-import { Card } from 'primeng/card';
-import { Select } from 'primeng/select';
-import { Toolbar } from 'primeng/toolbar';
 
 @Component({
     selector: 'user-filter',

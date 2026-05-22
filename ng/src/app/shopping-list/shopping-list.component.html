@@ -9,11 +9,15 @@
     </ng-template>
 
     <ng-template pTemplate="end">
+        <div class="flex flex-row items-center gap-2 mr-3">
+            <p-checkbox inputId="showCompleted" [(ngModel)]="showCompleted" [binary]="true" (onChange)="onShowCompletedChange()"></p-checkbox>
+            <label for="showCompleted" class="text-sm">Mostrar completados</label>
+        </div>
         <p-button label="Nuevo" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
     </ng-template>
 </p-toolbar>
 
-<p-dataView [value]="shoppingLists" [layout]="'list'">
+<p-dataView [value]="visibleShoppingLists()" [layout]="'list'">
     <ng-template #list let-shoppingLists>
         <div class="flex flex-col">
             <div *ngFor="let list of shoppingLists; let i = index">
@@ -36,7 +40,7 @@
 
                     <!-- Items -->
                     <div class="ml-4 mt-2 border-l-2 border-gray-200 pl-2" cdkDropList (cdkDropListDropped)="drop($event, list)">
-                        <div *ngFor="let item of list.items" class="flex flex-row justify-between items-center py-1 bg-surface-0 dark:bg-surface-900" cdkDrag>
+                        <div *ngFor="let item of getVisibleItems(list)" class="flex flex-row justify-between items-center py-1 bg-surface-0 dark:bg-surface-900" cdkDrag>
                             <div *cdkDragPlaceholder class="w-full h-0.5 bg-primary-100  my-1"></div>
                             <div class="flex flex-row items-center gap-2">
                                 <i class="pi pi-bars cursor-move text-gray-400" cdkDragHandle></i>
@@ -52,7 +56,7 @@
                                 <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [text]="true" (click)="deleteItem(item)" />
                              </div>
                         </div>
-                        <div *ngIf="list.items.length === 0" class="text-sm text-gray-400 italic">Sin ítems</div>
+                        <div *ngIf="getVisibleItems(list).length === 0" class="text-sm text-gray-400 italic">Sin ítems</div>
                     </div>
                 </div>
             </div>
@@ -60,7 +64,7 @@
     </ng-template>
 </p-dataView>
 
-<p-dialog [(visible)]="shoppingListDialog" [style]="{ width: '450px' }" header="Detalles de la lista de compras" [modal]="true">
+<p-dialog *ngIf="shoppingListDialog" [(visible)]="shoppingListDialog" [style]="{ width: '450px' }" header="Detalles de la lista de compras" [modal]="true">
     <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
             <div>
@@ -81,7 +85,7 @@
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" [header]="'Detalles del ítem - ' + shoppingList?.name" [modal]="true">
+<p-dialog *ngIf="itemDialog" [(visible)]="itemDialog" [style]="{ width: '450px' }" [header]="'Detalles del ítem - ' + shoppingList.name" [modal]="true">
     <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
             <div>

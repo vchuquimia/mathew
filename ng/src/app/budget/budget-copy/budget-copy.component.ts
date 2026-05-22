@@ -1,20 +1,20 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Dialog } from "primeng/dialog";
-import { Select } from "primeng/select";
+
 import { Button } from "primeng/button";
 import { BudgetCopyParameter } from '@/models/budget-copy-parameter';
 import { BudgetService } from '@/service/budget.service';
 import { MessageService } from 'primeng/api';
 import { Checkbox } from "primeng/checkbox";
 import { FormsModule } from '@angular/forms';
-import { Category } from '@/models/category';
+
 import { Textarea } from 'primeng/textarea';
 import { InputText } from 'primeng/inputtext';
 import { UserService } from '@/service/user.service';
 
 @Component({
     selector: 'budget-copy',
-    imports: [Dialog, Button, Checkbox, FormsModule, Textarea,InputText],
+    imports: [Dialog, Button, Checkbox, FormsModule, Textarea],
     templateUrl: './budget-copy.component.html',
     styleUrl: './budget-copy.component.css'
 })

@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserService } from '@/service/user.service';
 import { PeriodService } from '@/service/period.service';
-import { Period } from '@/models/period';
+
 import { UserPeriodParameter } from '@/models/user-period-parameter';
-import { SelectButton } from 'primeng/selectbutton';
-import { Select, SelectChangeEvent } from 'primeng/select';
+
 import { FormsModule } from '@angular/forms';
-import { from } from 'linq-to-typescript';
+
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { Toolbar } from 'primeng/toolbar';
 import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
@@ -15,7 +14,7 @@ import { PeriodParameter } from '@/models/period-parameter';
 @Component({
     selector: 'user-period-filter',
     standalone: true,
-    imports: [SelectButton, Select, FormsModule, PeriodFilterComponent, Toolbar, UserFilterComponent],
+    imports: [FormsModule, PeriodFilterComponent, Toolbar, UserFilterComponent],
     templateUrl: './user-period-filter.component.html'
 })
 export class UserPeriodFilterComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component ,ViewChild} from '@angular/core';
+import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 import { Button } from 'primeng/button';
@@ -16,7 +16,7 @@ import { Password } from 'primeng/password';
     providers: [CookieService],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css',
-    imports: [FormsModule, ReactiveFormsModule, AutoFocus, Button, Checkbox, InputText, Password, RouterLink]
+    imports: [FormsModule, ReactiveFormsModule, AutoFocus]
 })
 export class LoginComponent {
     codeForm: FormGroup;

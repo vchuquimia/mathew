@@ -24,7 +24,6 @@ import { UserService } from '@/service/user.service';
 import { User } from '@/models/user';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
-import { UserPeriodParameter } from '@/models/user-period-parameter';
 
 @Component({
     selector: 'app-home-task',
@@ -48,7 +47,6 @@ import { UserPeriodParameter } from '@/models/user-period-parameter';
         RatingModule,
         DatePickerModule,
         DividerModule,
-        PeriodFilterComponent,
         UserFilterComponent
     ],
     templateUrl: './home-task.component.html',

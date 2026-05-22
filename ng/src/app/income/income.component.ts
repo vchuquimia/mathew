@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Table, TableModule } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CategoryService } from '@/service/category.service';
@@ -27,7 +27,7 @@ import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component'
 import { UserFinancialSummaryComponent } from '@/shared/user-financial-summary/user-financial-summary.component';
 import { UserPeriodParameter } from '@/models/user-period-parameter';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
-import { Period } from '@/models/period';
+
 import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
 import { PeriodParameter } from '@/models/period-parameter';
 
@@ -57,7 +57,6 @@ import { PeriodParameter } from '@/models/period-parameter';
         DataView,
         TimeagoModule,
         UserAvatarComponent,
-        UserFinancialSummaryComponent,
         NgForOf,
         PeriodFilterComponent,
         FinancialSummaryComponent

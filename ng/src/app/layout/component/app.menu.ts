@@ -27,6 +27,7 @@ export class AppMenu implements OnInit {
                     { label: 'Gastos', icon: 'pi pi-fw pi-money-bill', routerLink: ['/expenses'] },
                     { label: 'Ingresos', icon: 'pi pi-fw pi-arrow-down', routerLink: ['/income'] },
                     { label: 'Presupuesto', icon: 'pi pi-fw pi-flag', routerLink: ['/budget'] },
+                    { label: 'Plantillas Reembolso', icon: 'pi pi-fw pi-wallet', routerLink: ['/fixed-amount-reimbursement-template'] },
                     { label: 'Fuente de ingresos', icon: 'pi pi-fw pi-reply', routerLink: ['/incomesource'] },
                     { label: 'Reembolsos', icon: 'pi pi-fw pi-history', routerLink: ['/reinbursement'] },
                     { label: 'Reporte', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/report'] },

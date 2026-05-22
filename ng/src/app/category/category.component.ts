@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table, TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
@@ -24,7 +24,7 @@ import { Category } from '@/models/category';
 import { CategoryViewerComponent } from '@/shared/category-viewer/category-viewer.component';
 import { DataView } from 'primeng/dataview';
 import { TimeagoModule } from 'ngx-timeago';
-import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
+
 import { ColorPicker } from 'primeng/colorpicker';
 
 interface Column {

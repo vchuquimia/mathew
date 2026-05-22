@@ -1,0 +1,72 @@
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+<p-toolbar class="mb-2">
+    <ng-template #start>
+        <div class=" flex flex-row gap-1 items-center">
+            <i class="text-2xl! pi pi-fw pi-wallet "></i>
+            <span class="text-base">Plantillas Reembolso Fijo</span>
+        </div>
+    </ng-template>
+
+    <ng-template #end>
+        <p-button label="Nuevo" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+    </ng-template>
+</p-toolbar>
+<p-dataview [value]="templates" [layout]="'list'">
+    <ng-template #list let-templates>
+        <div class="flex flex-col">
+            <div *ngFor="let template of templates; let i = index">
+                <div class="flex flex-row sm:items-center p-3 " [ngClass]="{ 'border-t border-surface': i !== 0 }">
+                    <div class="basis-2/3 ">
+                        <div class="flex-row" >
+                            <div class="text-sm mt-2 font-semibold">{{ template.name }}</div>
+                        </div>
+                        <div class="text-surface-500 dark:text-surface-400 text-sm">{{ template.paymentDescriptionTemplate }}</div>
+                        <div class="text-surface-500 dark:text-surface-400 text-sm">Nro pagos: {{ template.numberOfPayments }}</div>
+                    </div>
+                    <div class="flex basis-1/3 flex-col items-end gap-4">
+                        <span class="text-base font-semibold items-end items">{{ template.fixedAmount | currency:'BOB':'symbol-narrow' }}</span>
+                        <div class="flex flex-row gap-2 items-center">
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="delete(template)" />
+                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="edit(template)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataview>
+
+
+<p-dialog [(visible)]="showDialog" [style]="{ width: '450px' }" header="Plantilla de Reembolso" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="name" class="block font-bold mb-3">Nombre</label>
+                <input type="text" id="name" pTextarea [(ngModel)]="template.name"
+                       required rows="3" cols="20" fluid />
+            </div>
+            <div>
+                <label for="fixedAmount" class="block font-bold mb-3">Monto fijo</label>
+                <input type="number" inputmode="decimal" pattern="[0-9]*(\.[0-9]{0,2})?" id="fixedAmount" pTextarea
+                       [(ngModel)]="template.fixedAmount" required rows="3" cols="20" fluid />
+            </div>
+            <div>
+                <label for="numberOfPayments" class="block font-bold mb-3">Numero de pagos</label>
+                <input type="number" inputmode="numeric" pattern="[0-9]*" id="numberOfPayments" pTextarea
+                       [(ngModel)]="template.numberOfPayments" required rows="3" cols="20" fluid />
+            </div>
+            <div>
+                <label for="paymentDescriptionTemplate" class="block font-bold mb-3">Descripcion de pago</label>
+                <input type="text" id="paymentDescriptionTemplate" pTextarea [(ngModel)]="template.paymentDescriptionTemplate" required rows="3" cols="20" fluid />
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="save()" />
+    </ng-template>
+</p-dialog>
+
+<p-confirmdialog [style]="{ width: '450px' }" />
+

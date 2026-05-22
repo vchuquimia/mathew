@@ -6,7 +6,7 @@ import { CategoryService } from '@/service/category.service';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
-import { CurrencyPipe, DatePipe, NgClass, NgForOf } from '@angular/common';
+import { CurrencyPipe, NgClass, NgForOf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { Toolbar } from 'primeng/toolbar';
@@ -27,7 +27,7 @@ import { DataView } from 'primeng/dataview';
 import { TimeagoModule } from 'ngx-timeago';
 import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
-import { Period } from '@/models/period';
+
 import { Panel } from 'primeng/panel';
 import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
 import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-period-filter.component';
@@ -45,20 +45,15 @@ import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-peri
         Toolbar,
         NgClass,
         FormsModule,
-        Select,
         CurrencyPipe,
         Toast,
-        Tooltip,
         BudgetCopyComponent,
-        UserFilterComponent,
         CategorySelectComponent,
         CategoryViewerComponent,
         DataView,
         NgForOf,
         TimeagoModule,
         UserAvatarComponent,
-        PeriodFilterComponent,
-        Panel,
         FinancialSummaryComponent,
         UserPeriodFilterComponent
     ],

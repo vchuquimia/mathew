@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Select, SelectChangeEvent } from 'primeng/select';
+import { Select } from 'primeng/select';
 import { Period } from '@/models/period';
 import { from } from 'linq-to-typescript';
-import { UserPeriodParameter } from '@/models/user-period-parameter';
+
 import { PeriodService } from '@/service/period.service';
 import { FormsModule } from '@angular/forms';
 import { PeriodParameter } from '@/models/period-parameter';

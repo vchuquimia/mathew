@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Category } from '@/models/category';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'category-viewer',

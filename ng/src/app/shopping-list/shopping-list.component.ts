@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -45,7 +45,9 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 export class ShoppingListComponent implements OnInit {
     shoppingListDialog: boolean = false;
     itemDialog: boolean = false;
+    showCompleted: boolean = false;
     shoppingLists: ShoppingList[] = [];
+    visibleShoppingLists = signal<ShoppingList[]>([]) ;
     shoppingList!: ShoppingList;
     shoppingListItem!: ShoppingListItem;
     submitted: boolean = false;
@@ -66,6 +68,7 @@ export class ShoppingListComponent implements OnInit {
         if (familyId) {
             this.shoppingListService.getLists(familyId).subscribe((data) => {
                 this.shoppingLists = data;
+                this.refreshVisibleShoppingLists();
             });
         }
     }
@@ -154,12 +157,14 @@ export class ShoppingListComponent implements OnInit {
     }
 
     toggleListDone(list: ShoppingList) {
+        this.refreshVisibleShoppingLists();
         this.shoppingListService.updateList(list).subscribe(() => {
              this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Estado actualizado', life: 3000 });
         });
     }
 
     toggleItemDone(item: ShoppingListItem) {
+        this.refreshVisibleShoppingLists();
         this.shoppingListService.updateItem(item).subscribe(() => {
              this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Estado del ítem actualizado', life: 3000 });
         });
@@ -228,5 +233,29 @@ export class ShoppingListComponent implements OnInit {
         this.shoppingListService.reorderItems(list.items).subscribe(() => {
              // Optional: Show success message or just silent update
         });
+    }
+
+    getVisibleLists(): ShoppingList[] {
+        if (this.showCompleted) {
+            return this.shoppingLists;
+        }
+
+        return this.shoppingLists.filter((list) => !list.done);
+    }
+
+    onShowCompletedChange() {
+        this.refreshVisibleShoppingLists();
+    }
+
+    refreshVisibleShoppingLists() {
+        this.visibleShoppingLists.set(this.getVisibleLists());
+    }
+
+    getVisibleItems(list: ShoppingList): ShoppingListItem[] {
+        if (this.showCompleted) {
+            return list.items;
+        }
+
+        return list.items.filter((item) => !item.done);
     }
 }

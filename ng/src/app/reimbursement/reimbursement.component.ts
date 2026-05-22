@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgForOf } from '@angular/common';
@@ -6,7 +6,7 @@ import { DataView } from 'primeng/dataview';
 import { Dialog } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
-import { Textarea } from 'primeng/textarea';
+
 import { Toast } from 'primeng/toast';
 import { Toolbar } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -19,7 +19,7 @@ import { from } from 'linq-to-typescript';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
 import { Checkbox } from 'primeng/checkbox';
-import { UndoIcon } from 'primeng/icons';
+
 import { SelectButton } from 'primeng/selectbutton';
 
 @Component({
@@ -33,16 +33,13 @@ import { SelectButton } from 'primeng/selectbutton';
         FormsModule,
         InputText,
         NgForOf,
-        Textarea,
         Toast,
         Toolbar,
         NgClass,
         DatePipe,
         ExpenseDialogComponent,
         ToggleSwitch,
-        PeriodFilterComponent,
         UserFilterComponent,
-        Checkbox,
         SelectButton,
         DecimalPipe
     ],

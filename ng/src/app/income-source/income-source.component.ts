@@ -1,15 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Category } from '@/models/category';
+
 import { Table, TableModule } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CategoryService } from '@/service/category.service';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
-import { IconField } from 'primeng/iconfield';
-import { InputIcon } from 'primeng/inputicon';
+
 import { InputText } from 'primeng/inputtext';
-import { CurrencyPipe, DatePipe, NgClass, NgForOf } from '@angular/common';
+import { CurrencyPipe, NgClass, NgForOf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { Toolbar } from 'primeng/toolbar';
@@ -17,10 +16,9 @@ import { Toolbar } from 'primeng/toolbar';
 import { Toast } from 'primeng/toast';
 import { IncomeSource } from '@/models/income-source';
 import { IncomeSourceService } from '@/service/income-source.service';
-import { CategoryViewerComponent } from '@/shared/category-viewer/category-viewer.component';
+
 import { DataView } from 'primeng/dataview';
 import { TimeagoModule } from 'ngx-timeago';
-import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
 
 @Component({
     selector: 'income-source',

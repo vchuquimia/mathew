@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Category } from '@/models/category';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CategoryService } from '@/service/category.service';
@@ -6,7 +6,7 @@ import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
 
-import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgForOf, NgIf, PercentPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgForOf, PercentPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Toolbar } from 'primeng/toolbar';
@@ -14,7 +14,7 @@ import { BudgetService } from '@/service/budget.service';
 
 import { ExpenseSummaryDto } from '@/models/expense-summary-dto';
 import { ReportService } from '@/service/report.service';
-import { DatePicker } from 'primeng/datepicker';
+
 import { DataView } from 'primeng/dataview';
 import { Expense } from '@/models/expense';
 import { ExpensesService } from '@/service/expenses.service';
@@ -22,11 +22,11 @@ import { Avatar } from 'primeng/avatar';
 import { CategoryViewerComponent } from '@/shared/category-viewer/category-viewer.component';
 import { TimeagoModule } from 'ngx-timeago';
 import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
-import { ChartModule, UIChart } from 'primeng/chart';
+import { ChartModule } from 'primeng/chart';
 import { FluidModule } from 'primeng/fluid';
 import { Toast } from 'primeng/toast';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
-import { Period } from '@/models/period';
+
 import { from } from 'linq-to-typescript';
 import { PeriodParameter } from '@/models/period-parameter';
 

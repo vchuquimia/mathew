@@ -23,6 +23,8 @@ public class ExpenseDbContext : DbContext
 
     public DbSet<HomeTask> HomeTasks => Set<HomeTask>();
 
+    public DbSet<FixedAmountReimbursementTemplate> FixedAmountReimbursementTemplates => Set<FixedAmountReimbursementTemplate>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Family configuration
@@ -89,6 +91,13 @@ public class ExpenseDbContext : DbContext
             .HasOne(r => r.Family)
             .WithMany()
             .HasForeignKey(r => r.FamilyId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // FixedAmountReimbursementTemplate configuration
+        modelBuilder.Entity<FixedAmountReimbursementTemplate>()
+            .HasOne(f => f.Family)
+            .WithMany()
+            .HasForeignKey(f => f.FamilyId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

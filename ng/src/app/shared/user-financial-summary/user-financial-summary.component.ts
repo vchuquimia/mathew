@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CurrencyPipe, NgForOf } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { Toolbar } from 'primeng/toolbar';
 import { Tooltip } from 'primeng/tooltip';
 import { FinantialSummaryDto } from '@/models/finantial-summary-dto';

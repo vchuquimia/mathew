@@ -32,7 +32,7 @@ import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component'
 import { UserFilterComponent } from '@/shared/user-filter/user-filter.component';
 import { UserPeriodParameter } from '@/models/user-period-parameter';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
-import { Period } from '@/models/period';
+
 import { from } from 'linq-to-typescript';
 import { FinancialSummaryComponent } from '@/shared/financial-summary/financial-summary.component';
 import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-period-filter.component';
@@ -65,8 +65,6 @@ import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-peri
         TimeagoModule,
         CategoryViewerComponent,
         UserAvatarComponent,
-        UserFilterComponent,
-        PeriodFilterComponent,
         FinancialSummaryComponent,
         UserPeriodFilterComponent
     ],

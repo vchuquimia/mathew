@@ -20,7 +20,7 @@ import { CategoryService } from '@/service/category.service';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Reimbursement } from '@/models/reimbursement';
 import { ReimbursementService } from '@/service/reimbursement.service';
-import { data } from 'autoprefixer';
+
 import { SelectButton } from 'primeng/selectbutton';
 import { forkJoin } from 'rxjs';
 import { FixedAmountReimbursement } from '@/models/fixed-amount-reimbursement';
@@ -28,7 +28,7 @@ import { FixedAmountReimbursement } from '@/models/fixed-amount-reimbursement';
 @Component({
     standalone: true,
     selector: 'app-expense-dialog',
-    imports: [Dialog, FormsModule, InputGroup, InputGroupAddon, Select, Button, NgClass, DatePicker, Textarea, InputText, CurrencyPipe, CategorySelectComponent, ToggleSwitch, NgIf, SelectButton],
+    imports: [Dialog, FormsModule, InputGroup, InputGroupAddon, Button, DatePicker, Textarea, InputText, CurrencyPipe, CategorySelectComponent, ToggleSwitch, SelectButton],
     templateUrl: './expense-dialog.component.html',
     styleUrl: './expense-dialog.component.css'
 })

@@ -1,0 +1,46 @@
+### Get all templates for a family
+GET {{mathew_api_HostAddress}}/fixedamountreimbursementtemplate?familyId=1
+Accept: application/json
+
+### Get all templates filtered by user
+GET {{mathew_api_HostAddress}}/fixedamountreimbursementtemplate?familyId=1&userName=vh
+Accept: application/json
+
+### Get by id
+GET {{mathew_api_HostAddress}}/fixedamountreimbursementtemplate/1?familyId=1
+Accept: application/json
+
+### Create new template
+POST {{mathew_api_HostAddress}}/fixedamountreimbursementtemplate
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 0,
+  "name": "Mortgage",
+  "fixedAmount": 500.00,
+  "numberOfPayments": 12,
+  "paymentDescriptionTemplate": "Monthly mortgage split",
+  "userName": "vh",
+  "familyId": 1
+}
+
+### Update existing template
+POST {{mathew_api_HostAddress}}/fixedamountreimbursementtemplate
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Mortgage Updated",
+  "fixedAmount": 550.00,
+  "numberOfPayments": 10,
+  "paymentDescriptionTemplate": "Updated mortgage split",
+  "userName": "vh",
+  "familyId": 1
+}
+
+### Delete template
+DELETE {{mathew_api_HostAddress}}/fixedamountreimbursementtemplate/1?familyId=1
+Accept: application/json
+
