@@ -19,6 +19,7 @@ import { adminGuard } from '@/admin-guard';
 import { ShoppingListComponent } from '@/shopping-list/shopping-list.component';
 import { HomeProjectComponent } from '@/home-project/home-project.component';
 import { HomeTaskComponent } from '@/home-task/home-task.component';
+import { FixedAmountReimbursementTemplateComponent } from '@/fixed-amount-reimbursement-template/fixed-amount-reimbursement-template.component';
 export const appRoutes: Routes = [
     {
         path: '',
@@ -35,6 +36,7 @@ export const appRoutes: Routes = [
             {path: 'incomesource', component: IncomeSourceComponent, canActivate: [loginGuard]},
             {path: 'income', component: IncomeComponent, canActivate: [loginGuard]},
             {path: 'reinbursement', component: ReimbursementComponent, canActivate: [loginGuard]},
+            {path: 'fixed-amount-reimbursement-template', component: FixedAmountReimbursementTemplateComponent, canActivate: [loginGuard]},
             {path: 'user', component: UserComponent, canActivate: [loginGuard, adminGuard]},
             {path: 'family', component: FamilyComponent, canActivate: [loginGuard, adminGuard]},
             {path: 'shopping-list', component: ShoppingListComponent, canActivate: [loginGuard]},
