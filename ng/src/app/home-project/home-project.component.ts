@@ -5,7 +5,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
@@ -34,7 +33,6 @@ import { UserService } from '@/service/user.service';
         FormsModule,
         ButtonModule,
         RippleModule,
-        ToastModule,
         ToolbarModule,
         InputTextModule,
         TextareaModule,
@@ -48,7 +46,7 @@ import { UserService } from '@/service/user.service';
         RatingModule
     ],
     templateUrl: './home-project.component.html',
-    providers: [MessageService, ConfirmationService]
+    providers: [ConfirmationService]
 })
 export class HomeProjectComponent implements OnInit {
     projectDialog: boolean = false;

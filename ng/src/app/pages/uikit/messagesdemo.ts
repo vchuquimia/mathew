@@ -5,12 +5,11 @@ import { MessageService, ToastMessageOptions } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { ToastModule } from 'primeng/toast';
 
 @Component({
     selector: 'app-messages-demo',
     standalone: true,
-    imports: [CommonModule, ToastModule, ButtonModule, InputTextModule, MessageModule, FormsModule],
+    imports: [CommonModule, ButtonModule, InputTextModule, MessageModule, FormsModule],
     template: `
         <div class="flex flex-col md:flex-row gap-8">
             <div class="md:w-1/2">
@@ -21,7 +20,6 @@ import { ToastModule } from 'primeng/toast';
                         <p-button (click)="showInfoViaToast()" label="Info" severity="info" />
                         <p-button (click)="showWarnViaToast()" label="Warn" severity="warn" />
                         <p-button (click)="showErrorViaToast()" label="Error" severity="danger" />
-                        <p-toast />
                     </div>
 
                     <div class="font-semibold text-xl mt-4 mb-4">Inline</div>
@@ -50,7 +48,7 @@ import { ToastModule } from 'primeng/toast';
             </div>
         </div>
     `,
-    providers: [MessageService]
+    providers: []
 })
 export class MessagesDemo {
     msgs: ToastMessageOptions[] | null = [];

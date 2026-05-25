@@ -13,7 +13,6 @@ import { Toolbar } from 'primeng/toolbar';
 import { BudgetService } from '@/service/budget.service';
 import { Budget } from '@/models/budget';
 import { Select } from 'primeng/select';
-import { Toast } from 'primeng/toast';
 import { PeriodService } from '@/service/period.service';
 import { Tooltip } from 'primeng/tooltip';
 import { IncomeService } from '@/service/income.service';
@@ -46,7 +45,6 @@ import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-peri
         NgClass,
         FormsModule,
         CurrencyPipe,
-        Toast,
         BudgetCopyComponent,
         CategorySelectComponent,
         CategoryViewerComponent,
@@ -57,7 +55,7 @@ import { UserPeriodFilterComponent } from '@/shared/user-period-filter/user-peri
         FinancialSummaryComponent,
         UserPeriodFilterComponent
     ],
-    providers: [BudgetService, MessageService, ConfirmationService, CategoryService],
+    providers: [BudgetService, ConfirmationService, CategoryService],
     templateUrl: './budget.component.html',
     styleUrl: './budget.component.css'
 })

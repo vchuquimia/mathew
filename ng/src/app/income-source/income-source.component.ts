@@ -12,8 +12,6 @@ import { CurrencyPipe, NgClass, NgForOf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { Toolbar } from 'primeng/toolbar';
-
-import { Toast } from 'primeng/toast';
 import { IncomeSource } from '@/models/income-source';
 import { IncomeSourceService } from '@/service/income-source.service';
 
@@ -34,13 +32,12 @@ import { TimeagoModule } from 'ngx-timeago';
         Toolbar,
         FormsModule,
         CurrencyPipe,
-        Toast,
         DataView,
         NgForOf,
         TimeagoModule,
         NgClass
     ],
-    providers: [IncomeSourceService, MessageService, ConfirmationService, CategoryService],
+    providers: [IncomeSourceService, ConfirmationService, CategoryService],
     templateUrl: './income-source.component.html',
     styleUrl: './income-source.component.css'
 })

@@ -10,7 +10,6 @@
         <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
     </ng-template>
 </p-toolbar>
-<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
 <p-dataview [value]="incomeSources" [layout]="'list'">
     <ng-template #list let-incomeSources>
         <div class="flex flex-col">

@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { Toolbar } from 'primeng/toolbar';
 import { Select, SelectChangeEvent } from 'primeng/select';
-import { Toast } from 'primeng/toast';
 import { Income } from '@/models/income';
 import { IncomeService } from '@/service/income.service';
 import { IncomeSource } from '@/models/income-source';
@@ -47,7 +46,6 @@ import { PeriodParameter } from '@/models/period-parameter';
         FormsModule,
         Select,
         CurrencyPipe,
-        Toast,
         DatePicker,
         InputGroup,
         InputGroupAddon,
@@ -61,7 +59,7 @@ import { PeriodParameter } from '@/models/period-parameter';
         PeriodFilterComponent,
         FinancialSummaryComponent
     ],
-    providers: [IncomeService, MessageService, ConfirmationService, CategoryService],
+    providers: [IncomeService, ConfirmationService, CategoryService],
     templateUrl: './income.component.html',
     styleUrl: './income.component.css'
 })

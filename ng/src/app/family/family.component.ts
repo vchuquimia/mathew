@@ -8,7 +8,6 @@ import { Button } from 'primeng/button';
 import { Toolbar } from 'primeng/toolbar';
 import { DataView } from 'primeng/dataview';
 import { Dialog } from 'primeng/dialog';
-import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { InputText } from 'primeng/inputtext';
 import { FamilyService } from '@/service/family.service';
@@ -18,8 +17,8 @@ import { CommonModule } from '@angular/common';
     selector: 'app-family',
     templateUrl: './family.component.html',
     standalone: true,
-    imports: [CommonModule, Toolbar, Button, Toast, DataView, NgClass, Dialog, FormsModule, ConfirmDialog, NgForOf, InputText, DatePipe],
-    providers: [MessageService, ConfirmationService, DatePipe]
+    imports: [CommonModule, Toolbar, Button, DataView, NgClass, Dialog, FormsModule, ConfirmDialog, NgForOf, InputText, DatePipe],
+    providers: [ConfirmationService, DatePipe]
 })
 export class FamilyComponent implements OnInit {
     families: Family[] = [];

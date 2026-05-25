@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { ToastModule } from 'primeng/toast';
 import { DrawerModule } from 'primeng/drawer';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
@@ -15,7 +14,7 @@ import { Product, ProductService } from '../service/product.service';
 @Component({
     selector: 'app-overlay-demo',
     standalone: true,
-    imports: [ToastModule, DialogModule, ButtonModule, DrawerModule, PopoverModule, ConfirmPopupModule, InputTextModule, FormsModule, TooltipModule, TableModule, ToastModule],
+    imports: [DialogModule, ButtonModule, DrawerModule, PopoverModule, ConfirmPopupModule, InputTextModule, FormsModule, TooltipModule, TableModule],
     template: ` <div class="flex flex-col md:flex-row gap-8">
         <div class="md:w-1/2">
             <div class="card">
@@ -54,7 +53,6 @@ import { Product, ProductService } from '../service/product.service';
                             </ng-template>
                         </p-table>
                     </p-popover>
-                    <p-toast />
                 </div>
             </div>
 
@@ -133,7 +131,7 @@ import { Product, ProductService } from '../service/product.service';
             </div>
         </div>
     </div>`,
-    providers: [ConfirmationService, MessageService, ProductService]
+    providers: [ConfirmationService, ProductService]
 })
 export class OverlayDemo implements OnInit {
     images: any[] = [];

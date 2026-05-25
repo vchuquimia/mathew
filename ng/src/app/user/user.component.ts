@@ -5,7 +5,6 @@ import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { Toolbar } from 'primeng/toolbar';
 import { Button } from 'primeng/button';
-import { Toast } from 'primeng/toast';
 import { DataView } from 'primeng/dataview';
 import { NgClass, NgForOf } from '@angular/common';
 import { Dialog } from 'primeng/dialog';
@@ -18,8 +17,8 @@ import { InputText } from 'primeng/inputtext';
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.css'],
     standalone: true,
-    imports: [Toolbar, Button, Toast, DataView, NgClass, Dialog, FormsModule, ConfirmDialog, NgForOf, InputText],
-    providers: [UserService, MessageService, ConfirmationService]
+    imports: [Toolbar, Button, DataView, NgClass, Dialog, FormsModule, ConfirmDialog, NgForOf, InputText],
+    providers: [UserService, ConfirmationService]
 })
 export class UserComponent implements OnInit {
     users: User[] = [];

@@ -5,7 +5,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
@@ -34,7 +33,6 @@ import { UserFilterComponent } from '@/shared/user-filter/user-filter.component'
         FormsModule,
         ButtonModule,
         RippleModule,
-        ToastModule,
         ToolbarModule,
         InputTextModule,
         TextareaModule,
@@ -50,7 +48,7 @@ import { UserFilterComponent } from '@/shared/user-filter/user-filter.component'
         UserFilterComponent
     ],
     templateUrl: './home-task.component.html',
-    providers: [MessageService, ConfirmationService]
+    providers: [ConfirmationService]
 })
 export class HomeTaskComponent implements OnInit {
     taskDialog: boolean = false;

@@ -7,7 +7,6 @@ import { CurrencyPipe, NgClass, NgForOf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { Toolbar } from 'primeng/toolbar';
-import { Toast } from 'primeng/toast';
 import { DataView } from 'primeng/dataview';
 import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
 import { UserPeriodParameter } from '@/models/user-period-parameter';
@@ -17,8 +16,8 @@ import { FixedAmountReimbursementTemplate } from '@/models/fixed-amount-reimburs
 @Component({
     selector: 'fixed-amount-reimbursement-template',
     standalone: true,
-    imports: [Button, ConfirmDialog, Dialog, FormsModule, Textarea, Toolbar, NgClass, CurrencyPipe, Toast, DataView, NgForOf, UserAvatarComponent],
-    providers: [FixedAmountReimbursementTemplateService, MessageService, ConfirmationService],
+    imports: [Button, ConfirmDialog, Dialog, FormsModule, Textarea, Toolbar, NgClass, CurrencyPipe, DataView, NgForOf, UserAvatarComponent],
+    providers: [FixedAmountReimbursementTemplateService, ConfirmationService],
     templateUrl: './fixed-amount-reimbursement-template.component.html',
     styleUrl: './fixed-amount-reimbursement-template.component.css'
 })

@@ -7,7 +7,6 @@ import { Dialog } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
 
-import { Toast } from 'primeng/toast';
 import { Toolbar } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Reimbursement } from '@/models/reimbursement';
@@ -33,7 +32,6 @@ import { SelectButton } from 'primeng/selectbutton';
         FormsModule,
         InputText,
         NgForOf,
-        Toast,
         Toolbar,
         NgClass,
         DatePipe,
@@ -44,7 +42,7 @@ import { SelectButton } from 'primeng/selectbutton';
         DecimalPipe
     ],
     templateUrl: './reimbursement.component.html',
-    providers: [ReimbursementService, MessageService, ConfirmationService]
+    providers: [ReimbursementService, ConfirmationService]
 })
 export class ReimbursementComponent {
     showDialog: boolean = false;

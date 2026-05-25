@@ -8,6 +8,6 @@ import { Toast } from 'primeng/toast';
     selector: 'app-root',
     standalone: true,
     imports: [RouterModule, Toast],
-    template: `<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast> <router-outlet></router-outlet>`
+    template: `<p-toast position="bottom-right" [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast> <router-outlet></router-outlet>`
 })
 export class AppComponent {}

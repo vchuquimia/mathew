@@ -24,7 +24,6 @@ import { TimeagoModule } from 'ngx-timeago';
 import { UserAvatarComponent } from '@/shared/user-avatar/user-avatar.component';
 import { ChartModule } from 'primeng/chart';
 import { FluidModule } from 'primeng/fluid';
-import { Toast } from 'primeng/toast';
 import { PeriodFilterComponent } from '@/shared/period-filter/period-filter.component';
 
 import { from } from 'linq-to-typescript';
@@ -53,10 +52,9 @@ import { PeriodParameter } from '@/models/period-parameter';
         PercentPipe,
         ChartModule,
         FluidModule,
-        Toast,
         PeriodFilterComponent
     ],
-    providers: [BudgetService, MessageService, ConfirmationService, CategoryService],
+    providers: [BudgetService, ConfirmationService, CategoryService],
     templateUrl: './report.component.html',
     styleUrl: './report.component.css'
 })

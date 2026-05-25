@@ -66,7 +66,7 @@ interface ExportColumn {
         ColorPicker
     ],
     templateUrl: './category.component.html',
-    providers: [MessageService, ProductService, ConfirmationService]
+    providers: [ProductService, ConfirmationService]
 })
 export class CategoryComponent implements OnInit {
     productDialog: boolean = false;

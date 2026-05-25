@@ -16,7 +16,6 @@
     <period-filter [(periodParameter)]="currentUserPeriodParameter.periodParameter" (onFilter)="periodFilter($event)" ></period-filter>
 </p-toolbar>
 <financial-summary [(currentUserPeriodParameter)]="currentUserPeriodParameter" ></financial-summary>
-<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
 
 <p-dataview [value]="incomes" [layout]="'list'">
 
